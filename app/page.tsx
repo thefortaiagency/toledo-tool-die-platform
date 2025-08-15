@@ -19,10 +19,8 @@ export default function Home() {
         {/* Content */}
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
           <div className="text-center">
-            <div className="inline-flex items-center justify-center p-3 bg-orange-600 rounded-full mb-8 shadow-2xl">
-              <img src="/toledo-logo.png" alt="Toledo Tool & Die" className="h-24 w-24" />
-            </div>
-            <h1 className="text-6xl font-bold mb-4 bg-gradient-to-r from-white to-orange-200 bg-clip-text text-transparent">
+            <img src="/toledo-logo.png" alt="Toledo Tool & Die" className="h-20 mx-auto mb-8" />
+            <h1 className="text-6xl font-bold mb-4 text-white drop-shadow-2xl">
               Toledo Tool & Die
             </h1>
             <p className="text-2xl mb-8 text-orange-100 font-light">Production Metrics Platform</p>
