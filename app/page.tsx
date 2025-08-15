@@ -5,17 +5,55 @@ export default function Home() {
   return (
     <div className="min-h-[calc(100vh-140px)]">
       {/* Hero Section */}
-      <div className="bg-gradient-to-b from-slate-800 to-slate-700 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+      <div className="relative text-white overflow-hidden">
+        {/* Background image */}
+        <div className="absolute inset-0">
+          <img 
+            src="/hero-factory.jpg" 
+            alt="Toledo Tool & Die Factory Floor" 
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/70"></div>
+        </div>
+        
+        {/* Content */}
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
           <div className="text-center">
-            <img src="/toledo-logo.png" alt="Toledo Tool & Die" className="h-20 mx-auto mb-6" />
-            <h1 className="text-5xl font-bold mb-4">Toledo Tool & Die</h1>
-            <p className="text-xl mb-8 text-gray-300">Production Metrics Platform</p>
-            <p className="text-lg max-w-3xl mx-auto text-gray-400">
-              Advanced manufacturing intelligence system for real-time production tracking, 
-              efficiency analysis, and AI-powered insights
-            </p>
+            <div className="inline-flex items-center justify-center p-3 bg-orange-600 rounded-full mb-8 shadow-2xl">
+              <img src="/toledo-logo.png" alt="Toledo Tool & Die" className="h-24 w-24" />
+            </div>
+            <h1 className="text-6xl font-bold mb-4 bg-gradient-to-r from-white to-orange-200 bg-clip-text text-transparent">
+              Toledo Tool & Die
+            </h1>
+            <p className="text-2xl mb-8 text-orange-100 font-light">Production Metrics Platform</p>
+            <div className="max-w-3xl mx-auto">
+              <p className="text-lg text-gray-300 mb-8">
+                Advanced manufacturing intelligence system for real-time production tracking, 
+                efficiency analysis, and AI-powered insights
+              </p>
+              <div className="flex justify-center space-x-8 text-orange-200">
+                <div className="text-center">
+                  <div className="text-3xl font-bold">1,135+</div>
+                  <div className="text-sm">Production Records</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold">24/7</div>
+                  <div className="text-sm">Real-Time Tracking</div>
+                </div>
+                <div className="text-center">
+                  <div className="text-3xl font-bold">6</div>
+                  <div className="text-sm">Production Lines</div>
+                </div>
+              </div>
+            </div>
           </div>
+        </div>
+        
+        {/* Bottom wave */}
+        <div className="absolute bottom-0 left-0 right-0">
+          <svg className="w-full h-12 fill-gray-50" viewBox="0 0 1200 120" preserveAspectRatio="none">
+            <path d="M321.39,56.44c58-10.79,114.16-30.13,172-41.86,82.39-16.72,168.19-17.73,250.45-.39C823.78,31,906.67,72,985.66,92.83c70.05,18.48,146.53,26.09,214.34,3V0H0V27.35A600.21,600.21,0,0,0,321.39,56.44Z"></path>
+          </svg>
         </div>
       </div>
 
