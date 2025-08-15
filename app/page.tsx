@@ -1,6 +1,5 @@
 import Link from 'next/link'
 import { Factory, LayoutDashboard, FileText, BarChart3, Activity, Package, TrendingUp, Users } from 'lucide-react'
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 
 export default function Home() {
   return (
@@ -24,60 +23,44 @@ export default function Home() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <h2 className="text-2xl font-bold text-gray-900 mb-8">Quick Actions</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-          <Link href="/dashboard">
-            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg">Dashboard</CardTitle>
-                  <LayoutDashboard className="h-6 w-6 text-orange-600" />
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600">View real-time production metrics and efficiency reports</p>
-              </CardContent>
-            </Card>
+          <Link href="/dashboard" className="block">
+            <div className="bg-white rounded-lg border-2 border-gray-200 p-6 shadow-lg hover:shadow-xl transition-shadow cursor-pointer h-full">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-gray-900">Dashboard</h3>
+                <LayoutDashboard className="h-6 w-6 text-orange-600" />
+              </div>
+              <p className="text-gray-600">View real-time production metrics and efficiency reports</p>
+            </div>
           </Link>
           
-          <Link href="/entry">
-            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg">Data Entry</CardTitle>
-                  <FileText className="h-6 w-6 text-green-600" />
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600">Submit shift reports and production data</p>
-              </CardContent>
-            </Card>
+          <Link href="/entry" className="block">
+            <div className="bg-white rounded-lg border-2 border-gray-200 p-6 shadow-lg hover:shadow-xl transition-shadow cursor-pointer h-full">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-gray-900">Data Entry</h3>
+                <FileText className="h-6 w-6 text-green-600" />
+              </div>
+              <p className="text-gray-600">Submit shift reports and production data</p>
+            </div>
           </Link>
           
-          <Link href="/reports">
-            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg">Reports</CardTitle>
-                  <BarChart3 className="h-6 w-6 text-purple-600" />
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600">Generate and export detailed production reports</p>
-              </CardContent>
-            </Card>
+          <Link href="/reports" className="block">
+            <div className="bg-white rounded-lg border-2 border-gray-200 p-6 shadow-lg hover:shadow-xl transition-shadow cursor-pointer h-full">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-gray-900">Reports</h3>
+                <BarChart3 className="h-6 w-6 text-purple-600" />
+              </div>
+              <p className="text-gray-600">Generate and export detailed production reports</p>
+            </div>
           </Link>
 
-          <Link href="/settings">
-            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
-              <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg">Import Data</CardTitle>
-                  <Package className="h-6 w-6 text-slate-600" />
-                </div>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600">Import Excel files and manage system settings</p>
-              </CardContent>
-            </Card>
+          <Link href="/settings" className="block">
+            <div className="bg-white rounded-lg border-2 border-gray-200 p-6 shadow-lg hover:shadow-xl transition-shadow cursor-pointer h-full">
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold text-gray-900">Import Data</h3>
+                <Package className="h-6 w-6 text-slate-600" />
+              </div>
+              <p className="text-gray-600">Import Excel files and manage system settings</p>
+            </div>
           </Link>
         </div>
       </div>
