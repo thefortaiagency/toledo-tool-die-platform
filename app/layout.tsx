@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="min-h-screen bg-white">
+        <div className="min-h-screen bg-gray-50">
           {/* Navigation Header */}
           <nav className="bg-slate-800 text-white shadow-lg">
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
