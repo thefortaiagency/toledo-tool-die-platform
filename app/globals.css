@@ -2,6 +2,12 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+}
+
 :root {
   /* Toledo Tool & Die brand colors */
   --toledo-orange: #f97316;
