@@ -10,20 +10,33 @@ module.exports = {
       colors: {
         // Toledo Tool & Die brand colors
         toledo: {
-          orange: '#f97316', // Primary orange
-          slate: '#64748b',  // Secondary grey
-          dark: '#1e293b',   // Dark slate
-          light: '#f8fafc',  // Light background
+          orange: '#f97316',
+          slate: '#64748b',
+          dark: '#1e293b',
+          light: '#f8fafc',
         },
-        // Semantic colors for the app
+        // Map CSS variables to Tailwind
+        background: 'var(--background)',
+        foreground: 'var(--foreground)',
         card: {
-          DEFAULT: 'hsl(0, 0%, 100%)',
-          foreground: 'hsl(222.2, 84%, 4.9%)',
+          DEFAULT: 'var(--card)',
+          foreground: 'var(--card-foreground)',
         },
         muted: {
-          DEFAULT: 'hsl(210, 40%, 96.1%)',
-          foreground: 'hsl(215.4, 16.3%, 46.9%)',
+          DEFAULT: 'var(--muted)',
+          foreground: 'var(--muted-foreground)',
         },
+        border: 'var(--border)',
+      },
+      backgroundColor: {
+        card: 'var(--card)',
+      },
+      textColor: {
+        'card-foreground': 'var(--card-foreground)',
+        'muted-foreground': 'var(--muted-foreground)',
+      },
+      borderColor: {
+        DEFAULT: 'var(--border)',
       },
     },
   },
