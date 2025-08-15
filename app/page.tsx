@@ -1,0 +1,154 @@
+import Link from 'next/link'
+import { Factory, LayoutDashboard, FileText, BarChart3, Activity, Package, TrendingUp, Users } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+
+export default function Home() {
+  return (
+    <div className="min-h-[calc(100vh-140px)]">
+      {/* Hero Section */}
+      <div className="bg-gradient-to-b from-slate-800 to-slate-700 text-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+          <div className="text-center">
+            <img src="/toledo-logo.png" alt="Toledo Tool & Die" className="h-20 mx-auto mb-6" />
+            <h1 className="text-5xl font-bold mb-4">Toledo Tool & Die</h1>
+            <p className="text-xl mb-8 text-gray-300">Production Metrics Platform</p>
+            <p className="text-lg max-w-3xl mx-auto text-gray-400">
+              Advanced manufacturing intelligence system for real-time production tracking, 
+              efficiency analysis, and AI-powered insights
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <h2 className="text-2xl font-bold text-gray-900 mb-8">Quick Actions</h2>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <Link href="/dashboard">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-lg">Dashboard</CardTitle>
+                  <LayoutDashboard className="h-6 w-6 text-orange-600" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600">View real-time production metrics and efficiency reports</p>
+              </CardContent>
+            </Card>
+          </Link>
+          
+          <Link href="/entry">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-lg">Data Entry</CardTitle>
+                  <FileText className="h-6 w-6 text-green-600" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600">Submit shift reports and production data</p>
+              </CardContent>
+            </Card>
+          </Link>
+          
+          <Link href="/reports">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-lg">Reports</CardTitle>
+                  <BarChart3 className="h-6 w-6 text-purple-600" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600">Generate and export detailed production reports</p>
+              </CardContent>
+            </Card>
+          </Link>
+
+          <Link href="/settings">
+            <Card className="hover:shadow-lg transition-shadow cursor-pointer">
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <CardTitle className="text-lg">Import Data</CardTitle>
+                  <Package className="h-6 w-6 text-slate-600" />
+                </div>
+              </CardHeader>
+              <CardContent>
+                <p className="text-gray-600">Import Excel files and manage system settings</p>
+              </CardContent>
+            </Card>
+          </Link>
+        </div>
+      </div>
+
+      {/* Key Features */}
+      <div className="bg-slate-100 py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-8">Platform Features</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="bg-white p-6 rounded-lg shadow">
+              <Activity className="h-10 w-10 text-orange-600 mb-4" />
+              <h3 className="text-lg font-semibold mb-2">Real-Time Monitoring</h3>
+              <p className="text-gray-600">Track production metrics as they happen with live dashboard updates</p>
+            </div>
+
+            <div className="bg-white p-6 rounded-lg shadow">
+              <TrendingUp className="h-10 w-10 text-green-600 mb-4" />
+              <h3 className="text-lg font-semibold mb-2">Efficiency Analysis</h3>
+              <p className="text-gray-600">Monitor machine efficiency and identify improvement opportunities</p>
+            </div>
+
+            <div className="bg-white p-6 rounded-lg shadow">
+              <BarChart3 className="h-10 w-10 text-purple-600 mb-4" />
+              <h3 className="text-lg font-semibold mb-2">Advanced Analytics</h3>
+              <p className="text-gray-600">Comprehensive reporting with trend analysis and predictions</p>
+            </div>
+
+            <div className="bg-white p-6 rounded-lg shadow">
+              <Package className="h-10 w-10 text-slate-600 mb-4" />
+              <h3 className="text-lg font-semibold mb-2">Part Tracking</h3>
+              <p className="text-gray-600">Track production by part number with quality metrics</p>
+            </div>
+
+            <div className="bg-white p-6 rounded-lg shadow">
+              <Users className="h-10 w-10 text-indigo-600 mb-4" />
+              <h3 className="text-lg font-semibold mb-2">Shift Management</h3>
+              <p className="text-gray-600">Monitor shift performance and manning status</p>
+            </div>
+
+            <div className="bg-white p-6 rounded-lg shadow">
+              <Factory className="h-10 w-10 text-orange-600 mb-4" />
+              <h3 className="text-lg font-semibold mb-2">Machine Intelligence</h3>
+              <p className="text-gray-600">AI-powered insights for predictive maintenance</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Stats Section */}
+      <div className="py-12">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+            <div>
+              <div className="text-3xl font-bold text-gray-900">6</div>
+              <div className="text-gray-600">Production Lines</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-gray-900">3</div>
+              <div className="text-gray-600">Shifts Daily</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-gray-900">100+</div>
+              <div className="text-gray-600">Parts Tracked</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-gray-900">24/7</div>
+              <div className="text-gray-600">Real-Time Data</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
