@@ -266,15 +266,27 @@ export default function AIReportGenerator() {
     
     setExportLoading(true)
     try {
-      const dataUrl = await toPng(reportRef.current, {
-        quality: 0.95,
-        backgroundColor: 'white'
+      // Use html2canvas for better full-page capture
+      const canvas = await html2canvas(reportRef.current, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#ffffff',
+        windowWidth: reportRef.current.scrollWidth,
+        windowHeight: reportRef.current.scrollHeight,
+        logging: false
       })
       
-      const link = document.createElement('a')
-      link.download = `${report.title.replace(/\s+/g, '-')}-${Date.now()}.png`
-      link.href = dataUrl
-      link.click()
+      // Convert canvas to blob and download
+      canvas.toBlob((blob) => {
+        if (blob) {
+          const url = URL.createObjectURL(blob)
+          const link = document.createElement('a')
+          link.download = `${report.title.replace(/\s+/g, '-')}-${Date.now()}.png`
+          link.href = url
+          link.click()
+          URL.revokeObjectURL(url)
+        }
+      }, 'image/png', 0.95)
     } catch (err) {
       console.error('PNG export failed:', err)
     } finally {
