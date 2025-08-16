@@ -46,8 +46,21 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
+    <div 
+      className="min-h-screen flex items-center justify-center p-4 relative"
+      style={{
+        backgroundImage: 'url("/login-background.jpg")',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat'
+      }}
+    >
+      {/* Dark overlay for better text readability */}
+      <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+      
+      {/* Content container with higher z-index */}
+      <div className="relative z-10">
+        <Card className="w-full max-w-md backdrop-blur-md bg-white/95">
         <CardHeader className="text-center">
           <div className="bg-slate-800 p-4 rounded-lg mx-auto mb-4 inline-block">
             <img 
@@ -124,6 +137,7 @@ export default function Login() {
           </div>
         </CardContent>
       </Card>
+      </div>
     </div>
   )
 }
