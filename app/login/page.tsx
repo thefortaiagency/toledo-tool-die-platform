@@ -47,7 +47,7 @@ export default function Login() {
             alt="Toledo Tool & Die" 
             className="h-16 mx-auto mb-4"
           />
-          <CardTitle className="text-3xl font-bold text-gray-900">Toledo Tool & Die</CardTitle>
+          <CardTitle className="text-3xl font-bold text-black">Toledo Tool & Die</CardTitle>
           <CardDescription className="text-base mt-2 font-medium text-gray-700">Production Platform Login</CardDescription>
         </CardHeader>
         <CardContent>
