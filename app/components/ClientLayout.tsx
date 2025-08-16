@@ -134,23 +134,28 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       
       {/* Main Content Area with Sidebar */}
       <div className="flex flex-1 relative">
-        {/* Main Content - no margin adjustment needed for floating chat */}
-        <main className="flex-1">
+        {/* Main Content - adjusts width based on sidebar state */}
+        <main 
+          className="flex-1 transition-all duration-300"
+          style={{ 
+            marginRight: (user && !isChatCollapsed) ? chatWidth : 0,
+          }}
+        >
           {children}
         </main>
         
         {/* Chat Sidebar - Only show if user is authenticated */}
         {user && !isChatCollapsed && (
           <div 
-            className="fixed right-4 top-20 bottom-4 transition-all duration-300 z-50"
+            className="fixed right-0 top-16 bottom-0 transition-all duration-300"
             style={{ 
-              width: Math.min(chatWidth, 400),
+              width: chatWidth,
             }}
           >
             <ResizableChatSidebar 
               isCollapsed={isChatCollapsed}
               onCollapsedChange={setIsChatCollapsed}
-              width={Math.min(chatWidth, 400)}
+              width={chatWidth}
               onWidthChange={setChatWidth}
             />
           </div>
