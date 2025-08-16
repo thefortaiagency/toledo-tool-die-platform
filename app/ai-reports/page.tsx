@@ -1,8 +1,12 @@
 'use client'
 
-import { useState } from 'react'
-import { Sparkles, Loader2, Download, Share2, RefreshCw, Maximize2 } from 'lucide-react'
+import { useState, useRef } from 'react'
+import { Sparkles, Loader2, Download, Share2, RefreshCw, Maximize2, FileText, FileSpreadsheet, Image as ImageIcon, FileJson } from 'lucide-react'
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, AreaChart, Area, ScatterChart, Scatter } from 'recharts'
+import jsPDF from 'jspdf'
+import html2canvas from 'html2canvas'
+import * as XLSX from 'xlsx'
+import { toPng } from 'html-to-image'
 
 interface ChartComponent {
   type: 'bar' | 'line' | 'pie' | 'radar' | 'area' | 'scatter' | 'metric' | 'table'
@@ -25,6 +29,9 @@ export default function AIReportGenerator() {
   const [loading, setLoading] = useState(false)
   const [report, setReport] = useState<GeneratedReport | null>(null)
   const [error, setError] = useState('')
+  const [exportLoading, setExportLoading] = useState(false)
+  const [showExportMenu, setShowExportMenu] = useState(false)
+  const reportRef = useRef<HTMLDivElement>(null)
 
   const generateReport = async () => {
     if (!prompt.trim()) return
@@ -187,32 +194,256 @@ export default function AIReportGenerator() {
     }
   }
 
-  const exportReport = () => {
+  const exportToPDF = async () => {
+    if (!report || !reportRef.current) return
+    
+    setExportLoading(true)
+    try {
+      const canvas = await html2canvas(reportRef.current, {
+        scale: 2,
+        useCORS: true,
+        backgroundColor: '#ffffff'
+      })
+      
+      const imgData = canvas.toDataURL('image/png')
+      const pdf = new jsPDF({
+        orientation: 'landscape',
+        unit: 'px',
+        format: [canvas.width, canvas.height]
+      })
+      
+      pdf.addImage(imgData, 'PNG', 0, 0, canvas.width, canvas.height)
+      pdf.save(`${report.title.replace(/\s+/g, '-')}-${Date.now()}.pdf`)
+    } catch (err) {
+      console.error('PDF export failed:', err)
+    } finally {
+      setExportLoading(false)
+      setShowExportMenu(false)
+    }
+  }
+
+  const exportToExcel = () => {
     if (!report) return
     
-    // Create a simple HTML export
+    setExportLoading(true)
+    try {
+      const wb = XLSX.utils.book_new()
+      
+      // Add insights and recommendations sheet
+      const summaryData = [
+        ['Report Title', report.title],
+        ['Description', report.description],
+        ['Generated', report.timestamp],
+        [''],
+        ['Key Insights'],
+        ...report.insights.map(i => [i]),
+        [''],
+        ['Recommendations'],
+        ...report.recommendations.map(r => [r])
+      ]
+      const summarySheet = XLSX.utils.aoa_to_sheet(summaryData)
+      XLSX.utils.book_append_sheet(wb, summarySheet, 'Summary')
+      
+      // Add data sheets for each component
+      report.components.forEach((component, idx) => {
+        if (component.type === 'table' || component.data.length > 0) {
+          const sheet = XLSX.utils.json_to_sheet(component.data)
+          XLSX.utils.book_append_sheet(wb, sheet, `Data-${idx + 1}`)
+        }
+      })
+      
+      XLSX.writeFile(wb, `${report.title.replace(/\s+/g, '-')}-${Date.now()}.xlsx`)
+    } catch (err) {
+      console.error('Excel export failed:', err)
+    } finally {
+      setExportLoading(false)
+      setShowExportMenu(false)
+    }
+  }
+
+  const exportToPNG = async () => {
+    if (!report || !reportRef.current) return
+    
+    setExportLoading(true)
+    try {
+      const dataUrl = await toPng(reportRef.current, {
+        quality: 0.95,
+        backgroundColor: 'white'
+      })
+      
+      const link = document.createElement('a')
+      link.download = `${report.title.replace(/\s+/g, '-')}-${Date.now()}.png`
+      link.href = dataUrl
+      link.click()
+    } catch (err) {
+      console.error('PNG export failed:', err)
+    } finally {
+      setExportLoading(false)
+      setShowExportMenu(false)
+    }
+  }
+
+  const exportToHTML = () => {
+    if (!report) return
+    
     const html = `
       <!DOCTYPE html>
       <html>
         <head>
           <title>${report.title}</title>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1">
           <style>
-            body { font-family: Arial, sans-serif; padding: 20px; }
-            h1 { color: #f97316; }
-            .insight { background: #fef3c7; padding: 10px; margin: 10px 0; border-radius: 5px; }
-            .recommendation { background: #dbeafe; padding: 10px; margin: 10px 0; border-radius: 5px; }
+            * { margin: 0; padding: 0; box-sizing: border-box; }
+            body { 
+              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+              line-height: 1.6;
+              color: #333;
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              min-height: 100vh;
+              padding: 2rem;
+            }
+            .container {
+              max-width: 1200px;
+              margin: 0 auto;
+              background: white;
+              border-radius: 1rem;
+              box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+              overflow: hidden;
+            }
+            .header {
+              background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+              color: white;
+              padding: 2rem;
+            }
+            .header h1 {
+              font-size: 2.5rem;
+              margin-bottom: 0.5rem;
+            }
+            .header p {
+              opacity: 0.9;
+              margin-bottom: 0.5rem;
+            }
+            .header .timestamp {
+              opacity: 0.7;
+              font-size: 0.875rem;
+            }
+            .content {
+              padding: 2rem;
+            }
+            .section {
+              margin-bottom: 2rem;
+            }
+            .section h2 {
+              color: #f97316;
+              margin-bottom: 1rem;
+              padding-bottom: 0.5rem;
+              border-bottom: 2px solid #fed7aa;
+            }
+            .card {
+              background: #f9fafb;
+              border-left: 4px solid #f97316;
+              padding: 1rem;
+              margin-bottom: 1rem;
+              border-radius: 0.5rem;
+            }
+            .insight {
+              background: #fef3c7;
+              border-left-color: #fbbf24;
+            }
+            .recommendation {
+              background: #dbeafe;
+              border-left-color: #3b82f6;
+            }
+            .grid {
+              display: grid;
+              grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+              gap: 1rem;
+              margin-bottom: 2rem;
+            }
+            .metric-card {
+              background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+              color: white;
+              padding: 1.5rem;
+              border-radius: 0.5rem;
+              box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            }
+            .metric-value {
+              font-size: 2rem;
+              font-weight: bold;
+              margin: 0.5rem 0;
+            }
+            .metric-label {
+              opacity: 0.9;
+              font-size: 0.875rem;
+            }
+            table {
+              width: 100%;
+              border-collapse: collapse;
+              margin-top: 1rem;
+            }
+            th {
+              background: #f3f4f6;
+              padding: 0.75rem;
+              text-align: left;
+              font-weight: 600;
+              color: #4b5563;
+              border-bottom: 2px solid #e5e7eb;
+            }
+            td {
+              padding: 0.75rem;
+              border-bottom: 1px solid #e5e7eb;
+            }
+            tr:hover {
+              background: #f9fafb;
+            }
+            .footer {
+              background: #f3f4f6;
+              padding: 1.5rem 2rem;
+              text-align: center;
+              color: #6b7280;
+              font-size: 0.875rem;
+            }
           </style>
         </head>
         <body>
-          <h1>${report.title}</h1>
-          <p>${report.description}</p>
-          <p>Generated: ${report.timestamp}</p>
-          
-          <h2>Key Insights</h2>
-          ${report.insights.map(i => `<div class="insight">• ${i}</div>`).join('')}
-          
-          <h2>Recommendations</h2>
-          ${report.recommendations.map(r => `<div class="recommendation">• ${r}</div>`).join('')}
+          <div class="container">
+            <div class="header">
+              <h1>${report.title}</h1>
+              <p>${report.description}</p>
+              <p class="timestamp">Generated: ${report.timestamp}</p>
+            </div>
+            
+            <div class="content">
+              <div class="section">
+                <h2>Key Insights</h2>
+                ${report.insights.map(i => `<div class="card insight">${i}</div>`).join('')}
+              </div>
+              
+              <div class="section">
+                <h2>Recommendations</h2>
+                ${report.recommendations.map(r => `<div class="card recommendation">${r}</div>`).join('')}
+              </div>
+              
+              <div class="section">
+                <h2>Data Summary</h2>
+                <div class="grid">
+                  ${report.components
+                    .filter(c => c.type === 'metric')
+                    .map(c => `
+                      <div class="metric-card">
+                        <div class="metric-label">${c.title}</div>
+                        <div class="metric-value">${c.data[0]?.value || 'N/A'}</div>
+                      </div>
+                    `).join('')}
+                </div>
+              </div>
+            </div>
+            
+            <div class="footer">
+              Generated by Toledo Tool & Die AI Report Generator
+            </div>
+          </div>
         </body>
       </html>
     `
@@ -221,8 +452,22 @@ export default function AIReportGenerator() {
     const url = URL.createObjectURL(blob)
     const a = document.createElement('a')
     a.href = url
-    a.download = `report-${Date.now()}.html`
+    a.download = `${report.title.replace(/\s+/g, '-')}-${Date.now()}.html`
     a.click()
+    setShowExportMenu(false)
+  }
+
+  const exportToJSON = () => {
+    if (!report) return
+    
+    const json = JSON.stringify(report, null, 2)
+    const blob = new Blob([json], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const a = document.createElement('a')
+    a.href = url
+    a.download = `${report.title.replace(/\s+/g, '-')}-${Date.now()}.json`
+    a.click()
+    setShowExportMenu(false)
   }
 
   const samplePrompts = [
@@ -256,13 +501,74 @@ export default function AIReportGenerator() {
                   <RefreshCw className="w-4 h-4" />
                   <span>New Report</span>
                 </button>
-                <button
-                  onClick={exportReport}
-                  className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 flex items-center space-x-2"
-                >
-                  <Download className="w-4 h-4" />
-                  <span>Export</span>
-                </button>
+                <div className="relative">
+                  <button
+                    onClick={() => setShowExportMenu(!showExportMenu)}
+                    disabled={exportLoading}
+                    className="px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 flex items-center space-x-2"
+                  >
+                    {exportLoading ? (
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                    ) : (
+                      <Download className="w-4 h-4" />
+                    )}
+                    <span>Export</span>
+                  </button>
+                  {showExportMenu && (
+                    <div className="absolute right-0 mt-2 w-56 bg-white rounded-lg shadow-xl z-50 overflow-hidden">
+                      <button
+                        onClick={exportToPDF}
+                        className="w-full px-4 py-3 text-left hover:bg-orange-50 flex items-center space-x-3 transition-colors"
+                      >
+                        <FileText className="w-5 h-5 text-red-600" />
+                        <div>
+                          <div className="font-medium">Export as PDF</div>
+                          <div className="text-xs text-gray-500">Full report with charts</div>
+                        </div>
+                      </button>
+                      <button
+                        onClick={exportToExcel}
+                        className="w-full px-4 py-3 text-left hover:bg-orange-50 flex items-center space-x-3 transition-colors"
+                      >
+                        <FileSpreadsheet className="w-5 h-5 text-green-600" />
+                        <div>
+                          <div className="font-medium">Export as Excel</div>
+                          <div className="text-xs text-gray-500">Data in spreadsheet format</div>
+                        </div>
+                      </button>
+                      <button
+                        onClick={exportToPNG}
+                        className="w-full px-4 py-3 text-left hover:bg-orange-50 flex items-center space-x-3 transition-colors"
+                      >
+                        <ImageIcon className="w-5 h-5 text-blue-600" />
+                        <div>
+                          <div className="font-medium">Export as Image</div>
+                          <div className="text-xs text-gray-500">High-quality PNG</div>
+                        </div>
+                      </button>
+                      <button
+                        onClick={exportToHTML}
+                        className="w-full px-4 py-3 text-left hover:bg-orange-50 flex items-center space-x-3 transition-colors"
+                      >
+                        <FileText className="w-5 h-5 text-orange-600" />
+                        <div>
+                          <div className="font-medium">Export as HTML</div>
+                          <div className="text-xs text-gray-500">Styled web page</div>
+                        </div>
+                      </button>
+                      <button
+                        onClick={exportToJSON}
+                        className="w-full px-4 py-3 text-left hover:bg-orange-50 flex items-center space-x-3 transition-colors"
+                      >
+                        <FileJson className="w-5 h-5 text-purple-600" />
+                        <div>
+                          <div className="font-medium">Export as JSON</div>
+                          <div className="text-xs text-gray-500">Raw data format</div>
+                        </div>
+                      </button>
+                    </div>
+                  )}
+                </div>
               </div>
             )}
           </div>
@@ -332,7 +638,7 @@ export default function AIReportGenerator() {
           </div>
         </div>
       ) : (
-        <div className="max-w-7xl mx-auto px-4 py-8">
+        <div className="max-w-7xl mx-auto px-4 py-8" ref={reportRef}>
           {/* Report Header */}
           <div className="bg-white rounded-xl shadow-lg p-6 mb-6">
             <h2 className="text-2xl font-bold text-gray-900">{report.title}</h2>
