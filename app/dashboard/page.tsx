@@ -28,16 +28,37 @@ export default function Dashboard() {
 
   useEffect(() => {
     fetchDashboardData()
-    // Set up real-time subscription
-    const subscription = supabase
-      .channel('production_changes')
-      .on('postgres_changes', { event: '*', schema: 'public', table: 'production_data' }, () => {
-        fetchDashboardData()
-      })
-      .subscribe()
+    
+    // Set up real-time subscription (optional - will work without it)
+    let subscription: any = null
+    
+    try {
+      subscription = supabase
+        .channel('production_changes')
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'production_data' }, () => {
+          fetchDashboardData()
+        })
+        .subscribe((status) => {
+          // Only log errors if not a connection issue
+          if (status === 'SUBSCRIPTION_ERROR') {
+            console.log('Real-time updates not available - dashboard will still work')
+          }
+        })
+    } catch (error) {
+      // Silently fail - real-time is optional
+      console.log('Real-time connection not established - using manual refresh')
+    }
+
+    // Refresh data every 30 seconds as fallback
+    const interval = setInterval(() => {
+      fetchDashboardData()
+    }, 30000)
 
     return () => {
-      subscription.unsubscribe()
+      if (subscription) {
+        subscription.unsubscribe()
+      }
+      clearInterval(interval)
     }
   }, [])
 

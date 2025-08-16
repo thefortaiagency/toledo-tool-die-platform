@@ -3,7 +3,18 @@ import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
+  realtime: {
+    params: {
+      eventsPerSecond: 2
+    },
+    reconnectAfterMs: (retries) => {
+      // Exponential backoff: 1s, 2s, 4s, 8s, then stop trying
+      if (retries > 4) return -1
+      return Math.min(1000 * Math.pow(2, retries), 8000)
+    }
+  }
+})
 
 // Database types
 export type Machine = {
