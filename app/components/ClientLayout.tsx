@@ -63,7 +63,12 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   }, [chatWidth])
 
   return (
-    <div className="min-h-screen bg-gray-50 flex flex-col">
+    <div 
+      className="min-h-screen flex flex-col"
+      style={{
+        background: 'linear-gradient(135deg, #fafafa 0%, #f3f4f6 40%, #e5e7eb 60%, #f3f4f6 100%)',
+      }}
+    >
       {/* Navigation Header */}
       <nav className="bg-slate-800 text-white shadow-lg sticky top-0 z-50">
         <div className="w-full px-4 sm:px-6 lg:px-8">
