@@ -217,7 +217,7 @@ export default function Dashboard() {
     )
   }
 
-  const COLORS = ['#f97316', '#64748b', '#0ea5e9', '#10b981', '#f59e0b', '#8b5cf6']
+  const COLORS = ['#f97316', '#64748b', '#0ea5e9', '#fb923c', '#f59e0b', '#8b5cf6']
 
   return (
     <div className="p-8">
@@ -255,7 +255,7 @@ export default function Dashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Good Parts</CardTitle>
-            <Package className="h-4 w-4 text-green-600" />
+            <Package className="h-4 w-4 text-orange-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatNumber(metrics.totalGoodParts)}</div>
@@ -268,7 +268,7 @@ export default function Dashboard() {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Active Alerts</CardTitle>
-            <AlertCircle className={`h-4 w-4 ${metrics.alerts > 0 ? 'text-red-600' : 'text-green-600'}`} />
+            <AlertCircle className={`h-4 w-4 ${metrics.alerts > 0 ? 'text-red-600' : 'text-orange-600'}`} />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{metrics.alerts}</div>
@@ -376,7 +376,7 @@ export default function Dashboard() {
                 <Tooltip />
                 <Legend />
                 <Bar dataKey="cycles" fill="#1a1a1a" name="Total Cycles" />
-                <Bar dataKey="goodParts" fill="#10b981" name="Good Parts" />
+                <Bar dataKey="goodParts" fill="#f97316" name="Good Parts" />
               </BarChart>
             </ResponsiveContainer>
           </CardContent>
@@ -481,7 +481,7 @@ export default function Dashboard() {
                         insight.severity === 'critical' ? 'bg-red-100 text-red-700' :
                         insight.severity === 'high' ? 'bg-orange-100 text-orange-700' :
                         insight.severity === 'medium' ? 'bg-yellow-100 text-yellow-700' :
-                        'bg-green-100 text-green-700'
+                        'bg-orange-100 text-orange-700'
                       }`}>
                         {insight.severity}
                       </span>

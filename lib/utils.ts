@@ -23,15 +23,15 @@ export function formatDate(date: string | Date): string {
 }
 
 export function getEfficiencyColor(efficiency: number): string {
-  if (efficiency >= 100) return 'text-green-600'
-  if (efficiency >= 90) return 'text-yellow-600'
-  if (efficiency >= 80) return 'text-orange-600'
+  if (efficiency >= 100) return 'text-orange-600'
+  if (efficiency >= 90) return 'text-amber-600'
+  if (efficiency >= 80) return 'text-yellow-600'
   return 'text-red-600'
 }
 
 export function getEfficiencyBgColor(efficiency: number): string {
-  if (efficiency >= 100) return 'bg-green-100'
-  if (efficiency >= 90) return 'bg-yellow-100'
-  if (efficiency >= 80) return 'bg-orange-100'
+  if (efficiency >= 100) return 'bg-orange-100'
+  if (efficiency >= 90) return 'bg-amber-100'
+  if (efficiency >= 80) return 'bg-yellow-100'
   return 'bg-red-100'
 }
