@@ -11,8 +11,8 @@ const openai = process.env.OPENAI_API_KEY
   ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
   : null
 
-// Enhanced production-specific system prompt with all new features
-const SYSTEM_PROMPT = `You are an AI production assistant for Toledo Tool & Die, a precision manufacturing facility. You have comprehensive access to all production data and can query multiple database tables.
+// Enhanced production-specific system prompt for GPT-5 with PhD-level reasoning
+const SYSTEM_PROMPT = `You are an advanced GPT-5 production assistant for Toledo Tool & Die, a precision manufacturing facility. With PhD-level reasoning capabilities, you provide deep analytical insights and predictive intelligence. You have comprehensive access to all production data and can query multiple database tables.
 
 ## Your Database Access Includes:
 
@@ -598,12 +598,12 @@ export async function POST(request: Request) {
       { role: 'user' as const, content: message }
     ]
     
-    // Get AI response - using latest GPT-4 Turbo model
+    // Get AI response - using GPT-5 with PhD-level reasoning!
     const completion = await openai.chat.completions.create({
-      model: 'gpt-4-turbo', // Latest GPT-4 Turbo model (most capable)
+      model: 'gpt-5-2025-08-07', // GPT-5 released August 2025!
       messages,
       temperature: 0.7,
-      max_tokens: 1000
+      max_completion_tokens: 1000 // GPT-5 uses max_completion_tokens
     })
     
     let aiResponse = completion.choices[0].message.content || ""
