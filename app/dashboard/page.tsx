@@ -235,8 +235,8 @@ export default function Dashboard() {
       if (error) throw error
 
       // Process data based on metric type
-      let detailChartData = []
-      let insights = []
+      let detailChartData: any[] = []
+      let insights: any[] = []
 
       switch (metricType) {
         case 'cycles':
@@ -716,46 +716,51 @@ export default function Dashboard() {
               {/* Chart */}
               <div className="bg-white rounded-lg border p-6">
                 <h3 className="text-lg font-semibold mb-4">Daily Trend</h3>
-                <ResponsiveContainer width="100%" height={400}>
-                  {detailData.type === 'cycles' && (
+                {detailData.type === 'cycles' && (
+                  <ResponsiveContainer width="100%" height={400}>
                     <BarChart data={detailData.chartData}>
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="date" />
                       <YAxis />
-                      <Tooltip formatter={(value) => [formatNumber(value), 'Cycles']} />
+                      <Tooltip formatter={(value) => [formatNumber(Number(value)), 'Cycles']} />
                       <Bar dataKey="cycles" fill="#f97316" name="Daily Cycles" />
                     </BarChart>
-                  )}
-                  {detailData.type === 'efficiency' && (
+                  </ResponsiveContainer>
+                )}
+                {detailData.type === 'efficiency' && (
+                  <ResponsiveContainer width="100%" height={400}>
                     <LineChart data={detailData.chartData}>
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="date" />
                       <YAxis domain={[0, 100]} />
-                      <Tooltip formatter={(value) => [`${value}%`, 'Efficiency']} />
+                      <Tooltip formatter={(value) => [`${Number(value)}%`, 'Efficiency']} />
                       <Line type="monotone" dataKey="avgEfficiency" stroke="#2563eb" strokeWidth={2} name="Average Efficiency" />
                     </LineChart>
-                  )}
-                  {detailData.type === 'goodParts' && (
+                  </ResponsiveContainer>
+                )}
+                {detailData.type === 'goodParts' && (
+                  <ResponsiveContainer width="100%" height={400}>
                     <LineChart data={detailData.chartData}>
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="date" />
-                      <YAxis yAxisId="left" />
-                      <YAxis yAxisId="right" orientation="right" />
+                      <YAxis />
                       <Tooltip />
-                      <Bar dataKey="goodParts" fill="#10b981" name="Good Parts" yAxisId="left" />
-                      <Line type="monotone" dataKey="yield" stroke="#ef4444" strokeWidth={2} name="Yield %" yAxisId="right" />
+                      <Line type="monotone" dataKey="goodParts" stroke="#10b981" strokeWidth={2} name="Good Parts" />
+                      <Line type="monotone" dataKey="yield" stroke="#ef4444" strokeWidth={2} name="Yield %" />
                     </LineChart>
-                  )}
-                  {detailData.type === 'downtime' && (
+                  </ResponsiveContainer>
+                )}
+                {detailData.type === 'downtime' && (
+                  <ResponsiveContainer width="100%" height={400}>
                     <BarChart data={detailData.chartData}>
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="date" />
                       <YAxis />
-                      <Tooltip formatter={(value) => [`${value} minutes`, 'Downtime']} />
+                      <Tooltip formatter={(value) => [`${Number(value)} minutes`, 'Downtime']} />
                       <Bar dataKey="totalDowntime" fill="#dc2626" name="Total Downtime" />
                     </BarChart>
-                  )}
-                </ResponsiveContainer>
+                  </ResponsiveContainer>
+                )}
               </div>
 
               {/* Additional Details Table */}
