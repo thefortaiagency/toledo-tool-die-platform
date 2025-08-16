@@ -66,7 +66,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     <div 
       className="min-h-screen flex flex-col"
       style={{
-        background: 'linear-gradient(135deg, #fafafa 0%, #f3f4f6 40%, #e5e7eb 60%, #f3f4f6 100%)',
+        background: 'linear-gradient(135deg, #e5e7eb 0%, #d1d5db 40%, #9ca3af 60%, #d1d5db 100%)',
       }}
     >
       {/* Navigation Header */}
