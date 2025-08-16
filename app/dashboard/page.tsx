@@ -389,29 +389,7 @@ export default function Dashboard() {
       </div>
 
       {/* Charts Row 2 */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Machine Performance</CardTitle>
-            <CardDescription>Average efficiency by machine (Last 30 days)</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <ResponsiveContainer width="100%" height={250}>
-              <BarChart data={machineData} layout="horizontal">
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis type="number" domain={[0, 120]} />
-                <YAxis dataKey="machine" type="category" width={80} />
-                <Tooltip formatter={(value) => [`${value}%`, 'Efficiency']} />
-                <Bar dataKey="efficiency" fill="#2563eb" name="Efficiency %" />
-              </BarChart>
-            </ResponsiveContainer>
-            {machineData.length === 0 && (
-              <div className="text-center text-gray-500 py-8">
-                No machine data available for the selected period
-              </div>
-            )}
-          </CardContent>
-        </Card>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
 
         <Card>
           <CardHeader>
