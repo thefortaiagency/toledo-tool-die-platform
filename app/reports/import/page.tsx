@@ -348,16 +348,16 @@ export default function ImportPage() {
                 <span className="text-sm text-gray-600">Last Import</span>
                 <Badge variant="outline">
                   <Clock className="h-3 w-3 mr-1" />
-                  Today
+                  -
                 </Badge>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-600">Total Records</span>
-                <span className="font-medium">12,456</span>
+                <span className="font-medium">-</span>
               </div>
               <div className="flex justify-between items-center">
                 <span className="text-sm text-gray-600">Active Machines</span>
-                <span className="font-medium">6</span>
+                <span className="font-medium">-</span>
               </div>
             </CardContent>
           </Card>

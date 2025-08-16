@@ -23,7 +23,7 @@ export default function ReportsPage() {
   const [hitTrackerStats, setHitTrackerStats] = useState<any>(null)
   const [commentPatterns, setCommentPatterns] = useState<any[]>([])
   const [recentComments, setRecentComments] = useState<any[]>([])
-  const [totalComments, setTotalComments] = useState(614)
+  const [totalComments, setTotalComments] = useState(0)
 
   // Fetch Hit Tracker Data
   const fetchHitTrackerData = async () => {
@@ -66,54 +66,12 @@ export default function ReportsPage() {
       setAiInsights(mappedInsights)
       setCommentPatterns(data.commentPatterns || [])
       setRecentComments(data.recentComments || [])
-      setTotalComments(data.totalComments || 614)
+      setTotalComments(data.totalComments || 0)
     } catch (error) {
       console.error('Error fetching AI insights:', error)
-      // Set mock data as fallback
-      setAiInsights({
-        summary: "Analysis of 614 operator comments reveals critical patterns in production efficiency.",
-        keyFindings: [
-          {
-            icon: AlertCircle,
-            color: 'text-red-600',
-            title: 'Die Configuration Issues',
-            description: '38% of comments mention die problems, particularly with 4-out configurations.',
-            action: 'Schedule die maintenance for lines showing repeated issues.'
-          },
-          {
-            icon: TrendingUp,
-            color: 'text-green-600',
-            title: 'Shift 2 Outperforming',
-            description: 'Shift 2 consistently achieves 93% efficiency vs 89% average.',
-            action: 'Implement Shift 2 best practices across all shifts.'
-          },
-          {
-            icon: Package,
-            color: 'text-blue-600',
-            title: 'Part #07092789 Bottleneck',
-            description: 'This part number appears in 15% of issue comments.',
-            action: 'Engineering review recommended for this part.'
-          },
-          {
-            icon: Users,
-            color: 'text-purple-600',
-            title: 'Operator Training Opportunity',
-            description: 'Certain operators show consistent issues.',
-            action: 'Implement targeted cross-training program.'
-          }
-        ],
-        predictions: {
-          efficiency: 'Expected 3% efficiency increase if die issues are resolved',
-          cost: 'Potential $45,000/month savings from reduced downtime',
-          timeline: 'Improvements achievable within 2-week implementation'
-        }
-      })
-      setCommentPatterns([
-        { category: 'Die Issues', count: 234, percentage: 38, trend: 'up' },
-        { category: 'Machine Setup', count: 156, percentage: 25, trend: 'stable' },
-        { category: 'Quality Concerns', count: 128, percentage: 21, trend: 'down' },
-        { category: 'Maintenance', count: 96, percentage: 16, trend: 'up' },
-      ])
+      // NO MOCK DATA - Show empty state
+      setAiInsights(null)
+      setCommentPatterns([])
     }
     setLoading(false)
   }
@@ -131,7 +89,7 @@ export default function ReportsPage() {
       <div className="mb-4 sm:mb-6 md:mb-8 flex justify-between items-start">
         <div>
           <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">AI-Powered Production Reports</h1>
-          <p className="text-sm sm:text-base text-gray-600">Real-time analysis with machine learning insights from {totalComments} operator comments</p>
+          <p className="text-sm sm:text-base text-gray-600">Real-time analysis with machine learning insights{totalComments > 0 ? ` from ${totalComments} operator comments` : ''}</p>
         </div>
         <a
           href="/reports/import"
@@ -478,28 +436,9 @@ export default function ReportsPage() {
                   )
                 })
               ) : (
-                <>
-                  <div className="border-l-4 border-red-500 pl-3 sm:pl-4 py-2">
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start">
-                      <div>
-                        <span className="font-medium text-gray-900 text-sm sm:text-base">Peppi Rotella</span>
-                        <span className="text-gray-600 text-xs sm:text-sm ml-1 sm:ml-2">Line 3 - Part #07092789</span>
-                      </div>
-                      <span className="text-xs text-gray-500 mt-1 sm:mt-0">2 hours ago</span>
-                    </div>
-                    <p className="text-gray-700 mt-1 text-xs sm:text-sm">"4 out die showing issues, 2 LH and 2 RH not aligning properly. Need engineering review."</p>
-                  </div>
-                  <div className="border-l-4 border-yellow-500 pl-3 sm:pl-4 py-2">
-                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start">
-                      <div>
-                        <span className="font-medium text-gray-900 text-sm sm:text-base">Tricia Cooper</span>
-                        <span className="text-gray-600 text-xs sm:text-sm ml-1 sm:ml-2">Line 1 - General</span>
-                      </div>
-                      <span className="text-xs text-gray-500 mt-1 sm:mt-0">3 hours ago</span>
-                    </div>
-                    <p className="text-gray-700 mt-1 text-xs sm:text-sm">"2 OUT DIE - recurring issue from yesterday. Machine needs calibration."</p>
-                  </div>
-                </>
+                <div className="text-center py-4 text-gray-500">
+                  No recent comments to display
+                </div>
               )}
               <div className="border-l-4 border-blue-500 pl-3 sm:pl-4 py-2">
                 <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start">
