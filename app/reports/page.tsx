@@ -1,10 +1,13 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Calendar, TrendingUp, AlertCircle, CheckCircle, Activity, Users, Package, BarChart3, MessageSquare, Brain, Table } from 'lucide-react'
+import { Calendar, TrendingUp, AlertCircle, CheckCircle, Activity, Users, Package, BarChart3, MessageSquare, Brain, Table, AlertTriangle } from 'lucide-react'
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts'
 import HitTrackerTable from './hit-tracker-table'
 import HitTrackerAccurate from './hit-tracker-accurate'
+import dynamic from 'next/dynamic'
+
+const ScrapAnalysis = dynamic(() => import('./scrap-analysis/page'), { ssr: false })
 
 export default function ReportsPage() {
   const [selectedReport, setSelectedReport] = useState('hit-tracker-table')
@@ -169,6 +172,17 @@ export default function ReportsPage() {
         >
           <MessageSquare className="w-4 h-4 mr-2" />
           Comments
+        </button>
+        <button
+          onClick={() => setSelectedReport('scrap-analysis')}
+          className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center ${
+            selectedReport === 'scrap-analysis' 
+              ? 'bg-orange-600 text-white' 
+              : 'bg-white text-gray-700 hover:bg-gray-100'
+          }`}
+        >
+          <AlertTriangle className="w-4 h-4 mr-2" />
+          Scrap Analysis
         </button>
       </div>
 
@@ -419,6 +433,11 @@ export default function ReportsPage() {
             </div>
           </div>
         </div>
+      )}
+
+      {/* Scrap Analysis Report */}
+      {selectedReport === 'scrap-analysis' && (
+        <ScrapAnalysis />
       )}
     </div>
   )
