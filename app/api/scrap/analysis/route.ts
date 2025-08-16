@@ -44,7 +44,7 @@ export async function GET(req: NextRequest) {
     // Get summary data using aggregation
     let summaryQuery = supabase
       .from('scrap_data')
-      .select('quantity, extended_cost')
+      .select('*')
     
     // Apply same filters for summary
     if (startDate && endDate) {
