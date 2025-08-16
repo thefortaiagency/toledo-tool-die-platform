@@ -58,7 +58,7 @@ export async function GET() {
       
       // Create more realistic shift distribution with variation
       // Use the date and machine ID to create consistent but varied patterns
-      const dateHash = date.split('-').reduce((acc, val) => acc + parseInt(val), 0)
+      const dateHash = date.split('-').reduce((acc: number, val: string) => acc + parseInt(val), 0)
       const machineHash = record.machine_id.charCodeAt(0) + record.machine_id.charCodeAt(1)
       
       // Base distribution with variation
