@@ -128,53 +128,16 @@ export async function GET() {
   } catch (error) {
     console.error('Error generating AI insights:', error)
     
-    // Return enhanced mock data if API fails
+    // Return error response - NO MOCK DATA
     return NextResponse.json({
+      error: 'Failed to generate insights from database',
       insights: {
-        summary: "Analysis of 614 operator comments reveals critical patterns in production efficiency.",
-        keyFindings: [
-          {
-            icon: 'AlertCircle',
-            color: 'text-red-600',
-            title: 'Die Configuration Issues',
-            description: '38% of comments mention die problems, particularly with 4-out configurations showing 2 LH and 2 RH patterns.',
-            action: 'Schedule die maintenance for lines showing repeated issues.'
-          },
-          {
-            icon: 'TrendingUp',
-            color: 'text-green-600',
-            title: 'Shift 2 Outperforming',
-            description: 'Shift 2 consistently achieves 93% efficiency vs 89% average, likely due to operator expertise.',
-            action: 'Implement Shift 2 best practices across all shifts.'
-          },
-          {
-            icon: 'Package',
-            color: 'text-blue-600',
-            title: 'Part #07092789 Bottleneck',
-            description: 'This part number appears in 15% of issue comments, suggesting design or tooling problems.',
-            action: 'Engineering review recommended for this part.'
-          },
-          {
-            icon: 'Users',
-            color: 'text-purple-600',
-            title: 'Operator Training Opportunity',
-            description: 'Certain operators show consistent issues, indicating potential training needs.',
-            action: 'Implement targeted cross-training program.'
-          }
-        ],
-        predictions: {
-          efficiency: 'Expected 3% efficiency increase if die issues are resolved',
-          cost: 'Potential $45,000/month savings from reduced downtime',
-          timeline: 'Improvements achievable within 2-week implementation'
-        }
+        summary: "Unable to load production data.",
+        keyFindings: [],
+        predictions: {}
       },
-      commentPatterns: [
-        { category: 'Die Issues', count: 234, percentage: 38, trend: 'up' },
-        { category: 'Machine Setup', count: 156, percentage: 25, trend: 'stable' },
-        { category: 'Quality Concerns', count: 128, percentage: 21, trend: 'down' },
-        { category: 'Maintenance', count: 96, percentage: 16, trend: 'up' },
-      ],
-      totalComments: 614,
+      commentPatterns: [],
+      totalComments: 0,
       recentComments: []
     })
   }

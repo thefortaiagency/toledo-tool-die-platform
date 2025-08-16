@@ -62,8 +62,14 @@ export default function HitTrackerAccurate() {
   const [viewMode, setViewMode] = useState<'all' | 'single'>('all')
   const [detailModalMachine, setDetailModalMachine] = useState<MachineWeekData | null>(null)
 
-  // Generate mock data matching Excel structure
+  // NO MOCK DATA - Only use real database data
   const generateMockData = (): WeekData[] => {
+    // REMOVED - No mock data allowed
+    return []
+  }
+  
+  // Original mock data function removed - only keeping stub for compatibility
+  const _unusedMockDataFunction = (): WeekData[] => {
     const weeks: WeekData[] = []
     
     // Generate 4 weeks of data starting from current week
@@ -203,7 +209,7 @@ export default function HitTrackerAccurate() {
   }
 
   useEffect(() => {
-    // Fetch real data from the database
+    // Fetch ONLY real data from the database - NO MOCK DATA
     const fetchData = async () => {
       try {
         const response = await fetch('/api/reports/hit-tracker-weeks')
@@ -212,13 +218,14 @@ export default function HitTrackerAccurate() {
         if (data.weeks && data.weeks.length > 0) {
           setWeekData(data.weeks)
         } else {
-          // Fallback to mock data if no real data available
-          setWeekData(generateMockData())
+          // NO MOCK DATA - Show empty state
+          setWeekData([])
+          console.log('No data available in database')
         }
       } catch (error) {
         console.error('Error fetching hit tracker data:', error)
-        // Fallback to mock data on error
-        setWeekData(generateMockData())
+        // NO MOCK DATA - Show empty state on error
+        setWeekData([])
       } finally {
         setLoading(false)
       }

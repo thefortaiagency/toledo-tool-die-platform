@@ -77,21 +77,16 @@ export async function GET() {
   } catch (error) {
     console.error('Error fetching hit tracker data:', error)
     
-    // Return mock data if database is not available
+    // Return empty data - NO MOCK DATA
     return NextResponse.json({
-      chartData: [
-        { date: '2025-01-06', shift1: 87, shift2: 92, shift3: 85, target: 90 },
-        { date: '2025-01-07', shift1: 91, shift2: 94, shift3: 88, target: 90 },
-        { date: '2025-01-08', shift1: 93, shift2: 89, shift3: 91, target: 90 },
-        { date: '2025-01-09', shift1: 88, shift2: 95, shift3: 87, target: 90 },
-        { date: '2025-01-10', shift1: 92, shift2: 93, shift3: 90, target: 90 },
-      ],
+      chartData: [],
       stats: {
-        weeklyAverage: 91.2,
-        bestShift: { name: 'Shift 2', avg: 93 },
-        totalHits: 1135,
-        targetAchievement: 78
-      }
+        weeklyAverage: 0,
+        bestShift: { name: 'No data', avg: 0 },
+        totalHits: 0,
+        targetAchievement: 0
+      },
+      error: 'Failed to fetch data from database'
     })
   }
 }
