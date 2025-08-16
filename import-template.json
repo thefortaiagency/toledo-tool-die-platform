@@ -1,0 +1,50 @@
+{
+  "hitTracker": {
+    "type": "hit-tracker",
+    "source": "Excel Import",
+    "data": [
+      {
+        "machine": "600 Ton",
+        "date": "2025-08-16",
+        "shift": 1,
+        "hits": 45000,
+        "efficiency": 92.5,
+        "downtime_minutes": 15,
+        "operator": "John Smith",
+        "part_number": "PART-001",
+        "comments": "Sample comment - delete this row before importing"
+      },
+      {
+        "machine": "1500-1 Ton",
+        "date": "2025-08-16",
+        "shift": 2,
+        "hits": 38000,
+        "efficiency": 88,
+        "downtime_minutes": 20,
+        "operator": "Jane Doe",
+        "part_number": "PART-002",
+        "comments": "Example data - replace with actual"
+      }
+    ]
+  },
+  "oeeMetrics": {
+    "type": "oee-metrics",
+    "source": "OEE Calculator",
+    "data": [
+      {
+        "machine": "600 Ton",
+        "date": "2025-08-16",
+        "availability": 92.5,
+        "performance": 88.3,
+        "quality": 97.2
+      },
+      {
+        "machine": "1500-1 Ton",
+        "date": "2025-08-16",
+        "availability": 85,
+        "performance": 82,
+        "quality": 96.5
+      }
+    ]
+  }
+}
