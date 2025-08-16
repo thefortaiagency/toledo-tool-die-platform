@@ -27,14 +27,14 @@ const MACHINE_NAMES: Record<string, string> = {
 
 export async function GET() {
   try {
-    // Fetch the latest hit tracker data from the last 7 days
-    const sevenDaysAgo = new Date()
-    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
+    // Fetch the latest hit tracker data from the last 30 days to ensure we have data
+    const thirtyDaysAgo = new Date()
+    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
     
     const { data: hitTrackerData, error } = await supabase
       .from('hits_tracking')
       .select('*')
-      .gte('date', sevenDaysAgo.toISOString().split('T')[0])
+      .gte('date', thirtyDaysAgo.toISOString().split('T')[0])
       .order('date', { ascending: false })
 
     if (error) throw error
