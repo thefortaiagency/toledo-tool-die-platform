@@ -400,11 +400,16 @@ export default function Dashboard() {
               <BarChart data={machineData} layout="horizontal">
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis type="number" domain={[0, 120]} />
-                <YAxis dataKey="machine" type="category" />
-                <Tooltip />
+                <YAxis dataKey="machine" type="category" width={80} />
+                <Tooltip formatter={(value) => [`${value}%`, 'Efficiency']} />
                 <Bar dataKey="efficiency" fill="#2563eb" name="Efficiency %" />
               </BarChart>
             </ResponsiveContainer>
+            {machineData.length === 0 && (
+              <div className="text-center text-gray-500 py-8">
+                No machine data available for the selected period
+              </div>
+            )}
           </CardContent>
         </Card>
 
