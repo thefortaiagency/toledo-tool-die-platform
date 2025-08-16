@@ -4,14 +4,14 @@ import React, { useState, useEffect } from 'react'
 import { ChevronLeft, ChevronRight, TrendingUp, TrendingDown, AlertCircle, CheckCircle, Loader2, Info } from 'lucide-react'
 import MachineDetailModal from './machine-detail-modal'
 
-// Machine configurations with their targets
+// Machine configurations with their targets - MUST MATCH DATABASE IDS
 const MACHINES = [
-  { id: '600-ton', name: '600 Ton', target: 950, color: 'blue' },
-  { id: '1500-1', name: '1500-1 Ton', target: 600, color: 'green' },
-  { id: '1500-2', name: '1500-2', target: 600, color: 'purple' },
-  { id: '1400', name: '1400', target: 600, color: 'orange' },
-  { id: '1000', name: '1000T', target: 875, color: 'red' },
-  { id: 'hyd', name: 'Hyd', target: 600, color: 'indigo' }
+  { id: 'b8e48ae1-513f-4211-aa15-a421150c15a4', name: '600 Ton', target: 950, color: 'blue' },
+  { id: '73a96295-79f3-4dc7-ab38-08ee48679a6f', name: '1500-1', target: 600, color: 'green' },
+  { id: '5d509a37-0e1c-4c18-be71-34638b3ec716', name: '1500-2', target: 600, color: 'purple' },
+  { id: '45dadf58-b046-4fe1-93fd-bf76568e8ef1', name: '1400', target: 600, color: 'orange' },
+  { id: '3c9453df-432f-47cb-9fd8-19b9a19fd012', name: '1000T', target: 875, color: 'red' },
+  { id: '0e29b01a-7383-4c66-81e7-f92e9d52f227', name: 'Hyd', target: 600, color: 'indigo' }
 ]
 
 interface ShiftData {
@@ -274,6 +274,87 @@ export default function HitTrackerAccurate() {
   const displayMachines = selectedMachine 
     ? currentWeek.machines.filter(m => m.machineId === selectedMachine)
     : currentWeek.machines
+  
+  // If no machines to display after filtering, show empty state
+  if (displayMachines.length === 0) {
+    return (
+      <div className="space-y-4">
+        {/* Week Navigation Header */}
+        <div className="bg-white rounded-lg shadow p-4">
+          <div className="flex items-center justify-between">
+            <button
+              onClick={() => setCurrentWeekIndex(Math.max(0, currentWeekIndex - 1))}
+              disabled={currentWeekIndex === 0}
+              className="p-2 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            
+            <div className="text-center">
+              <h2 className="text-xl font-bold">Hit Tracker - Week of {currentWeek.weekStart}</h2>
+              <p className="text-sm text-gray-600">
+                {currentWeek.weekStart} to {currentWeek.weekEnd}
+              </p>
+            </div>
+            
+            <button
+              onClick={() => setCurrentWeekIndex(Math.min(weekData.length - 1, currentWeekIndex + 1))}
+              disabled={currentWeekIndex === weekData.length - 1}
+              className="p-2 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+
+        {/* Machine Filter Buttons */}
+        <div className="bg-white rounded-lg shadow p-4">
+          <div className="flex flex-wrap gap-2">
+            <button
+              onClick={() => {
+                setSelectedMachine(null)
+                setViewMode('all')
+              }}
+              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                !selectedMachine 
+                  ? 'bg-orange-600 text-white' 
+                  : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+              }`}
+            >
+              All Machines
+            </button>
+            {MACHINES.map(machine => (
+              <button
+                key={machine.id}
+                onClick={() => {
+                  setSelectedMachine(machine.id)
+                  setViewMode('single')
+                }}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+                  selectedMachine === machine.id 
+                    ? 'bg-orange-600 text-white' 
+                    : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                }`}
+              >
+                {machine.name}
+                <span className="ml-2 text-xs opacity-75">({machine.target}/hr)</span>
+              </button>
+            ))}
+          </div>
+        </div>
+        
+        <div className="bg-white rounded-lg shadow p-8 text-center">
+          <p className="text-gray-500">No data available for the selected machine in this week.</p>
+          <button 
+            onClick={() => setSelectedMachine(null)}
+            className="mt-4 px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700"
+          >
+            Show All Machines
+          </button>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-4">
@@ -350,7 +431,7 @@ export default function HitTrackerAccurate() {
                 <th className="px-3 py-2 text-left font-medium text-gray-700 border-r-2 border-gray-300 min-w-[140px]">
                   Machine / Shift
                 </th>
-                {currentWeek.machines[0].days.map((day, idx) => (
+                {currentWeek.machines[0]?.days?.map((day, idx) => (
                   <th key={idx} className="px-2 py-2 text-center font-medium text-gray-700 border-r border-gray-200 min-w-[100px]">
                     <div className="text-xs">{day.dayName}</div>
                     <div className="text-xs text-gray-500">{day.date.slice(5)}</div>
