@@ -13,6 +13,7 @@ const ExecutiveDashboard = dynamic(() => import('./executive-dashboard'), { ssr:
 const QualityPerformance = dynamic(() => import('./quality-performance'), { ssr: false })
 const MachineDowntime = dynamic(() => import('./machine-downtime'), { ssr: false })
 const QuarterlyReview = dynamic(() => import('./quarterly-review'), { ssr: false })
+const OEEDashboard = dynamic(() => import('./oee-dashboard'), { ssr: false })
 
 export default function ReportsPage() {
   const [selectedReport, setSelectedReport] = useState('hit-tracker-table')
@@ -244,6 +245,17 @@ export default function ReportsPage() {
           >
             <FileText className="w-4 h-4 sm:mr-1.5 mb-1 sm:mb-0" />
             <span className="text-center">Quarterly</span>
+          </button>
+          <button
+            onClick={() => setSelectedReport('oee')}
+            className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg font-medium transition-colors flex flex-col sm:flex-row items-center justify-center text-xs sm:text-sm ${
+              selectedReport === 'oee' 
+                ? 'bg-orange-600 text-white' 
+                : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
+            }`}
+          >
+            <Factory className="w-4 h-4 sm:mr-1.5 mb-1 sm:mb-0" />
+            <span className="text-center">OEE</span>
           </button>
         </div>
       </div>
@@ -525,6 +537,11 @@ export default function ReportsPage() {
       {/* Quarterly Business Review */}
       {selectedReport === 'quarterly' && (
         <QuarterlyReview />
+      )}
+
+      {/* OEE Dashboard */}
+      {selectedReport === 'oee' && (
+        <OEEDashboard />
       )}
     </div>
   )

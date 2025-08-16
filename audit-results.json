@@ -1,0 +1,42 @@
+{
+  "timestamp": "2025-08-16T13:34:18.669Z",
+  "dataQualityScore": 80,
+  "scores": {
+    "Data Completeness": 75,
+    "Data Consistency": 70,
+    "Data Timeliness": 90,
+    "Data Accuracy": 85,
+    "Data Accessibility": 80
+  },
+  "discrepancies": {
+    "scrapData": "ScrapInfo incomplete, Pioneer Excel authoritative",
+    "januaryScrap": "$72,379 vs $29,610 discrepancy needs investigation"
+  },
+  "recommendations": [
+    {
+      "priority": "HIGH",
+      "issue": "ScrapInfo missing summary data",
+      "action": "Regenerate February, March, April, June summary sheets from source system"
+    },
+    {
+      "priority": "HIGH",
+      "issue": "January scrap discrepancy ($72K vs $29K)",
+      "action": "Investigate if ScrapInfo includes different cost categories or time periods"
+    },
+    {
+      "priority": "MEDIUM",
+      "issue": "3 machines consistently over downtime targets",
+      "action": "Implement predictive maintenance for 1500-2, 1400T, and 600T presses"
+    },
+    {
+      "priority": "MEDIUM",
+      "issue": "Hit tracker data not automated",
+      "action": "Create automated import from production system to database"
+    },
+    {
+      "priority": "LOW",
+      "issue": "No customer-specific metrics",
+      "action": "Add customer dimension to quality and delivery metrics"
+    }
+  ]
+}
