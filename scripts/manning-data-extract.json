@@ -1,0 +1,3174 @@
+{
+  "summary": {
+    "filesProcessed": 10,
+    "totalRecords": 113,
+    "dateRange": {
+      "start": "2025-06-10T00:00:00.000Z",
+      "end": "2025-06-21T00:00:00.000Z"
+    }
+  },
+  "shiftData": [
+    {
+      "fileName": "6.10.25.2.xlsx",
+      "date": "2025-06-10T00:00:00.000Z",
+      "shift": 2,
+      "production": [
+        {
+          "machine": "600",
+          "row": 2,
+          "efficiency": 1.5130263157894737,
+          "totalStrokes": 11499,
+          "details": []
+        },
+        {
+          "machine": "1000",
+          "row": 3,
+          "efficiency": 0.6398571428571429,
+          "totalStrokes": 4479,
+          "details": []
+        },
+        {
+          "machine": "1400",
+          "row": 4,
+          "efficiency": 0.774375,
+          "totalStrokes": 3717,
+          "details": []
+        },
+        {
+          "machine": "1500-1",
+          "row": 5,
+          "efficiency": 0.15388888888888888,
+          "totalStrokes": 277,
+          "details": []
+        },
+        {
+          "machine": "1500-2",
+          "row": 6,
+          "efficiency": 0.6370833333333333,
+          "totalStrokes": 3058,
+          "details": []
+        },
+        {
+          "machine": "3000",
+          "row": 7,
+          "efficiency": 1.18125,
+          "totalStrokes": 5670,
+          "details": [
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "B1-2026A-0B",
+              "hits": 1298,
+              "hours": 2
+            }
+          ]
+        },
+        {
+          "machine": "3000",
+          "row": 12,
+          "efficiency": "B1-2026A-0B",
+          "totalStrokes": 1298,
+          "details": [
+            {
+              "job": "2.",
+              "partNumber": "B1-2027A-0B",
+              "hits": 3450,
+              "hours": 4
+            },
+            {
+              "job": "3.",
+              "partNumber": "969075/6",
+              "hits": 922,
+              "hours": 2
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "P21-B15230-0811.1",
+              "hits": 122,
+              "hours": 0
+            }
+          ]
+        },
+        {
+          "machine": "1500-1",
+          "row": 20,
+          "efficiency": "P21-B15230-0811.1",
+          "totalStrokes": 122,
+          "details": [
+            {
+              "job": "3.",
+              "partNumber": "B1-2016",
+              "hits": 155,
+              "hours": 3
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "40L475/6",
+              "hits": 86,
+              "hours": 1.5
+            }
+          ]
+        },
+        {
+          "machine": "1500-2",
+          "row": 28,
+          "efficiency": "40L475/6",
+          "totalStrokes": 86,
+          "details": [
+            {
+              "job": "3.",
+              "partNumber": "B1-1115/1169-0B",
+              "hits": 2972,
+              "hours": 6.5
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "1751862/63",
+              "hits": 3717,
+              "hours": 7.5
+            }
+          ]
+        },
+        {
+          "machine": "1400",
+          "row": 36,
+          "efficiency": "1751862/63",
+          "totalStrokes": 3717,
+          "details": [
+            {
+              "job": "2.",
+              "partNumber": "060904/44",
+              "hits": 0,
+              "hours": 0.5
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "65553-TVA",
+              "hits": 2880,
+              "hours": 2
+            }
+          ]
+        },
+        {
+          "machine": "600",
+          "row": 44,
+          "efficiency": "65553-TVA",
+          "totalStrokes": 2880,
+          "details": [
+            {
+              "job": "2.",
+              "partNumber": "60847/947-3A0",
+              "hits": 8619,
+              "hours": 6
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "21743763/4 BLANKS",
+              "hits": 3985,
+              "hours": 7
+            }
+          ]
+        },
+        {
+          "machine": "1000",
+          "row": 52,
+          "efficiency": "21743763/4 BLANKS",
+          "totalStrokes": 3985,
+          "details": [
+            {
+              "job": "2.",
+              "partNumber": "20092601/2",
+              "hits": 494,
+              "hours": 1
+            }
+          ]
+        }
+      ],
+      "manning": {
+        "activeMachines": 12,
+        "totalMachines": 7,
+        "utilizationRate": "171.4",
+        "estimatedOperators": 12,
+        "totalHitsProduced": 40788,
+        "averageEfficiency": "NaN"
+      }
+    },
+    {
+      "fileName": "6.12.25.2.xlsx",
+      "date": "2025-06-12T00:00:00.000Z",
+      "shift": 2,
+      "production": [
+        {
+          "machine": "600",
+          "row": 2,
+          "efficiency": 1.0921052631578947,
+          "totalStrokes": 8300,
+          "details": []
+        },
+        {
+          "machine": "1000",
+          "row": 3,
+          "efficiency": null,
+          "totalStrokes": null,
+          "details": []
+        },
+        {
+          "machine": "1400",
+          "row": 4,
+          "efficiency": 0.710625,
+          "totalStrokes": 3411,
+          "details": []
+        },
+        {
+          "machine": "1500-1",
+          "row": 5,
+          "efficiency": 1.3205555555555557,
+          "totalStrokes": 2377,
+          "details": []
+        },
+        {
+          "machine": "1500-2",
+          "row": 6,
+          "efficiency": 0.6260416666666667,
+          "totalStrokes": 3005,
+          "details": []
+        },
+        {
+          "machine": "3000",
+          "row": 7,
+          "efficiency": 0.8989583333333333,
+          "totalStrokes": 4315,
+          "details": [
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "B1-2017A/2018A-0A",
+              "hits": 1961,
+              "hours": 3
+            }
+          ]
+        },
+        {
+          "machine": "3000",
+          "row": 12,
+          "efficiency": "B1-2017A/2018A-0A",
+          "totalStrokes": 1961,
+          "details": [
+            {
+              "job": "2.",
+              "partNumber": 17192602,
+              "hits": 1416,
+              "hours": 3
+            },
+            {
+              "job": "3.",
+              "partNumber": "060927",
+              "hits": 938,
+              "hours": 2
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "P21-B51730/40-0811.1",
+              "hits": 300,
+              "hours": 0
+            }
+          ]
+        },
+        {
+          "machine": "1500-1",
+          "row": 20,
+          "efficiency": "P21-B51730/40-0811.1",
+          "totalStrokes": 300,
+          "details": [
+            {
+              "job": "3.",
+              "partNumber": "PT00113085/126",
+              "hits": 2077,
+              "hours": 3
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "25K702",
+              "hits": 2992,
+              "hours": 6.5
+            }
+          ]
+        },
+        {
+          "machine": "1500-2",
+          "row": 28,
+          "efficiency": "25K702",
+          "totalStrokes": 2992,
+          "details": [
+            {
+              "job": "3.",
+              "partNumber": "1487657-00-B",
+              "hits": 13,
+              "hours": 1.5
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "PT003222/221",
+              "hits": 826,
+              "hours": 2
+            }
+          ]
+        },
+        {
+          "machine": "1400",
+          "row": 36,
+          "efficiency": "PT003222/221",
+          "totalStrokes": 826,
+          "details": [
+            {
+              "job": "2.",
+              "partNumber": "060940/41",
+              "hits": 2585,
+              "hours": 5.5
+            },
+            {
+              "job": "3.",
+              "partNumber": "1487737-00-B",
+              "hits": 0,
+              "hours": 0.5
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "1344651/52",
+              "hits": 8300,
+              "hours": 8
+            }
+          ]
+        },
+        {
+          "machine": "600",
+          "row": 44,
+          "efficiency": "1344651/52",
+          "totalStrokes": 8300,
+          "details": [
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            }
+          ]
+        },
+        {
+          "machine": "1000",
+          "row": 52,
+          "efficiency": null,
+          "totalStrokes": null,
+          "details": []
+        }
+      ],
+      "manning": {
+        "activeMachines": 10,
+        "totalMachines": 7,
+        "utilizationRate": "142.9",
+        "estimatedOperators": 10,
+        "totalHitsProduced": 35787,
+        "averageEfficiency": "NaN"
+      }
+    },
+    {
+      "fileName": "6.13.25.2.xlsx",
+      "date": "2025-06-13T00:00:00.000Z",
+      "shift": 2,
+      "production": [
+        {
+          "machine": "600",
+          "row": 2,
+          "efficiency": 1.3102631578947368,
+          "totalStrokes": 9958,
+          "details": []
+        },
+        {
+          "machine": "1000",
+          "row": 3,
+          "efficiency": 0.8537142857142858,
+          "totalStrokes": 3735,
+          "details": []
+        },
+        {
+          "machine": "1400",
+          "row": 4,
+          "efficiency": 0.755625,
+          "totalStrokes": 3627,
+          "details": []
+        },
+        {
+          "machine": "1500-1",
+          "row": 5,
+          "efficiency": 1.2410416666666666,
+          "totalStrokes": 5957,
+          "details": []
+        },
+        {
+          "machine": "1500-2",
+          "row": 6,
+          "efficiency": 0.48520833333333335,
+          "totalStrokes": 2329,
+          "details": []
+        },
+        {
+          "machine": "3000",
+          "row": 7,
+          "efficiency": 1.1208333333333333,
+          "totalStrokes": 5380,
+          "details": [
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "B1-2027A-0B",
+              "hits": 2820,
+              "hours": 4
+            }
+          ]
+        },
+        {
+          "machine": "3000",
+          "row": 12,
+          "efficiency": "B1-2027A-0B",
+          "totalStrokes": 2820,
+          "details": [
+            {
+              "job": "2.",
+              "partNumber": "B1-2026A-0B",
+              "hits": 2560,
+              "hours": 4
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "1646083/084-00-A",
+              "hits": 5296,
+              "hours": 6.25
+            }
+          ]
+        },
+        {
+          "machine": "1500-1",
+          "row": 20,
+          "efficiency": "1646083/084-00-A",
+          "totalStrokes": 5296,
+          "details": [
+            {
+              "job": "3.",
+              "partNumber": "1493543/544-00-B",
+              "hits": 661,
+              "hours": 1.75
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "40L475/6",
+              "hits": 315,
+              "hours": 1
+            }
+          ]
+        },
+        {
+          "machine": "1500-2",
+          "row": 28,
+          "efficiency": "40L475/6",
+          "totalStrokes": 315,
+          "details": [
+            {
+              "job": "3.",
+              "partNumber": "B1-2019A/2020A-0A",
+              "hits": 1820,
+              "hours": 5
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "060904/44",
+              "hits": 3612,
+              "hours": 7
+            }
+          ]
+        },
+        {
+          "machine": "1400",
+          "row": 36,
+          "efficiency": "060904/44",
+          "totalStrokes": 3612,
+          "details": [
+            {
+              "job": "2.",
+              "partNumber": "64344/744-T90-A000 H1",
+              "hits": 15,
+              "hours": 1
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "1493599-00-A",
+              "hits": 4873,
+              "hours": 4
+            }
+          ]
+        },
+        {
+          "machine": "600",
+          "row": 44,
+          "efficiency": "1493599-00-A",
+          "totalStrokes": 4873,
+          "details": [
+            {
+              "job": "2.",
+              "partNumber": "1493594-00-C",
+              "hits": 5085,
+              "hours": 4
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "060923/24 Blanks",
+              "hits": 680,
+              "hours": 1
+            }
+          ]
+        },
+        {
+          "machine": "1000",
+          "row": 52,
+          "efficiency": "060923/24 Blanks",
+          "totalStrokes": 680,
+          "details": [
+            {
+              "job": "2.",
+              "partNumber": "B1-2017/18 Blanks",
+              "hits": 2967,
+              "hours": 3
+            },
+            {
+              "job": "3.",
+              "partNumber": "060927/28",
+              "hits": 88,
+              "hours": 1
+            }
+          ]
+        }
+      ],
+      "manning": {
+        "activeMachines": 12,
+        "totalMachines": 7,
+        "utilizationRate": "171.4",
+        "estimatedOperators": 12,
+        "totalHitsProduced": 48582,
+        "averageEfficiency": "NaN"
+      }
+    },
+    {
+      "fileName": "6.14.25.2.xlsx",
+      "date": "2025-06-14T00:00:00.000Z",
+      "shift": 2,
+      "production": [
+        {
+          "machine": "600",
+          "row": 2,
+          "efficiency": 1.0003947368421053,
+          "totalStrokes": 7603,
+          "details": []
+        },
+        {
+          "machine": "1000",
+          "row": 3,
+          "efficiency": null,
+          "totalStrokes": null,
+          "details": []
+        },
+        {
+          "machine": "1400",
+          "row": 4,
+          "efficiency": 0.6775,
+          "totalStrokes": 3252,
+          "details": []
+        },
+        {
+          "machine": "1500-1",
+          "row": 5,
+          "efficiency": 1.1983333333333333,
+          "totalStrokes": 5752,
+          "details": []
+        },
+        {
+          "machine": "1500-2",
+          "row": 6,
+          "efficiency": 0.8510416666666667,
+          "totalStrokes": 4085,
+          "details": []
+        },
+        {
+          "machine": "3000",
+          "row": 7,
+          "efficiency": 1.0604166666666666,
+          "totalStrokes": 5090,
+          "details": [
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "B1-2017A/2018A-0A",
+              "hits": 3549,
+              "hours": 5
+            }
+          ]
+        },
+        {
+          "machine": "3000",
+          "row": 12,
+          "efficiency": "B1-2017A/2018A-0A",
+          "totalStrokes": 3549,
+          "details": [
+            {
+              "job": "2.",
+              "partNumber": 18092601,
+              "hits": 1541,
+              "hours": 3
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "1493548-00-B",
+              "hits": 2313,
+              "hours": 2.5
+            }
+          ]
+        },
+        {
+          "machine": "1500-1",
+          "row": 20,
+          "efficiency": "1493548-00-B",
+          "totalStrokes": 2313,
+          "details": [
+            {
+              "job": "3.",
+              "partNumber": "65702-TWA",
+              "hits": 3439,
+              "hours": 5.5
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "P11-B32130-03",
+              "hits": 926,
+              "hours": 3
+            }
+          ]
+        },
+        {
+          "machine": "1500-2",
+          "row": 28,
+          "efficiency": "P11-B32130-03",
+          "totalStrokes": 926,
+          "details": [
+            {
+              "job": "3.",
+              "partNumber": "K00692A49P/K00693A49P",
+              "hits": 3159,
+              "hours": 5
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "64344/744-T90-A000 H1",
+              "hits": 855,
+              "hours": 1.5
+            }
+          ]
+        },
+        {
+          "machine": "1400",
+          "row": 36,
+          "efficiency": "64344/744-T90-A000 H1",
+          "totalStrokes": 855,
+          "details": [
+            {
+              "job": "2.",
+              "partNumber": "1487738-00-B",
+              "hits": 2300,
+              "hours": 5
+            },
+            {
+              "job": "3.",
+              "partNumber": "SWL3011",
+              "hits": 97,
+              "hours": 1.5
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "745J4/5-6RR0A",
+              "hits": 2558,
+              "hours": 4
+            }
+          ]
+        },
+        {
+          "machine": "600",
+          "row": 44,
+          "efficiency": "745J4/5-6RR0A",
+          "totalStrokes": 2558,
+          "details": [
+            {
+              "job": "2.",
+              "partNumber": "751F8/9-6RR0A",
+              "hits": 5045,
+              "hours": 4
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            }
+          ]
+        },
+        {
+          "machine": "1000",
+          "row": 52,
+          "efficiency": null,
+          "totalStrokes": null,
+          "details": []
+        }
+      ],
+      "manning": {
+        "activeMachines": 10,
+        "totalMachines": 7,
+        "utilizationRate": "142.9",
+        "estimatedOperators": 10,
+        "totalHitsProduced": 35983,
+        "averageEfficiency": "NaN"
+      }
+    },
+    {
+      "fileName": "6.16.25.2.xlsx",
+      "date": "2025-06-16T00:00:00.000Z",
+      "shift": 2,
+      "production": [
+        {
+          "machine": "600",
+          "row": 2,
+          "efficiency": 1.3571052631578948,
+          "totalStrokes": 10314,
+          "details": []
+        },
+        {
+          "machine": "1000",
+          "row": 3,
+          "efficiency": 0.49357142857142855,
+          "totalStrokes": 3455,
+          "details": []
+        },
+        {
+          "machine": "1400",
+          "row": 4,
+          "efficiency": 0.82625,
+          "totalStrokes": 3966,
+          "details": []
+        },
+        {
+          "machine": "1500-1",
+          "row": 5,
+          "efficiency": 0.9943589743589744,
+          "totalStrokes": 1939,
+          "details": []
+        },
+        {
+          "machine": "1500-2",
+          "row": 6,
+          "efficiency": 0.670952380952381,
+          "totalStrokes": 2818,
+          "details": []
+        },
+        {
+          "machine": "3000",
+          "row": 7,
+          "efficiency": 1.174375,
+          "totalStrokes": 5637,
+          "details": [
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "21743763/764",
+              "hits": 427,
+              "hours": 0.75
+            }
+          ]
+        },
+        {
+          "machine": "3000",
+          "row": 12,
+          "efficiency": "21743763/764",
+          "totalStrokes": 427,
+          "details": [
+            {
+              "job": "2.",
+              "partNumber": "B1-2027A-0B",
+              "hits": 5019,
+              "hours": 5.75
+            },
+            {
+              "job": "3.",
+              "partNumber": "20092617/9463/9473",
+              "hits": 191,
+              "hours": 1.5
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "B1-1115/1169-0B",
+              "hits": 22,
+              "hours": 0.25
+            }
+          ]
+        },
+        {
+          "machine": "1500-1",
+          "row": 20,
+          "efficiency": "B1-1115/1169-0B",
+          "totalStrokes": 22,
+          "details": [
+            {
+              "job": "3.",
+              "partNumber": "P21-B14130-0814.1",
+              "hits": 24,
+              "hours": 0
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": 1073874,
+              "hits": 299,
+              "hours": 1
+            }
+          ]
+        },
+        {
+          "machine": "1500-2",
+          "row": 28,
+          "efficiency": 1073874,
+          "totalStrokes": 299,
+          "details": [
+            {
+              "job": "3.",
+              "partNumber": "B1-1115/1169-0B",
+              "hits": 2293,
+              "hours": 3.25
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "K00694C49P / K00695C49P",
+              "hits": 2707,
+              "hours": 4.75
+            }
+          ]
+        },
+        {
+          "machine": "1400",
+          "row": 36,
+          "efficiency": "K00694C49P / K00695C49P",
+          "totalStrokes": 2707,
+          "details": [
+            {
+              "job": "2.",
+              "partNumber": "SWL4120",
+              "hits": 1259,
+              "hours": 3.25
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "B1-2023/24",
+              "hits": 4277,
+              "hours": 2.75
+            }
+          ]
+        },
+        {
+          "machine": "600",
+          "row": 44,
+          "efficiency": "B1-2023/24",
+          "totalStrokes": 4277,
+          "details": [
+            {
+              "job": "2.",
+              "partNumber": "75262/3-6RR1A",
+              "hits": 6037,
+              "hours": 5.25
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "21743763/4 BLANKS",
+              "hits": 2327,
+              "hours": 5
+            }
+          ]
+        },
+        {
+          "machine": "1000",
+          "row": 52,
+          "efficiency": "21743763/4 BLANKS",
+          "totalStrokes": 2327,
+          "details": [
+            {
+              "job": "2.",
+              "partNumber": "B1-2027/28 Blanks",
+              "hits": 1128,
+              "hours": 3
+            }
+          ]
+        }
+      ],
+      "manning": {
+        "activeMachines": 12,
+        "totalMachines": 7,
+        "utilizationRate": "171.4",
+        "estimatedOperators": 12,
+        "totalHitsProduced": 38188,
+        "averageEfficiency": "NaN"
+      }
+    },
+    {
+      "fileName": "6.17.25.2.xlsx",
+      "date": "2025-06-17T00:00:00.000Z",
+      "shift": 2,
+      "production": [
+        {
+          "machine": "600",
+          "row": 2,
+          "efficiency": 1.173927125506073,
+          "totalStrokes": 7249,
+          "details": []
+        },
+        {
+          "machine": "1000",
+          "row": 3,
+          "efficiency": 0.48542857142857143,
+          "totalStrokes": 3398,
+          "details": []
+        },
+        {
+          "machine": "1400",
+          "row": 4,
+          "efficiency": 0.916875,
+          "totalStrokes": 4401,
+          "details": []
+        },
+        {
+          "machine": "1500-1",
+          "row": 5,
+          "efficiency": 0.994375,
+          "totalStrokes": 4773,
+          "details": []
+        },
+        {
+          "machine": "1500-2",
+          "row": 6,
+          "efficiency": 0.7379166666666667,
+          "totalStrokes": 3542,
+          "details": []
+        },
+        {
+          "machine": "3000",
+          "row": 7,
+          "efficiency": 1.0104166666666667,
+          "totalStrokes": 4850,
+          "details": [
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "B1-2028A-0B",
+              "hits": 1951,
+              "hours": 2
+            }
+          ]
+        },
+        {
+          "machine": "3000",
+          "row": 12,
+          "efficiency": "B1-2028A-0B",
+          "totalStrokes": 1951,
+          "details": [
+            {
+              "job": "2.",
+              "partNumber": "060927",
+              "hits": 2064,
+              "hours": 4
+            },
+            {
+              "job": "3.",
+              "partNumber": "969075/6",
+              "hits": 835,
+              "hours": 2
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "B1-2016",
+              "hits": 4389,
+              "hours": 7
+            }
+          ]
+        },
+        {
+          "machine": "1500-1",
+          "row": 20,
+          "efficiency": "B1-2016",
+          "totalStrokes": 4389,
+          "details": [
+            {
+              "job": "3.",
+              "partNumber": "062071/72",
+              "hits": 384,
+              "hours": 1
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "B1-2019A/2020A-0A",
+              "hits": 61,
+              "hours": 0.5
+            }
+          ]
+        },
+        {
+          "machine": "1500-2",
+          "row": 28,
+          "efficiency": "B1-2019A/2020A-0A",
+          "totalStrokes": 61,
+          "details": [
+            {
+              "job": "3.",
+              "partNumber": "B1-1115/1169-0B",
+              "hits": 2341,
+              "hours": 5
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "40L415/6",
+              "hits": 2756,
+              "hours": 5.5
+            }
+          ]
+        },
+        {
+          "machine": "1400",
+          "row": 36,
+          "efficiency": "40L415/6",
+          "totalStrokes": 2756,
+          "details": [
+            {
+              "job": "2.",
+              "partNumber": "65612/662-THRA-A022-H1",
+              "hits": 1645,
+              "hours": 2.5
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "Offload",
+              "hits": 187,
+              "hours": 0
+            }
+          ]
+        },
+        {
+          "machine": "600",
+          "row": 44,
+          "efficiency": "Offload",
+          "totalStrokes": 187,
+          "details": [
+            {
+              "job": "2.",
+              "partNumber": "1493600-00-A",
+              "hits": 3795,
+              "hours": 2.5
+            },
+            {
+              "job": "3.",
+              "partNumber": "Offload",
+              "hits": 3267,
+              "hours": 4
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "969075/6",
+              "hits": 3398,
+              "hours": 8
+            }
+          ]
+        },
+        {
+          "machine": "1000",
+          "row": 52,
+          "efficiency": "969075/6",
+          "totalStrokes": 3398,
+          "details": []
+        }
+      ],
+      "manning": {
+        "activeMachines": 12,
+        "totalMachines": 7,
+        "utilizationRate": "171.4",
+        "estimatedOperators": 12,
+        "totalHitsProduced": 40955,
+        "averageEfficiency": "NaN"
+      }
+    },
+    {
+      "fileName": "6.18.25.2.xlsx",
+      "date": "2025-06-18T00:00:00.000Z",
+      "shift": 2,
+      "production": [
+        {
+          "machine": "600",
+          "row": 2,
+          "efficiency": 1.2626315789473683,
+          "totalStrokes": 9596,
+          "details": []
+        },
+        {
+          "machine": "1000",
+          "row": 3,
+          "efficiency": 0.8735714285714286,
+          "totalStrokes": 6115,
+          "details": []
+        },
+        {
+          "machine": "1400",
+          "row": 4,
+          "efficiency": 0.37166666666666665,
+          "totalStrokes": 1784,
+          "details": []
+        },
+        {
+          "machine": "1500-1",
+          "row": 5,
+          "efficiency": 0.7045833333333333,
+          "totalStrokes": 3382,
+          "details": []
+        },
+        {
+          "machine": "1500-2",
+          "row": 6,
+          "efficiency": 0.9229166666666667,
+          "totalStrokes": 4430,
+          "details": []
+        },
+        {
+          "machine": "3000",
+          "row": 7,
+          "efficiency": 0.7435416666666667,
+          "totalStrokes": 3569,
+          "details": [
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": 17192602,
+              "hits": 2752,
+              "hours": 5.75
+            }
+          ]
+        },
+        {
+          "machine": "3000",
+          "row": 12,
+          "efficiency": 17192602,
+          "totalStrokes": 2752,
+          "details": [
+            {
+              "job": "2.",
+              "partNumber": "060928",
+              "hits": 817,
+              "hours": 2.25
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "P11-B30430/440-00",
+              "hits": 430,
+              "hours": 1
+            }
+          ]
+        },
+        {
+          "machine": "1500-1",
+          "row": 20,
+          "efficiency": "P11-B30430/440-00",
+          "totalStrokes": 430,
+          "details": [
+            {
+              "job": "3.",
+              "partNumber": "P11-C91230-01",
+              "hits": 2552,
+              "hours": 4.75
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "25K701",
+              "hits": 2332,
+              "hours": 4
+            }
+          ]
+        },
+        {
+          "machine": "1500-2",
+          "row": 28,
+          "efficiency": "25K701",
+          "totalStrokes": 2332,
+          "details": [
+            {
+              "job": "3.",
+              "partNumber": "25K702",
+              "hits": 2098,
+              "hours": 4
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "060940/41",
+              "hits": 1380,
+              "hours": 2.5
+            }
+          ]
+        },
+        {
+          "machine": "1400",
+          "row": 36,
+          "efficiency": "060940/41",
+          "totalStrokes": 1380,
+          "details": [
+            {
+              "job": "2.",
+              "partNumber": "40L479/80",
+              "hits": 404,
+              "hours": 5.5
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "60847/947-3A0",
+              "hits": 5484,
+              "hours": 3.5
+            }
+          ]
+        },
+        {
+          "machine": "600",
+          "row": 44,
+          "efficiency": "60847/947-3A0",
+          "totalStrokes": 5484,
+          "details": [
+            {
+              "job": "2.",
+              "partNumber": "Offload",
+              "hits": 4112,
+              "hours": 4.5
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "60941-TNY-G000",
+              "hits": 2066,
+              "hours": 3
+            }
+          ]
+        },
+        {
+          "machine": "1000",
+          "row": 52,
+          "efficiency": "60941-TNY-G000",
+          "totalStrokes": 2066,
+          "details": [
+            {
+              "job": "2.",
+              "partNumber": "B1-2025/2026",
+              "hits": 4049,
+              "hours": 5
+            }
+          ]
+        }
+      ],
+      "manning": {
+        "activeMachines": 12,
+        "totalMachines": 7,
+        "utilizationRate": "171.4",
+        "estimatedOperators": 12,
+        "totalHitsProduced": 43320,
+        "averageEfficiency": "NaN"
+      }
+    },
+    {
+      "fileName": "6.19.25.2.xlsx",
+      "date": "2025-06-19T00:00:00.000Z",
+      "shift": 2,
+      "production": [
+        {
+          "machine": "600",
+          "row": 2,
+          "efficiency": 1.2714473684210525,
+          "totalStrokes": 9663,
+          "details": []
+        },
+        {
+          "machine": "1000",
+          "row": 3,
+          "efficiency": 0.5004081632653061,
+          "totalStrokes": 3065,
+          "details": []
+        },
+        {
+          "machine": "1400",
+          "row": 4,
+          "efficiency": 1.25,
+          "totalStrokes": 6000,
+          "details": []
+        },
+        {
+          "machine": "1500-1",
+          "row": 5,
+          "efficiency": 1.034375,
+          "totalStrokes": 4965,
+          "details": []
+        },
+        {
+          "machine": "1500-2",
+          "row": 6,
+          "efficiency": 1.3739583333333334,
+          "totalStrokes": 6595,
+          "details": []
+        },
+        {
+          "machine": "3000",
+          "row": 7,
+          "efficiency": 0.7522916666666667,
+          "totalStrokes": 3611,
+          "details": [
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "21743763/764",
+              "hits": 3611,
+              "hours": 8
+            }
+          ]
+        },
+        {
+          "machine": "3000",
+          "row": 12,
+          "efficiency": "21743763/764",
+          "totalStrokes": 3611,
+          "details": [
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "P11-C20730/40-02",
+              "hits": 1348,
+              "hours": 3
+            }
+          ]
+        },
+        {
+          "machine": "1500-1",
+          "row": 20,
+          "efficiency": "P11-C20730/40-02",
+          "totalStrokes": 1348,
+          "details": [
+            {
+              "job": "3.",
+              "partNumber": "1493543/544-00-B",
+              "hits": 3617,
+              "hours": 5
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "B1-2059/60",
+              "hits": 853,
+              "hours": 1.25
+            }
+          ]
+        },
+        {
+          "machine": "1500-2",
+          "row": 28,
+          "efficiency": "B1-2059/60",
+          "totalStrokes": 853,
+          "details": [
+            {
+              "job": "3.",
+              "partNumber": "1493547-00-B",
+              "hits": 5742,
+              "hours": 6.75
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "1474167/168-00-E",
+              "hits": 5641,
+              "hours": 6
+            }
+          ]
+        },
+        {
+          "machine": "1400",
+          "row": 36,
+          "efficiency": "1474167/168-00-E",
+          "totalStrokes": 5641,
+          "details": [
+            {
+              "job": "2.",
+              "partNumber": "1751862/63",
+              "hits": 359,
+              "hours": 2
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "1089644/645",
+              "hits": 2289,
+              "hours": 1.75
+            }
+          ]
+        },
+        {
+          "machine": "600",
+          "row": 44,
+          "efficiency": "1089644/645",
+          "totalStrokes": 2289,
+          "details": [
+            {
+              "job": "2.",
+              "partNumber": 1751857,
+              "hits": 4297,
+              "hours": 4
+            },
+            {
+              "job": "3.",
+              "partNumber": "1493593-00-C",
+              "hits": 3077,
+              "hours": 2.25
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "21743763/4 BLANKS",
+              "hits": 204,
+              "hours": 0.5
+            }
+          ]
+        },
+        {
+          "machine": "1000",
+          "row": 52,
+          "efficiency": "21743763/4 BLANKS",
+          "totalStrokes": 204,
+          "details": [
+            {
+              "job": "2.",
+              "partNumber": "060927/28",
+              "hits": 2861,
+              "hours": 6.5
+            }
+          ]
+        }
+      ],
+      "manning": {
+        "activeMachines": 12,
+        "totalMachines": 7,
+        "utilizationRate": "171.4",
+        "estimatedOperators": 12,
+        "totalHitsProduced": 47845,
+        "averageEfficiency": "NaN"
+      }
+    },
+    {
+      "fileName": "6.20.25.2.xlsx",
+      "date": "2025-06-20T00:00:00.000Z",
+      "shift": 2,
+      "production": [
+        {
+          "machine": "600",
+          "row": 2,
+          "efficiency": 1.023421052631579,
+          "totalStrokes": 7778,
+          "details": []
+        },
+        {
+          "machine": "1000",
+          "row": 3,
+          "efficiency": 0.7001428571428572,
+          "totalStrokes": 4901,
+          "details": []
+        },
+        {
+          "machine": "1400",
+          "row": 4,
+          "efficiency": 0.753,
+          "totalStrokes": 2259,
+          "details": []
+        },
+        {
+          "machine": "1500-1",
+          "row": 5,
+          "efficiency": 0.8725,
+          "totalStrokes": 4188,
+          "details": []
+        },
+        {
+          "machine": "1500-2",
+          "row": 6,
+          "efficiency": 1.1947916666666667,
+          "totalStrokes": 5735,
+          "details": []
+        },
+        {
+          "machine": "3000",
+          "row": 7,
+          "efficiency": 1.2752083333333333,
+          "totalStrokes": 6121,
+          "details": [
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "B1-2025A-0B",
+              "hits": 1721,
+              "hours": 2
+            }
+          ]
+        },
+        {
+          "machine": "3000",
+          "row": 12,
+          "efficiency": "B1-2025A-0B",
+          "totalStrokes": 1721,
+          "details": [
+            {
+              "job": "2.",
+              "partNumber": "B1-1214A/1268A",
+              "hits": 4400,
+              "hours": 6
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            }
+          ]
+        },
+        {
+          "machine": "1500-1",
+          "row": 20,
+          "efficiency": null,
+          "totalStrokes": null,
+          "details": [
+            {
+              "job": "3.",
+              "partNumber": "062073/74",
+              "hits": 3600,
+              "hours": 6.75
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "1073681 / 682-00-G",
+              "hits": 5735,
+              "hours": 8
+            }
+          ]
+        },
+        {
+          "machine": "1500-2",
+          "row": 28,
+          "efficiency": "1073681 / 682-00-G",
+          "totalStrokes": 5735,
+          "details": [
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "1474167/168-00-E",
+              "hits": 40,
+              "hours": 0
+            }
+          ]
+        },
+        {
+          "machine": "1400",
+          "row": 36,
+          "efficiency": "1474167/168-00-E",
+          "totalStrokes": 40,
+          "details": [
+            {
+              "job": "2.",
+              "partNumber": "1474167/168-00-E",
+              "hits": 2219,
+              "hours": 5
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "P11-U8F0L0/R0-01",
+              "hits": 1674,
+              "hours": 1
+            }
+          ]
+        },
+        {
+          "machine": "600",
+          "row": 44,
+          "efficiency": "P11-U8F0L0/R0-01",
+          "totalStrokes": 1674,
+          "details": [
+            {
+              "job": "2.",
+              "partNumber": 1091646,
+              "hits": 1786,
+              "hours": 3.5
+            },
+            {
+              "job": "3.",
+              "partNumber": "65632/82-TVA",
+              "hits": 4318,
+              "hours": 3.5
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "B1-2027/28 Blanks",
+              "hits": 3232,
+              "hours": 5
+            }
+          ]
+        },
+        {
+          "machine": "1000",
+          "row": 52,
+          "efficiency": "B1-2027/28 Blanks",
+          "totalStrokes": 3232,
+          "details": [
+            {
+              "job": "2.",
+              "partNumber": "B1-2017/18 Blanks",
+              "hits": 1669,
+              "hours": 3
+            }
+          ]
+        }
+      ],
+      "manning": {
+        "activeMachines": 11,
+        "totalMachines": 7,
+        "utilizationRate": "157.1",
+        "estimatedOperators": 11,
+        "totalHitsProduced": 43384,
+        "averageEfficiency": "NaN"
+      }
+    },
+    {
+      "fileName": "6.21.25.2.xlsx",
+      "date": "2025-06-21T00:00:00.000Z",
+      "shift": 2,
+      "production": [
+        {
+          "machine": "600",
+          "row": 2,
+          "efficiency": 0.7518421052631579,
+          "totalStrokes": 5714,
+          "details": []
+        },
+        {
+          "machine": "1000",
+          "row": 3,
+          "efficiency": 0.5612857142857143,
+          "totalStrokes": 3929,
+          "details": []
+        },
+        {
+          "machine": "1400",
+          "row": 4,
+          "efficiency": null,
+          "totalStrokes": null,
+          "details": []
+        },
+        {
+          "machine": "1500-1",
+          "row": 5,
+          "efficiency": 0.7602083333333334,
+          "totalStrokes": 3649,
+          "details": []
+        },
+        {
+          "machine": "1500-2",
+          "row": 6,
+          "efficiency": 0.6,
+          "totalStrokes": 2880,
+          "details": []
+        },
+        {
+          "machine": "3000",
+          "row": 7,
+          "efficiency": 0.37604166666666666,
+          "totalStrokes": 1805,
+          "details": [
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "20092617/9463/9473",
+              "hits": 753,
+              "hours": 4
+            }
+          ]
+        },
+        {
+          "machine": "3000",
+          "row": 12,
+          "efficiency": "20092617/9463/9473",
+          "totalStrokes": 753,
+          "details": [
+            {
+              "job": "2.",
+              "partNumber": "20092617/9463/9473",
+              "hits": 1052,
+              "hours": 4
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "B1-2015",
+              "hits": 2914,
+              "hours": 5.75
+            }
+          ]
+        },
+        {
+          "machine": "1500-1",
+          "row": 20,
+          "efficiency": "B1-2015",
+          "totalStrokes": 2914,
+          "details": [
+            {
+              "job": "3.",
+              "partNumber": "B1-2016",
+              "hits": 735,
+              "hours": 2.25
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "Offload",
+              "hits": 1950,
+              "hours": 4
+            }
+          ]
+        },
+        {
+          "machine": "1500-2",
+          "row": 28,
+          "efficiency": "Offload",
+          "totalStrokes": 1950,
+          "details": [
+            {
+              "job": "3.",
+              "partNumber": "062084",
+              "hits": 930,
+              "hours": 4
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            }
+          ]
+        },
+        {
+          "machine": "1400",
+          "row": 36,
+          "efficiency": null,
+          "totalStrokes": null,
+          "details": [
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": 1091646,
+              "hits": 812,
+              "hours": 0.5
+            }
+          ]
+        },
+        {
+          "machine": "600",
+          "row": 44,
+          "efficiency": 1091646,
+          "totalStrokes": 812,
+          "details": [
+            {
+              "job": "2.",
+              "partNumber": "1614528-00-B",
+              "hits": 2559,
+              "hours": 2
+            },
+            {
+              "job": "3.",
+              "partNumber": "P11-B14320",
+              "hits": 1878,
+              "hours": 3.5
+            },
+            {
+              "job": "4.",
+              "partNumber": "P11-U8R0L0/R0-02",
+              "hits": 465,
+              "hours": 2
+            },
+            {
+              "job": "Job",
+              "partNumber": "Part Number",
+              "hits": "Hits",
+              "hours": "Hours of Run Time"
+            },
+            {
+              "job": "1.",
+              "partNumber": "20092601/2",
+              "hits": 3117,
+              "hours": 6.75
+            }
+          ]
+        },
+        {
+          "machine": "1000",
+          "row": 52,
+          "efficiency": "20092601/2",
+          "totalStrokes": 3117,
+          "details": [
+            {
+              "job": "2.",
+              "partNumber": "B1-1214/68 Blanks",
+              "hits": 812,
+              "hours": 1.25
+            }
+          ]
+        }
+      ],
+      "manning": {
+        "activeMachines": 10,
+        "totalMachines": 7,
+        "utilizationRate": "142.9",
+        "estimatedOperators": 10,
+        "totalHitsProduced": 27523,
+        "averageEfficiency": "NaN"
+      }
+    }
+  ],
+  "manningRecords": [
+    {
+      "date": "2025-06-10",
+      "machine_number": "600",
+      "hours_worked": 0,
+      "parts_produced": 11499,
+      "production_efficiency": 151.30263157894737,
+      "attendance_status": "present",
+      "imported_from": "6.10.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-10",
+      "machine_number": "1000",
+      "hours_worked": 0,
+      "parts_produced": 4479,
+      "production_efficiency": 63.98571428571429,
+      "attendance_status": "present",
+      "imported_from": "6.10.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-10",
+      "machine_number": "1400",
+      "hours_worked": 0,
+      "parts_produced": 3717,
+      "production_efficiency": 77.4375,
+      "attendance_status": "present",
+      "imported_from": "6.10.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-10",
+      "machine_number": "1500-1",
+      "hours_worked": 0,
+      "parts_produced": 277,
+      "production_efficiency": 15.388888888888888,
+      "attendance_status": "present",
+      "imported_from": "6.10.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-10",
+      "machine_number": "1500-2",
+      "hours_worked": 0,
+      "parts_produced": 3058,
+      "production_efficiency": 63.708333333333336,
+      "attendance_status": "present",
+      "imported_from": "6.10.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-10",
+      "machine_number": "3000",
+      "hours_worked": "0Hours of Run Time2",
+      "parts_produced": 5670,
+      "production_efficiency": 118.12499999999999,
+      "attendance_status": "present",
+      "imported_from": "6.10.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-10",
+      "machine_number": "3000",
+      "hours_worked": "6Hours of Run Time0",
+      "parts_produced": 1298,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.10.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-10",
+      "machine_number": "1500-1",
+      "hours_worked": "3Hours of Run Time1.5",
+      "parts_produced": 122,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.10.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-10",
+      "machine_number": "1500-2",
+      "hours_worked": "6.5Hours of Run Time7.5",
+      "parts_produced": 86,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.10.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-10",
+      "machine_number": "1400",
+      "hours_worked": "0.5Hours of Run Time2",
+      "parts_produced": 3717,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.10.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-10",
+      "machine_number": "600",
+      "hours_worked": "6Hours of Run Time7",
+      "parts_produced": 2880,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.10.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-10",
+      "machine_number": "1000",
+      "hours_worked": 1,
+      "parts_produced": 3985,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.10.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-12",
+      "machine_number": "600",
+      "hours_worked": 0,
+      "parts_produced": 8300,
+      "production_efficiency": 109.21052631578947,
+      "attendance_status": "present",
+      "imported_from": "6.12.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-12",
+      "machine_number": "1400",
+      "hours_worked": 0,
+      "parts_produced": 3411,
+      "production_efficiency": 71.0625,
+      "attendance_status": "present",
+      "imported_from": "6.12.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-12",
+      "machine_number": "1500-1",
+      "hours_worked": 0,
+      "parts_produced": 2377,
+      "production_efficiency": 132.05555555555557,
+      "attendance_status": "present",
+      "imported_from": "6.12.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-12",
+      "machine_number": "1500-2",
+      "hours_worked": 0,
+      "parts_produced": 3005,
+      "production_efficiency": 62.60416666666667,
+      "attendance_status": "present",
+      "imported_from": "6.12.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-12",
+      "machine_number": "3000",
+      "hours_worked": "0Hours of Run Time3",
+      "parts_produced": 4315,
+      "production_efficiency": 89.89583333333333,
+      "attendance_status": "present",
+      "imported_from": "6.12.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-12",
+      "machine_number": "3000",
+      "hours_worked": "5Hours of Run Time0",
+      "parts_produced": 1961,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.12.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-12",
+      "machine_number": "1500-1",
+      "hours_worked": "3Hours of Run Time6.5",
+      "parts_produced": 300,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.12.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-12",
+      "machine_number": "1500-2",
+      "hours_worked": "1.5Hours of Run Time2",
+      "parts_produced": 2992,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.12.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-12",
+      "machine_number": "1400",
+      "hours_worked": "6Hours of Run Time8",
+      "parts_produced": 826,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.12.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-12",
+      "machine_number": "600",
+      "hours_worked": "0Hours of Run Time",
+      "parts_produced": 8300,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.12.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-13",
+      "machine_number": "600",
+      "hours_worked": 0,
+      "parts_produced": 9958,
+      "production_efficiency": 131.02631578947367,
+      "attendance_status": "present",
+      "imported_from": "6.13.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-13",
+      "machine_number": "1000",
+      "hours_worked": 0,
+      "parts_produced": 3735,
+      "production_efficiency": 85.37142857142858,
+      "attendance_status": "present",
+      "imported_from": "6.13.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-13",
+      "machine_number": "1400",
+      "hours_worked": 0,
+      "parts_produced": 3627,
+      "production_efficiency": 75.5625,
+      "attendance_status": "present",
+      "imported_from": "6.13.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-13",
+      "machine_number": "1500-1",
+      "hours_worked": 0,
+      "parts_produced": 5957,
+      "production_efficiency": 124.10416666666666,
+      "attendance_status": "present",
+      "imported_from": "6.13.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-13",
+      "machine_number": "1500-2",
+      "hours_worked": 0,
+      "parts_produced": 2329,
+      "production_efficiency": 48.520833333333336,
+      "attendance_status": "present",
+      "imported_from": "6.13.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-13",
+      "machine_number": "3000",
+      "hours_worked": "0Hours of Run Time4",
+      "parts_produced": 5380,
+      "production_efficiency": 112.08333333333333,
+      "attendance_status": "present",
+      "imported_from": "6.13.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-13",
+      "machine_number": "3000",
+      "hours_worked": "4Hours of Run Time6.25",
+      "parts_produced": 2820,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.13.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-13",
+      "machine_number": "1500-1",
+      "hours_worked": "1.75Hours of Run Time1",
+      "parts_produced": 5296,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.13.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-13",
+      "machine_number": "1500-2",
+      "hours_worked": "5Hours of Run Time7",
+      "parts_produced": 315,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.13.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-13",
+      "machine_number": "1400",
+      "hours_worked": "1Hours of Run Time4",
+      "parts_produced": 3612,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.13.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-13",
+      "machine_number": "600",
+      "hours_worked": "4Hours of Run Time1",
+      "parts_produced": 4873,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.13.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-13",
+      "machine_number": "1000",
+      "hours_worked": 4,
+      "parts_produced": 680,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.13.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-14",
+      "machine_number": "600",
+      "hours_worked": 0,
+      "parts_produced": 7603,
+      "production_efficiency": 100.03947368421053,
+      "attendance_status": "present",
+      "imported_from": "6.14.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-14",
+      "machine_number": "1400",
+      "hours_worked": 0,
+      "parts_produced": 3252,
+      "production_efficiency": 67.75,
+      "attendance_status": "present",
+      "imported_from": "6.14.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-14",
+      "machine_number": "1500-1",
+      "hours_worked": 0,
+      "parts_produced": 5752,
+      "production_efficiency": 119.83333333333333,
+      "attendance_status": "present",
+      "imported_from": "6.14.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-14",
+      "machine_number": "1500-2",
+      "hours_worked": 0,
+      "parts_produced": 4085,
+      "production_efficiency": 85.10416666666667,
+      "attendance_status": "present",
+      "imported_from": "6.14.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-14",
+      "machine_number": "3000",
+      "hours_worked": "0Hours of Run Time5",
+      "parts_produced": 5090,
+      "production_efficiency": 106.04166666666666,
+      "attendance_status": "present",
+      "imported_from": "6.14.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-14",
+      "machine_number": "3000",
+      "hours_worked": "3Hours of Run Time2.5",
+      "parts_produced": 3549,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.14.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-14",
+      "machine_number": "1500-1",
+      "hours_worked": "5.5Hours of Run Time3",
+      "parts_produced": 2313,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.14.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-14",
+      "machine_number": "1500-2",
+      "hours_worked": "5Hours of Run Time1.5",
+      "parts_produced": 926,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.14.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-14",
+      "machine_number": "1400",
+      "hours_worked": "6.5Hours of Run Time4",
+      "parts_produced": 855,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.14.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-14",
+      "machine_number": "600",
+      "hours_worked": "4Hours of Run Time",
+      "parts_produced": 2558,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.14.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-16",
+      "machine_number": "600",
+      "hours_worked": 0,
+      "parts_produced": 10314,
+      "production_efficiency": 135.71052631578948,
+      "attendance_status": "present",
+      "imported_from": "6.16.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-16",
+      "machine_number": "1000",
+      "hours_worked": 0,
+      "parts_produced": 3455,
+      "production_efficiency": 49.357142857142854,
+      "attendance_status": "present",
+      "imported_from": "6.16.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-16",
+      "machine_number": "1400",
+      "hours_worked": 0,
+      "parts_produced": 3966,
+      "production_efficiency": 82.625,
+      "attendance_status": "present",
+      "imported_from": "6.16.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-16",
+      "machine_number": "1500-1",
+      "hours_worked": 0,
+      "parts_produced": 1939,
+      "production_efficiency": 99.43589743589743,
+      "attendance_status": "present",
+      "imported_from": "6.16.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-16",
+      "machine_number": "1500-2",
+      "hours_worked": 0,
+      "parts_produced": 2818,
+      "production_efficiency": 67.0952380952381,
+      "attendance_status": "present",
+      "imported_from": "6.16.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-16",
+      "machine_number": "3000",
+      "hours_worked": "0Hours of Run Time0.75",
+      "parts_produced": 5637,
+      "production_efficiency": 117.4375,
+      "attendance_status": "present",
+      "imported_from": "6.16.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-16",
+      "machine_number": "3000",
+      "hours_worked": "7.25Hours of Run Time0.25",
+      "parts_produced": 427,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.16.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-16",
+      "machine_number": "1500-1",
+      "hours_worked": "0Hours of Run Time1",
+      "parts_produced": 22,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.16.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-16",
+      "machine_number": "1500-2",
+      "hours_worked": "3.25Hours of Run Time4.75",
+      "parts_produced": 299,
+      "production_efficiency": 107387400,
+      "attendance_status": "present",
+      "imported_from": "6.16.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-16",
+      "machine_number": "1400",
+      "hours_worked": "3.25Hours of Run Time2.75",
+      "parts_produced": 2707,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.16.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-16",
+      "machine_number": "600",
+      "hours_worked": "5.25Hours of Run Time5",
+      "parts_produced": 4277,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.16.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-16",
+      "machine_number": "1000",
+      "hours_worked": 3,
+      "parts_produced": 2327,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.16.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-17",
+      "machine_number": "600",
+      "hours_worked": 0,
+      "parts_produced": 7249,
+      "production_efficiency": 117.3927125506073,
+      "attendance_status": "present",
+      "imported_from": "6.17.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-17",
+      "machine_number": "1000",
+      "hours_worked": 0,
+      "parts_produced": 3398,
+      "production_efficiency": 48.542857142857144,
+      "attendance_status": "present",
+      "imported_from": "6.17.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-17",
+      "machine_number": "1400",
+      "hours_worked": 0,
+      "parts_produced": 4401,
+      "production_efficiency": 91.6875,
+      "attendance_status": "present",
+      "imported_from": "6.17.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-17",
+      "machine_number": "1500-1",
+      "hours_worked": 0,
+      "parts_produced": 4773,
+      "production_efficiency": 99.4375,
+      "attendance_status": "present",
+      "imported_from": "6.17.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-17",
+      "machine_number": "1500-2",
+      "hours_worked": 0,
+      "parts_produced": 3542,
+      "production_efficiency": 73.79166666666667,
+      "attendance_status": "present",
+      "imported_from": "6.17.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-17",
+      "machine_number": "3000",
+      "hours_worked": "0Hours of Run Time2",
+      "parts_produced": 4850,
+      "production_efficiency": 101.04166666666667,
+      "attendance_status": "present",
+      "imported_from": "6.17.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-17",
+      "machine_number": "3000",
+      "hours_worked": "6Hours of Run Time7",
+      "parts_produced": 1951,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.17.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-17",
+      "machine_number": "1500-1",
+      "hours_worked": "1Hours of Run Time0.5",
+      "parts_produced": 4389,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.17.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-17",
+      "machine_number": "1500-2",
+      "hours_worked": "5Hours of Run Time5.5",
+      "parts_produced": 61,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.17.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-17",
+      "machine_number": "1400",
+      "hours_worked": "2.5Hours of Run Time0",
+      "parts_produced": 2756,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.17.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-17",
+      "machine_number": "600",
+      "hours_worked": "6.5Hours of Run Time8",
+      "parts_produced": 187,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.17.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-17",
+      "machine_number": "1000",
+      "hours_worked": 0,
+      "parts_produced": 3398,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.17.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-18",
+      "machine_number": "600",
+      "hours_worked": 0,
+      "parts_produced": 9596,
+      "production_efficiency": 126.26315789473684,
+      "attendance_status": "present",
+      "imported_from": "6.18.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-18",
+      "machine_number": "1000",
+      "hours_worked": 0,
+      "parts_produced": 6115,
+      "production_efficiency": 87.35714285714286,
+      "attendance_status": "present",
+      "imported_from": "6.18.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-18",
+      "machine_number": "1400",
+      "hours_worked": 0,
+      "parts_produced": 1784,
+      "production_efficiency": 37.166666666666664,
+      "attendance_status": "present",
+      "imported_from": "6.18.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-18",
+      "machine_number": "1500-1",
+      "hours_worked": 0,
+      "parts_produced": 3382,
+      "production_efficiency": 70.45833333333333,
+      "attendance_status": "present",
+      "imported_from": "6.18.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-18",
+      "machine_number": "1500-2",
+      "hours_worked": 0,
+      "parts_produced": 4430,
+      "production_efficiency": 92.29166666666667,
+      "attendance_status": "present",
+      "imported_from": "6.18.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-18",
+      "machine_number": "3000",
+      "hours_worked": "0Hours of Run Time5.75",
+      "parts_produced": 3569,
+      "production_efficiency": 74.35416666666667,
+      "attendance_status": "present",
+      "imported_from": "6.18.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-18",
+      "machine_number": "3000",
+      "hours_worked": "2.25Hours of Run Time1",
+      "parts_produced": 2752,
+      "production_efficiency": 1719260200,
+      "attendance_status": "present",
+      "imported_from": "6.18.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-18",
+      "machine_number": "1500-1",
+      "hours_worked": "4.75Hours of Run Time4",
+      "parts_produced": 430,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.18.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-18",
+      "machine_number": "1500-2",
+      "hours_worked": "4Hours of Run Time2.5",
+      "parts_produced": 2332,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.18.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-18",
+      "machine_number": "1400",
+      "hours_worked": "5.5Hours of Run Time3.5",
+      "parts_produced": 1380,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.18.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-18",
+      "machine_number": "600",
+      "hours_worked": "4.5Hours of Run Time3",
+      "parts_produced": 5484,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.18.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-18",
+      "machine_number": "1000",
+      "hours_worked": 5,
+      "parts_produced": 2066,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.18.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-19",
+      "machine_number": "600",
+      "hours_worked": 0,
+      "parts_produced": 9663,
+      "production_efficiency": 127.14473684210526,
+      "attendance_status": "present",
+      "imported_from": "6.19.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-19",
+      "machine_number": "1000",
+      "hours_worked": 0,
+      "parts_produced": 3065,
+      "production_efficiency": 50.04081632653061,
+      "attendance_status": "present",
+      "imported_from": "6.19.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-19",
+      "machine_number": "1400",
+      "hours_worked": 0,
+      "parts_produced": 6000,
+      "production_efficiency": 125,
+      "attendance_status": "present",
+      "imported_from": "6.19.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-19",
+      "machine_number": "1500-1",
+      "hours_worked": 0,
+      "parts_produced": 4965,
+      "production_efficiency": 103.4375,
+      "attendance_status": "present",
+      "imported_from": "6.19.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-19",
+      "machine_number": "1500-2",
+      "hours_worked": 0,
+      "parts_produced": 6595,
+      "production_efficiency": 137.39583333333334,
+      "attendance_status": "present",
+      "imported_from": "6.19.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-19",
+      "machine_number": "3000",
+      "hours_worked": "0Hours of Run Time8",
+      "parts_produced": 3611,
+      "production_efficiency": 75.22916666666667,
+      "attendance_status": "present",
+      "imported_from": "6.19.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-19",
+      "machine_number": "3000",
+      "hours_worked": "0Hours of Run Time3",
+      "parts_produced": 3611,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.19.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-19",
+      "machine_number": "1500-1",
+      "hours_worked": "5Hours of Run Time1.25",
+      "parts_produced": 1348,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.19.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-19",
+      "machine_number": "1500-2",
+      "hours_worked": "6.75Hours of Run Time6",
+      "parts_produced": 853,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.19.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-19",
+      "machine_number": "1400",
+      "hours_worked": "2Hours of Run Time1.75",
+      "parts_produced": 5641,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.19.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-19",
+      "machine_number": "600",
+      "hours_worked": "6.25Hours of Run Time0.5",
+      "parts_produced": 2289,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.19.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-19",
+      "machine_number": "1000",
+      "hours_worked": 6.5,
+      "parts_produced": 204,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.19.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-20",
+      "machine_number": "600",
+      "hours_worked": 0,
+      "parts_produced": 7778,
+      "production_efficiency": 102.3421052631579,
+      "attendance_status": "present",
+      "imported_from": "6.20.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-20",
+      "machine_number": "1000",
+      "hours_worked": 0,
+      "parts_produced": 4901,
+      "production_efficiency": 70.01428571428572,
+      "attendance_status": "present",
+      "imported_from": "6.20.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-20",
+      "machine_number": "1400",
+      "hours_worked": 0,
+      "parts_produced": 2259,
+      "production_efficiency": 75.3,
+      "attendance_status": "present",
+      "imported_from": "6.20.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-20",
+      "machine_number": "1500-1",
+      "hours_worked": 0,
+      "parts_produced": 4188,
+      "production_efficiency": 87.25,
+      "attendance_status": "present",
+      "imported_from": "6.20.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-20",
+      "machine_number": "1500-2",
+      "hours_worked": 0,
+      "parts_produced": 5735,
+      "production_efficiency": 119.47916666666667,
+      "attendance_status": "present",
+      "imported_from": "6.20.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-20",
+      "machine_number": "3000",
+      "hours_worked": "0Hours of Run Time2",
+      "parts_produced": 6121,
+      "production_efficiency": 127.52083333333333,
+      "attendance_status": "present",
+      "imported_from": "6.20.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-20",
+      "machine_number": "3000",
+      "hours_worked": "6Hours of Run Time",
+      "parts_produced": 1721,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.20.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-20",
+      "machine_number": "1500-2",
+      "hours_worked": "0Hours of Run Time0",
+      "parts_produced": 5735,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.20.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-20",
+      "machine_number": "1400",
+      "hours_worked": "5Hours of Run Time1",
+      "parts_produced": 40,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.20.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-20",
+      "machine_number": "600",
+      "hours_worked": "7Hours of Run Time5",
+      "parts_produced": 1674,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.20.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-20",
+      "machine_number": "1000",
+      "hours_worked": 3,
+      "parts_produced": 3232,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.20.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-21",
+      "machine_number": "600",
+      "hours_worked": 0,
+      "parts_produced": 5714,
+      "production_efficiency": 75.18421052631578,
+      "attendance_status": "present",
+      "imported_from": "6.21.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-21",
+      "machine_number": "1000",
+      "hours_worked": 0,
+      "parts_produced": 3929,
+      "production_efficiency": 56.128571428571426,
+      "attendance_status": "present",
+      "imported_from": "6.21.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-21",
+      "machine_number": "1500-1",
+      "hours_worked": 0,
+      "parts_produced": 3649,
+      "production_efficiency": 76.02083333333334,
+      "attendance_status": "present",
+      "imported_from": "6.21.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-21",
+      "machine_number": "1500-2",
+      "hours_worked": 0,
+      "parts_produced": 2880,
+      "production_efficiency": 60,
+      "attendance_status": "present",
+      "imported_from": "6.21.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-21",
+      "machine_number": "3000",
+      "hours_worked": "0Hours of Run Time4",
+      "parts_produced": 1805,
+      "production_efficiency": 37.604166666666664,
+      "attendance_status": "present",
+      "imported_from": "6.21.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-21",
+      "machine_number": "3000",
+      "hours_worked": "4Hours of Run Time5.75",
+      "parts_produced": 753,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.21.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-21",
+      "machine_number": "1500-1",
+      "hours_worked": "2.25Hours of Run Time4",
+      "parts_produced": 2914,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.21.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-21",
+      "machine_number": "1500-2",
+      "hours_worked": "4Hours of Run Time",
+      "parts_produced": 1950,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.21.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-21",
+      "machine_number": "600",
+      "hours_worked": "7.5Hours of Run Time6.75",
+      "parts_produced": 812,
+      "production_efficiency": 109164600,
+      "attendance_status": "present",
+      "imported_from": "6.21.25.2.xlsx"
+    },
+    {
+      "date": "2025-06-21",
+      "machine_number": "1000",
+      "hours_worked": 1.25,
+      "parts_produced": 3117,
+      "production_efficiency": null,
+      "attendance_status": "present",
+      "imported_from": "6.21.25.2.xlsx"
+    }
+  ]
+}

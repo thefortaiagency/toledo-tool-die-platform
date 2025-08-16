@@ -134,9 +134,9 @@ Ask me anything about your production data.`,
     },
     {
       icon: <Users className="w-5 h-5" />,
-      title: "Shift Analysis",
-      subtitle: "Compare shift performance",
-      query: "Which shift is performing best this week?",
+      title: "Manning Report",
+      subtitle: "Attendance & coverage",
+      query: "Show me manning and attendance data for all shifts",
       color: "bg-gradient-to-br from-blue-500 to-blue-600"
     },
     {
@@ -148,9 +148,9 @@ Ask me anything about your production data.`,
     },
     {
       icon: <ClipboardList className="w-5 h-5" />,
-      title: "Follow-up Items",
-      subtitle: "Issues requiring action",
-      query: "What issues need follow-up?",
+      title: "Operator Performance",
+      subtitle: "Top performers & hours",
+      query: "Who are the top operators by efficiency and hours worked?",
       color: "bg-gradient-to-br from-orange-500 to-orange-600"
     },
     {
@@ -172,10 +172,10 @@ Ask me anything about your production data.`,
   // Quick questions for first-time users
   const quickQuestions = [
     "What machines are below target?",
-    "Show operator comments from today",
-    "Compare this week to last week",
-    "What's the scrap rate by shift?",
-    "Which machine has the most downtime?"
+    "Show manning coverage by shift",
+    "Who worked the most hours this week?",
+    "What's the attendance rate?",
+    "Which shift needs more operators?"
   ]
 
   return (

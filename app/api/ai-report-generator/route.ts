@@ -62,6 +62,100 @@ export async function POST(request: Request) {
     // Fetch relevant data based on the prompt
     let contextData = ''
     
+    // Check for manning/attendance keywords
+    if (/manning|attendance|operator|employee|staff|coverage|absent|present|overtime/i.test(prompt)) {
+      // Fetch manning data (simulated from production data for now)
+      const { data: productionData } = await supabase
+        .from('production_data')
+        .select(`
+          *,
+          machines!inner(machine_number, machine_name),
+          shifts!inner(shift_name),
+          operators!inner(name)
+        `)
+        .order('date', { ascending: false })
+        .limit(100)
+      
+      if (productionData && productionData.length > 0) {
+        // Calculate manning statistics by shift
+        const manningByShift: any = {}
+        const operatorsByShift: any = {}
+        
+        productionData.forEach((record: any) => {
+          const shift = record.shifts.shift_name
+          const operator = record.operators?.name || 'Unknown'
+          
+          if (!manningByShift[shift]) {
+            manningByShift[shift] = {
+              totalRecords: 0,
+              uniqueOperators: new Set(),
+              machinesActive: new Set(),
+              totalHours: 0,
+              overtimeHours: 0
+            }
+          }
+          
+          manningByShift[shift].totalRecords++
+          manningByShift[shift].uniqueOperators.add(operator)
+          manningByShift[shift].machinesActive.add(record.machines.machine_number)
+          manningByShift[shift].totalHours += record.run_time_hours || 0
+          
+          // Track operators
+          if (!operatorsByShift[shift]) {
+            operatorsByShift[shift] = {}
+          }
+          if (!operatorsByShift[shift][operator]) {
+            operatorsByShift[shift][operator] = {
+              machines: new Set(),
+              totalHours: 0,
+              efficiency: []
+            }
+          }
+          operatorsByShift[shift][operator].machines.add(record.machines.machine_number)
+          operatorsByShift[shift][operator].totalHours += record.run_time_hours || 0
+          if (record.actual_efficiency) {
+            operatorsByShift[shift][operator].efficiency.push(record.actual_efficiency)
+          }
+        })
+        
+        contextData += `\nManning & Attendance Statistics:\n`
+        Object.entries(manningByShift).forEach(([shift, stats]: [string, any]) => {
+          const avgMachinesPerOperator = stats.machinesActive.size / stats.uniqueOperators.size
+          contextData += `\n${shift}:\n`
+          contextData += `- Unique Operators: ${stats.uniqueOperators.size}\n`
+          contextData += `- Active Machines: ${stats.machinesActive.size}\n`
+          contextData += `- Coverage Ratio: ${avgMachinesPerOperator.toFixed(1)} machines/operator\n`
+          contextData += `- Total Production Hours: ${stats.totalHours.toFixed(1)}\n`
+          
+          // List top operators
+          const shiftOperators = operatorsByShift[shift]
+          if (shiftOperators) {
+            const topOperators = Object.entries(shiftOperators)
+              .sort((a: any, b: any) => b[1].totalHours - a[1].totalHours)
+              .slice(0, 3)
+            
+            contextData += `- Top Operators by Hours:\n`
+            topOperators.forEach(([name, data]: [string, any]) => {
+              const avgEff = data.efficiency.length > 0 
+                ? (data.efficiency.reduce((a: number, b: number) => a + b, 0) / data.efficiency.length).toFixed(1)
+                : 'N/A'
+              contextData += `  • ${name}: ${data.totalHours.toFixed(1)} hrs, ${data.machines.size} machines, ${avgEff}% efficiency\n`
+            })
+          }
+        })
+        
+        // Calculate attendance estimates
+        const totalUniqueOperators = new Set()
+        Object.values(manningByShift).forEach((stats: any) => {
+          stats.uniqueOperators.forEach((op: string) => totalUniqueOperators.add(op))
+        })
+        
+        contextData += `\nOverall Manning:\n`
+        contextData += `- Total Unique Operators: ${totalUniqueOperators.size}\n`
+        contextData += `- Average Machines Running: ${Object.values(manningByShift).reduce((sum: number, s: any) => sum + s.machinesActive.size, 0) / Object.keys(manningByShift).length}\n`
+      }
+    }
+    
     // Determine what data to fetch based on keywords in prompt
     if (/machine|efficiency|performance/i.test(prompt)) {
       const { data: machineData } = await supabase

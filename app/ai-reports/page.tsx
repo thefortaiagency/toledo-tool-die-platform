@@ -486,9 +486,9 @@ export default function AIReportGenerator() {
     "Create a comprehensive efficiency analysis for all machines this week",
     "Show me shift performance comparison with quality metrics",
     "Generate a downtime root cause analysis report",
-    "Build a safety incident dashboard for the last 30 days",
-    "Create an operator performance scorecard",
-    "Show production targets vs actuals with trend analysis"
+    "Build a manning and attendance report for all shifts",
+    "Create an operator performance scorecard with hours worked",
+    "Show staffing coverage analysis with overtime trends"
   ]
 
   return (

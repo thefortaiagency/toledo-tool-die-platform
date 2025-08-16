@@ -152,7 +152,9 @@ function parseUserIntent(message: string) {
     targets: /target|goal|meeting|achieve|quota/i.test(message),
     bestShift: /best|top|highest.*shift|shift.*best|which shift/i.test(message),
     improvement: /improve|increase|boost|enhance|better|optimize/i.test(message) && /efficiency|performance|production/i.test(message),
-    causation: /what.*caus|why.*drop|reason.*low|cause.*efficiency/i.test(message)
+    causation: /what.*caus|why.*drop|reason.*low|cause.*efficiency/i.test(message),
+    manning: /manning|attendance|absent|present|coverage|staffing|overtime|hours.*worked/i.test(message),
+    operatorPerformance: /operator.*performance|employee.*efficiency|who.*best.*operator/i.test(message)
   }
   
   return intents
@@ -372,6 +374,96 @@ export async function POST(request: Request) {
     let dataContext = ""
     let relevantLinks: string[] = []
     
+    // Fetch manning/attendance data if needed
+    if (intent.manning || intent.operatorPerformance || intent.operators) {
+      const { data: productionData } = await supabase
+        .from('production_data')
+        .select(`
+          *,
+          machines!inner(machine_number, machine_name),
+          shifts!inner(shift_name),
+          operators!inner(name, employee_id)
+        `)
+        .order('date', { ascending: false })
+        .limit(100)
+      
+      if (productionData && productionData.length > 0) {
+        const operatorStats: any = {}
+        const shiftCoverage: any = {}
+        
+        productionData.forEach((record: any) => {
+          const operator = record.operators?.name || 'Unknown'
+          const shift = record.shifts.shift_name
+          const date = record.date
+          
+          // Track operator statistics
+          if (!operatorStats[operator]) {
+            operatorStats[operator] = {
+              totalHours: 0,
+              machinesOperated: new Set(),
+              shifts: new Set(),
+              efficiency: [],
+              goodParts: 0,
+              scrapParts: 0,
+              daysWorked: new Set()
+            }
+          }
+          
+          operatorStats[operator].totalHours += record.run_time_hours || 0
+          operatorStats[operator].machinesOperated.add(record.machines.machine_number)
+          operatorStats[operator].shifts.add(shift)
+          operatorStats[operator].daysWorked.add(date)
+          operatorStats[operator].goodParts += record.good_parts || 0
+          operatorStats[operator].scrapParts += record.scrap_parts || 0
+          if (record.actual_efficiency) {
+            operatorStats[operator].efficiency.push(record.actual_efficiency)
+          }
+          
+          // Track shift coverage
+          const shiftDate = `${shift}-${date}`
+          if (!shiftCoverage[shiftDate]) {
+            shiftCoverage[shiftDate] = {
+              operators: new Set(),
+              machinesActive: new Set(),
+              totalHours: 0
+            }
+          }
+          shiftCoverage[shiftDate].operators.add(operator)
+          shiftCoverage[shiftDate].machinesActive.add(record.machines.machine_number)
+          shiftCoverage[shiftDate].totalHours += record.run_time_hours || 0
+        })
+        
+        // Calculate attendance metrics
+        const uniqueDates = new Set(productionData.map((r: any) => r.date))
+        const avgOperatorsPerDay = Object.values(shiftCoverage).reduce((sum: number, s: any) => sum + s.operators.size, 0) / Object.keys(shiftCoverage).length
+        
+        contextData.manningStats = {
+          totalOperators: Object.keys(operatorStats).length,
+          avgOperatorsPerShift: avgOperatorsPerDay.toFixed(1),
+          topOperators: Object.entries(operatorStats)
+            .sort((a: any, b: any) => b[1].totalHours - a[1].totalHours)
+            .slice(0, 5)
+            .map(([name, stats]: [string, any]) => ({
+              name,
+              hours: stats.totalHours.toFixed(1),
+              efficiency: stats.efficiency.length > 0 
+                ? (stats.efficiency.reduce((a: number, b: number) => a + b, 0) / stats.efficiency.length).toFixed(1)
+                : 'N/A',
+              machinesOperated: stats.machinesOperated.size,
+              daysWorked: stats.daysWorked.size
+            })),
+          shiftCoverage: Object.entries(shiftCoverage)
+            .slice(0, 10)
+            .map(([key, data]: [string, any]) => ({
+              shiftDate: key,
+              operators: data.operators.size,
+              machines: data.machinesActive.size,
+              totalHours: data.totalHours.toFixed(1)
+            }))
+        }
+      }
+    }
+    
     // Fetch production data if needed (expanded to include improvement/causation queries)
     if (intent.currentEfficiency || intent.machineStatus || intent.targets || intent.improvement || intent.causation) {
       const { data: productionData } = await supabase
@@ -581,6 +673,26 @@ export async function POST(request: Request) {
             dataContext += `  Recommendation: ${insight.recommendation}\n`
           }
         })
+      }
+      
+      if (contextData.manningStats) {
+        dataContext += "\n### Manning & Attendance Data:\n"
+        dataContext += `- Total Operators: ${contextData.manningStats.totalOperators}\n`
+        dataContext += `- Average Operators per Shift: ${contextData.manningStats.avgOperatorsPerShift}\n`
+        
+        if (contextData.manningStats.topOperators.length > 0) {
+          dataContext += "\nTop Operators by Hours Worked:\n"
+          contextData.manningStats.topOperators.forEach((op: any) => {
+            dataContext += `- ${op.name}: ${op.hours} hrs, ${op.efficiency}% avg efficiency, ${op.machinesOperated} machines, ${op.daysWorked} days\n`
+          })
+        }
+        
+        if (contextData.manningStats.shiftCoverage.length > 0) {
+          dataContext += "\nRecent Shift Coverage:\n"
+          contextData.manningStats.shiftCoverage.slice(0, 5).forEach((shift: any) => {
+            dataContext += `- ${shift.shiftDate}: ${shift.operators} operators, ${shift.machines} machines, ${shift.totalHours} total hours\n`
+          })
+        }
       }
     }
     
