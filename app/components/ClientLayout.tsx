@@ -113,36 +113,40 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
         <main 
           className="flex-1 transition-all duration-300"
           style={{ 
-            marginRight: isChatCollapsed ? 0 : chatWidth,
+            marginRight: (user && !isChatCollapsed) ? chatWidth : 0,
           }}
         >
           {children}
         </main>
         
-        {/* Chat Sidebar */}
-        <div 
-          className="fixed right-0 top-16 bottom-0 transition-all duration-300"
-          style={{ 
-            width: isChatCollapsed ? 0 : chatWidth,
-          }}
-        >
-          <ResizableChatSidebar 
-            isCollapsed={isChatCollapsed}
-            onCollapsedChange={setIsChatCollapsed}
-            width={chatWidth}
-            onWidthChange={setChatWidth}
-          />
-        </div>
-        
-        {/* Floating toggle button when collapsed */}
-        {isChatCollapsed && (
-          <button
-            onClick={() => setIsChatCollapsed(false)}
-            className="fixed right-0 top-1/2 -translate-y-1/2 bg-orange-600 text-white p-2 rounded-l-lg shadow-lg hover:bg-orange-700 transition-all z-40"
-            title="Open AI Assistant (⌘/)"
-          >
-            <ChevronLeft className="w-5 h-5" />
-          </button>
+        {/* Chat Sidebar - Only show if user is authenticated */}
+        {user && (
+          <>
+            <div 
+              className="fixed right-0 top-16 bottom-0 transition-all duration-300"
+              style={{ 
+                width: isChatCollapsed ? 0 : chatWidth,
+              }}
+            >
+              <ResizableChatSidebar 
+                isCollapsed={isChatCollapsed}
+                onCollapsedChange={setIsChatCollapsed}
+                width={chatWidth}
+                onWidthChange={setChatWidth}
+              />
+            </div>
+            
+            {/* Floating toggle button when collapsed */}
+            {isChatCollapsed && (
+              <button
+                onClick={() => setIsChatCollapsed(false)}
+                className="fixed right-0 top-1/2 -translate-y-1/2 bg-orange-600 text-white p-2 rounded-l-lg shadow-lg hover:bg-orange-700 transition-all z-40"
+                title="Open AI Assistant (⌘/)"
+              >
+                <ChevronLeft className="w-5 h-5" />
+              </button>
+            )}
+          </>
         )}
       </div>
       
