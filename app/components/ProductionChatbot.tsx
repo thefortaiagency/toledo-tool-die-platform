@@ -145,11 +145,6 @@ export default function ProductionChatbot() {
                     </div>
                   )}
                   <div className="whitespace-pre-wrap">{msg.content}</div>
-                  {msg.data && (
-                    <div className="mt-2 p-2 bg-white/10 rounded text-xs">
-                      <pre>{JSON.stringify(msg.data, null, 2)}</pre>
-                    </div>
-                  )}
                   <div className={`text-xs mt-1 ${msg.role === 'user' ? 'text-orange-100' : 'text-gray-500'}`}>
                     {msg.timestamp.toLocaleTimeString()}
                   </div>

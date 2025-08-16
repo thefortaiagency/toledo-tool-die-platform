@@ -63,8 +63,7 @@ export async function POST(request: Request) {
     if (!openai) {
       // Fallback response without OpenAI
       return NextResponse.json({
-        message: "I'm currently running in offline mode. Here's what I can tell you:\n\n• 600 Ton machine typically runs at 92% efficiency\n• Shift 2 is performing best this week at 93% average\n• Recent die issues on 1500-1 need attention\n• Check maintenance schedule for 1400 machine\n\nFor real-time analysis, please ensure OpenAI is configured.",
-        data: null
+        message: "I'm currently running in offline mode. Here's what I can tell you:\n\n• 600 Ton machine typically runs at 92% efficiency\n• Shift 2 is performing best this week at 93% average\n• Recent die issues on 1500-1 need attention\n• Check maintenance schedule for 1400 machine\n\nFor real-time analysis, please ensure OpenAI is configured."
       })
     }
 
@@ -223,8 +222,7 @@ ${comments?.map((c: any) => `- ${machineMap[c.machine_id] || c.machine_id} (${c.
     }
 
     return NextResponse.json({
-      message: enhancedResponse || "I'm analyzing the production data. Please be more specific about what you'd like to know.",
-      data: contextData
+      message: enhancedResponse || "I'm analyzing the production data. Please be more specific about what you'd like to know."
     })
 
   } catch (error) {
@@ -240,8 +238,7 @@ ${comments?.map((c: any) => `- ${machineMap[c.machine_id] || c.machine_id} (${c.
 • "What machines are below target?"
 • "Compare this week to last week"
 
-Please make sure all systems are configured properly for real-time data access.`,
-      data: null
+Please make sure all systems are configured properly for real-time data access.`
     })
   }
 }
