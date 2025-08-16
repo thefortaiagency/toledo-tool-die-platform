@@ -49,30 +49,30 @@ export default async function Home() {
         </div>
         
         {/* Content */}
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-32">
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24 md:py-32">
           <div className="text-center">
-            <img src="/toledo-logo.png" alt="Toledo Tool & Die" className="h-20 mx-auto mb-8" />
-            <h1 className="text-6xl font-bold mb-4 text-white drop-shadow-2xl">
+            <img src="/toledo-logo.png" alt="Toledo Tool & Die" className="h-12 sm:h-16 md:h-20 mx-auto mb-4 sm:mb-6 md:mb-8" />
+            <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-2 sm:mb-3 md:mb-4 text-white drop-shadow-2xl">
               Toledo Tool & Die
             </h1>
-            <p className="text-2xl mb-8 text-orange-100 font-light">Production Metrics Platform</p>
+            <p className="text-lg sm:text-xl md:text-2xl mb-4 sm:mb-6 md:mb-8 text-orange-100 font-light">Production Metrics Platform</p>
             <div className="max-w-3xl mx-auto">
-              <p className="text-lg text-gray-300 mb-8">
+              <p className="text-sm sm:text-base md:text-lg text-gray-300 mb-4 sm:mb-6 md:mb-8 px-4">
                 Advanced manufacturing intelligence system for real-time production tracking, 
                 efficiency analysis, and AI-powered insights
               </p>
-              <div className="flex justify-center space-x-8 text-orange-200">
+              <div className="flex flex-wrap justify-center gap-4 sm:gap-6 md:gap-8 text-orange-200">
                 <div className="text-center">
-                  <div className="text-3xl font-bold">{stats.productionRecords.toLocaleString()}+</div>
-                  <div className="text-sm">Production Records</div>
+                  <div className="text-xl sm:text-2xl md:text-3xl font-bold">{stats.productionRecords.toLocaleString()}+</div>
+                  <div className="text-xs sm:text-sm">Production Records</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold">24/7</div>
-                  <div className="text-sm">Real-Time Tracking</div>
+                  <div className="text-xl sm:text-2xl md:text-3xl font-bold">24/7</div>
+                  <div className="text-xs sm:text-sm">Real-Time Tracking</div>
                 </div>
                 <div className="text-center">
-                  <div className="text-3xl font-bold">{stats.machines}</div>
-                  <div className="text-sm">Production Lines</div>
+                  <div className="text-xl sm:text-2xl md:text-3xl font-bold">{stats.machines}</div>
+                  <div className="text-xs sm:text-sm">Production Lines</div>
                 </div>
               </div>
             </div>
@@ -88,56 +88,56 @@ export default async function Home() {
       </div>
 
       {/* Quick Actions */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <h2 className="text-2xl font-bold text-gray-900 mb-8">Quick Actions</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6 md:mb-8">Quick Actions</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
           <Link href="/dashboard" className="block">
-            <div className="h-full bg-white/95 backdrop-blur-sm p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200/50">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">Dashboard</h3>
-                <LayoutDashboard className="h-6 w-6 text-orange-600" />
+            <div className="h-full bg-white/95 backdrop-blur-sm p-6 sm:p-8 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200/50">
+              <div className="flex items-center justify-between mb-3 sm:mb-4">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900">Dashboard</h3>
+                <LayoutDashboard className="h-5 sm:h-6 w-5 sm:w-6 text-orange-600" />
               </div>
-              <p className="text-gray-600">View real-time production metrics and efficiency reports</p>
+              <p className="text-sm sm:text-base text-gray-600">View real-time production metrics and efficiency reports</p>
             </div>
           </Link>
           
           <Link href="/entry" className="block">
-            <div className="h-full bg-white/95 backdrop-blur-sm p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200/50">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">Data Entry</h3>
-                <FileText className="h-6 w-6 text-green-600" />
+            <div className="h-full bg-white/95 backdrop-blur-sm p-6 sm:p-8 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200/50">
+              <div className="flex items-center justify-between mb-3 sm:mb-4">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900">Data Entry</h3>
+                <FileText className="h-5 sm:h-6 w-5 sm:w-6 text-green-600" />
               </div>
-              <p className="text-gray-600">Submit shift reports and production data</p>
+              <p className="text-sm sm:text-base text-gray-600">Submit shift reports and production data</p>
             </div>
           </Link>
           
           <Link href="/reports" className="block">
-            <div className="h-full bg-white/95 backdrop-blur-sm p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200/50">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">Reports</h3>
-                <BarChart3 className="h-6 w-6 text-purple-600" />
+            <div className="h-full bg-white/95 backdrop-blur-sm p-6 sm:p-8 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200/50">
+              <div className="flex items-center justify-between mb-3 sm:mb-4">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900">Reports</h3>
+                <BarChart3 className="h-5 sm:h-6 w-5 sm:w-6 text-purple-600" />
               </div>
-              <p className="text-gray-600">Generate and export detailed production reports</p>
+              <p className="text-sm sm:text-base text-gray-600">Generate and export detailed production reports</p>
             </div>
           </Link>
 
           <Link href="/settings" className="block">
-            <div className="h-full bg-white/95 backdrop-blur-sm p-8 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200/50">
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-semibold text-gray-900">Import Data</h3>
-                <Package className="h-6 w-6 text-slate-600" />
+            <div className="h-full bg-white/95 backdrop-blur-sm p-6 sm:p-8 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200/50">
+              <div className="flex items-center justify-between mb-3 sm:mb-4">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900">Import Data</h3>
+                <Package className="h-5 sm:h-6 w-5 sm:w-6 text-slate-600" />
               </div>
-              <p className="text-gray-600">Import Excel files and manage system settings</p>
+              <p className="text-sm sm:text-base text-gray-600">Import Excel files and manage system settings</p>
             </div>
           </Link>
         </div>
       </div>
 
       {/* Key Features */}
-      <div className="bg-gradient-to-br from-gray-50/50 via-gray-100/50 to-gray-50/50 backdrop-blur-sm py-16">
+      <div className="bg-gradient-to-br from-gray-50/50 via-gray-100/50 to-gray-50/50 backdrop-blur-sm py-12 sm:py-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-8">Platform Features</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6 md:mb-8">Platform Features</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             <div className="bg-white/95 backdrop-blur-sm p-6 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200/50">
               <Activity className="h-10 w-10 text-orange-600 mb-4" />
               <h3 className="text-lg font-semibold mb-2 text-gray-900 dark:text-white">Real-Time Monitoring</h3>
@@ -178,24 +178,24 @@ export default async function Home() {
       </div>
 
       {/* Stats Section */}
-      <div className="py-12">
+      <div className="py-8 sm:py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 text-center">
             <div>
-              <div className="text-3xl font-bold text-gray-900">6</div>
-              <div className="text-gray-600">Production Lines</div>
+              <div className="text-2xl sm:text-3xl font-bold text-gray-900">6</div>
+              <div className="text-sm sm:text-base text-gray-600">Production Lines</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-gray-900">3</div>
-              <div className="text-gray-600">Shifts Daily</div>
+              <div className="text-2xl sm:text-3xl font-bold text-gray-900">3</div>
+              <div className="text-sm sm:text-base text-gray-600">Shifts Daily</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-gray-900">100+</div>
-              <div className="text-gray-600">Parts Tracked</div>
+              <div className="text-2xl sm:text-3xl font-bold text-gray-900">100+</div>
+              <div className="text-sm sm:text-base text-gray-600">Parts Tracked</div>
             </div>
             <div>
-              <div className="text-3xl font-bold text-gray-900">24/7</div>
-              <div className="text-gray-600">Real-Time Data</div>
+              <div className="text-2xl sm:text-3xl font-bold text-gray-900">24/7</div>
+              <div className="text-sm sm:text-base text-gray-600">Real-Time Data</div>
             </div>
           </div>
         </div>

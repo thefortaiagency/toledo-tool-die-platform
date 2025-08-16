@@ -29,13 +29,15 @@ interface ResizableChatSidebarProps {
   onCollapsedChange: (collapsed: boolean) => void
   width: number
   onWidthChange: (width: number) => void
+  isMobile?: boolean
 }
 
 export default function ResizableChatSidebar({ 
   isCollapsed,
   onCollapsedChange,
   width,
-  onWidthChange
+  onWidthChange,
+  isMobile = false
 }: ResizableChatSidebarProps) {
   const [messages, setMessages] = useState<Message[]>(() => {
     // Load messages from localStorage
@@ -280,16 +282,18 @@ export default function ResizableChatSidebar({
       className="h-full bg-white flex flex-col relative border-l border-gray-200"
       style={{ width: `${width}px`, flexShrink: 0 }}
     >
-      {/* Resize Handle */}
-      <div
-        ref={resizeRef}
-        onMouseDown={handleMouseDown}
-        className="absolute left-0 top-0 bottom-0 w-1 hover:w-2 bg-transparent hover:bg-orange-500/50 cursor-col-resize transition-all z-10 flex items-center justify-center"
-      >
-        <div className="w-4 h-8 rounded bg-gray-400/50 opacity-0 hover:opacity-100 flex items-center justify-center">
-          <GripVertical className="h-4 w-4 text-gray-600" />
+      {/* Resize Handle - Hide on mobile */}
+      {!isMobile && (
+        <div
+          ref={resizeRef}
+          onMouseDown={handleMouseDown}
+          className="absolute left-0 top-0 bottom-0 w-1 hover:w-2 bg-transparent hover:bg-orange-500/50 cursor-col-resize transition-all z-10 flex items-center justify-center"
+        >
+          <div className="w-4 h-8 rounded bg-gray-400/50 opacity-0 hover:opacity-100 flex items-center justify-center">
+            <GripVertical className="h-4 w-4 text-gray-600" />
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Header */}
       <div className="bg-gradient-to-r from-orange-600 to-orange-700 text-white p-4 flex items-center justify-between">

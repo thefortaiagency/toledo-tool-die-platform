@@ -59,37 +59,37 @@ export default function Login() {
       <div className="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
       
       {/* Content container with higher z-index */}
-      <div className="relative z-10">
-        <Card className="w-full max-w-md backdrop-blur-md bg-white/95">
-        <CardHeader className="text-center">
-          <div className="bg-slate-800 p-4 rounded-lg mx-auto mb-4 inline-block">
+      <div className="relative z-10 w-full max-w-2xl mx-auto px-4">
+        <Card className="w-full backdrop-blur-md bg-white/95 shadow-2xl">
+        <CardHeader className="text-center py-6 sm:py-8">
+          <div className="bg-slate-800 p-4 sm:p-6 rounded-lg mx-auto mb-4 sm:mb-6 inline-block">
             <img 
               src="/toledo-logo.png" 
               alt="Toledo Tool & Die" 
-              className="h-16 w-auto"
+              className="h-16 sm:h-20 md:h-24 w-auto"
             />
           </div>
-          <CardTitle className="text-2xl font-bold text-black">Production Platform Login</CardTitle>
+          <CardTitle className="text-2xl sm:text-3xl md:text-4xl font-bold text-black">Production Platform Login</CardTitle>
         </CardHeader>
-        <CardContent>
-          <form onSubmit={handleLogin} className="space-y-4">
+        <CardContent className="px-4 sm:px-6 md:px-8 py-4 sm:py-6">
+          <form onSubmit={handleLogin} className="space-y-4 sm:space-y-6">
             {error && (
-              <div className="p-3 bg-red-50 border border-red-200 rounded-lg flex items-center text-red-800 text-sm">
+              <div className="p-2 sm:p-3 bg-red-50 border border-red-200 rounded-lg flex items-center text-red-800 text-xs sm:text-sm">
                 <AlertCircle className="h-4 w-4 mr-2 flex-shrink-0" />
                 {error}
               </div>
             )}
             
             <div>
-              <label className="block text-sm font-medium mb-2">
-                <Mail className="inline h-4 w-4 mr-1" />
+              <label className="block text-sm sm:text-base font-medium mb-2 sm:mb-3">
+                <Mail className="inline h-4 sm:h-5 w-4 sm:w-5 mr-1 sm:mr-2" />
                 Email Address
               </label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 text-base sm:text-lg border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                 placeholder="your.email@company.com"
                 required
                 autoComplete="email"
@@ -97,15 +97,15 @@ export default function Login() {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">
-                <Lock className="inline h-4 w-4 mr-1" />
+              <label className="block text-sm sm:text-base font-medium mb-2 sm:mb-3">
+                <Lock className="inline h-4 sm:h-5 w-4 sm:w-5 mr-1 sm:mr-2" />
                 Password
               </label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                className="w-full px-3 sm:px-4 py-2 sm:py-3 text-base sm:text-lg border rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent"
                 placeholder="Enter your password"
                 required
                 autoComplete="current-password"
@@ -115,23 +115,23 @@ export default function Login() {
             <Button
               type="submit"
               disabled={loading}
-              className="w-full bg-orange-600 hover:bg-orange-700"
+              className="w-full bg-orange-600 hover:bg-orange-700 py-3 sm:py-4 md:py-6 text-base sm:text-lg"
             >
               {loading ? (
                 <>
-                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  <Loader2 className="h-4 sm:h-5 w-4 sm:w-5 mr-2 animate-spin" />
                   Signing in...
                 </>
               ) : (
                 <>
-                  <Lock className="h-4 w-4 mr-2" />
+                  <Lock className="h-4 sm:h-5 w-4 sm:w-5 mr-2" />
                   Sign In
                 </>
               )}
             </Button>
           </form>
 
-          <div className="mt-6 text-center text-sm text-gray-600">
+          <div className="mt-6 sm:mt-8 text-center text-sm sm:text-base text-gray-600">
             <p>Authorized personnel only</p>
             <p className="mt-2">Contact IT support for access issues</p>
           </div>
