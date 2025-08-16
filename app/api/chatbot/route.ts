@@ -325,14 +325,10 @@ async function generateFallbackResponse(message: string, intent: any) {
     console.error('Error querying database:', error)
   }
   
-  // If no specific response was generated, provide general guidance
+  // If no specific response was generated, return empty to trigger GPT-4
   if (!response) {
-    response = "I can help you analyze production data. Here's what I can do:\n\n"
-    response += "• Check if you're meeting production targets\n"
-    response += "• Compare shift performance\n"
-    response += "• Review safety concerns and issues\n"
-    response += "• Analyze machine efficiency\n"
-    response += "• Track downtime and quality metrics\n"
+    // Don't provide demo/instant responses - let GPT-4 handle it
+    return { response: "", links: relevantLinks }
   }
   
   // Always add relevant links
@@ -363,13 +359,11 @@ export async function POST(request: Request) {
     // Parse user intent
     const intent = parseUserIntent(message)
     
-    // If no OpenAI, use intelligent fallback
+    // If no OpenAI, return error instead of demo data
     if (!openai) {
-      const { response: fallbackResponse, links } = await generateFallbackResponse(message, intent)
-      
       return NextResponse.json({
-        message: fallbackResponse,
-        links
+        message: 'AI service is not configured. Please contact support.',
+        error: true
       })
     }
     
@@ -672,36 +666,16 @@ export async function POST(request: Request) {
       links: relevantLinks
     })
     
-  } catch (error) {
+  } catch (error: any) {
     console.error('Chatbot error:', error)
+    console.error('Error details:', error.message, error.status)
     
+    // Return actual error message, not demo responses
     return NextResponse.json({
-      message: `I can help you with production questions. Try asking:
+      message: `I'm having trouble connecting to the AI service right now. Please try again in a moment. 
       
-• "Are we meeting production targets?"
-• "Which shift is performing best?"
-• "Show me recent safety concerns"
-• "What issues need follow-up?"
-• "Analyze die tooling problems"
-• "Compare this week's performance to last week"
-• "What machines are below target?"
-• "Show operator comments from today"
-
-You can also visit these reports directly:
-• [Daily Report](/reports/daily)
-• [Weekly Report](/reports/weekly)
-• [Machine Performance](/reports/machine-performance)
-• [Shift Analysis](/reports/shift-analysis)
-• [Comments & Issues](/reports/comments)
-• [AI Insights](/reports/insights)`,
-      links: [
-        generateReportLink('daily'),
-        generateReportLink('weekly'),
-        generateReportLink('machine'),
-        generateReportLink('shift'),
-        generateReportLink('comments'),
-        generateReportLink('insights')
-      ]
+Error: ${error.message || 'Connection issue'}`,
+      error: true
     })
   }
 }

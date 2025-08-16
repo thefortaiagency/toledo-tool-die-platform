@@ -49,16 +49,9 @@ export default function ProductionChatbot({ isNavbar = false }: ProductionChatbo
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: `👋 Hi! I'm your Toledo Tool & Die production assistant with enhanced capabilities!
+      content: `👋 Hi! I'm your Toledo Tool & Die AI assistant powered by GPT-4.
 
-I can help you with:
-• **Real-time Production Data** - Machine efficiency, shift performance, operator metrics
-• **Issue Tracking** - Die problems, safety concerns, maintenance needs
-• **Comments Analysis** - AI-categorized operator and supervisor comments
-• **Predictive Insights** - Maintenance predictions and anomaly detection
-• **Quality Metrics** - Scrap rates, defect tracking, quality trends
-
-What would you like to know about your production floor?`,
+Ask me anything about your production data.`,
       timestamp: new Date()
     }
   ])
@@ -115,7 +108,7 @@ What would you like to know about your production floor?`,
       console.error('Chat error:', error)
       setMessages(prev => [...prev, {
         role: 'assistant',
-        content: 'Sorry, I encountered an error. Please try again.',
+        content: 'Connection error. Please check if the service is configured correctly.',
         timestamp: new Date()
       }])
     } finally {
