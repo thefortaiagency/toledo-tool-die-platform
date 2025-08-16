@@ -1,0 +1,61 @@
+{
+  "monthly": {
+    "January": {
+      "totalCost": 72378.62516999998,
+      "topParts": [],
+      "totalParts": 0
+    },
+    "February": {
+      "totalCost": 0,
+      "topParts": [],
+      "totalParts": 0
+    },
+    "March": {
+      "totalCost": 0,
+      "topParts": [],
+      "totalParts": 0
+    },
+    "April": {
+      "totalCost": 0,
+      "topParts": [],
+      "totalParts": 0
+    },
+    "May": {
+      "totalCost": 55032.56985999999,
+      "topParts": [],
+      "totalParts": 0
+    },
+    "June": {
+      "totalCost": 0,
+      "topParts": [],
+      "totalParts": 0
+    }
+  },
+  "quarterly": {
+    "Q1": {
+      "total": 72378.62516999998,
+      "months": [
+        "January",
+        "February",
+        "March"
+      ]
+    },
+    "Q2": {
+      "total": 55032.56985999999,
+      "months": [
+        "April",
+        "May",
+        "June"
+      ]
+    }
+  },
+  "ytd": {
+    "total": 127411.19502999997,
+    "averageMonthly": 21235.199171666663
+  },
+  "comparison": {
+    "pioneerYTD": 164016,
+    "scrapInfoYTD": 127411.19502999997,
+    "difference": -36604.80497000003
+  }
+}

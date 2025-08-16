@@ -1,0 +1,191 @@
+{
+  "monthly": {
+    "January": {
+      "total": 72378.62516999998,
+      "machines": {
+        "WC-P1000": 15147.676579999992,
+        "WC-P1400": 8436.826510000003,
+        "WC-P1500-1": 4648.507210000002,
+        "WC-P1500-2": 17683.543480000008,
+        "WC-P3000": 6358.460939999994,
+        "WC-P600": 7259.062289999999,
+        "WC-P-Sort": 12844.548159999998
+      }
+    },
+    "April": {
+      "total": 0,
+      "machines": {}
+    },
+    "May": {
+      "total": 55032.56985999999,
+      "machines": {
+        "WC-P1000": 9845.523709999998,
+        "WC-P1400": 9895.668009999994,
+        "WC-P1500-1": 8690.517629999998,
+        "WC-P1500-2": 9725.11141,
+        "WC-P3000": 3268.755710000001,
+        "WC-P600": 10020.769040000001,
+        "WC-P-Sort": 3586.2243500000004
+      }
+    }
+  },
+  "quarterly": {
+    "Q1": {
+      "total": 72378.62516999998,
+      "months": [
+        "January",
+        "February",
+        "March"
+      ],
+      "pioneerTotal": 80829,
+      "difference": -8450.374830000015
+    },
+    "Q2": {
+      "total": 55032.56985999999,
+      "months": [
+        "April",
+        "May",
+        "June"
+      ],
+      "pioneerTotal": 83187,
+      "difference": -28154.43014000001
+    }
+  },
+  "ytd": {
+    "total": 127411.19502999997,
+    "pioneerTotal": 164016,
+    "difference": -36604.80497000003
+  },
+  "machineBreakdown": {
+    "WC-P1000": 24993.20028999999,
+    "WC-P1400": 18332.494519999997,
+    "WC-P1500-1": 13339.02484,
+    "WC-P1500-2": 27408.654890000005,
+    "WC-P3000": 9627.216649999995,
+    "WC-P600": 17279.83133,
+    "WC-P-Sort": 16430.77251
+  },
+  "topParts": [
+    {
+      "part": "1073874-00-G@G",
+      "qty": 631,
+      "cost": 6502.521849999999,
+      "reasons": [
+        "13- Fracture (trim Edge)",
+        "25 - Bent or Damaged Parts",
+        "Hourly Part Check",
+        "23 - Slug or Scrap Mark",
+        "10 - Trial Material",
+        "15- Fracture (hole / slot)"
+      ],
+      "month": "January"
+    },
+    {
+      "part": "060944@E10",
+      "qty": 9242,
+      "cost": 5256.8811000000005,
+      "reasons": [
+        "93-Obsolete"
+      ],
+      "month": "January"
+    },
+    {
+      "part": "060904@E09",
+      "qty": 8349,
+      "cost": 4754.3121200000005,
+      "reasons": [
+        "93-Obsolete"
+      ],
+      "month": "January"
+    },
+    {
+      "part": "1073874-00-G@G",
+      "qty": 462,
+      "cost": 4760.481800000001,
+      "reasons": [
+        "12- Fracture (flange / radius)",
+        "13- Fracture (trim Edge)",
+        "10 - Trial Material",
+        "51 - Set Up Parts"
+      ],
+      "month": "February"
+    },
+    {
+      "part": "60125-7BA0A@Y5R229",
+      "qty": 2825,
+      "cost": 3916.0859899999996,
+      "reasons": [
+        "20 - Off Location Weld",
+        "50 - Destruct Part",
+        "53 - Burn Hole",
+        "51 - Set Up Parts",
+        "28 - Dimensionally out of Tolerance",
+        "22 -  Mis-hit or Mis-formed"
+      ],
+      "month": "February"
+    },
+    {
+      "part": "1973139-00-F@F",
+      "qty": 564,
+      "cost": 3755.43348,
+      "reasons": [
+        "13- Fracture (trim Edge)",
+        "21 - Start or End of Coil",
+        "25 - Bent or Damaged Parts",
+        "12- Fracture (flange / radius)",
+        "23 - Slug or Scrap Mark",
+        "31 - Fractures / Crack",
+        "37 - Deep Scratches"
+      ],
+      "month": "February"
+    },
+    {
+      "part": "P21-B35110-06@6",
+      "qty": 235,
+      "cost": 6551.4992,
+      "reasons": [
+        "50 - Destruct Part",
+        "51 - Set Up Parts"
+      ],
+      "month": "March"
+    },
+    {
+      "part": "21743763/764 Blank@M00",
+      "qty": 1044,
+      "cost": 3945.9337199999986,
+      "reasons": [
+        "51 - Set Up Parts",
+        "28 - Dimensionally out of Tolerance",
+        "56 - Stamping Defect",
+        "15- Fracture (hole / slot)",
+        "25 - Bent or Damaged Parts",
+        "22 -  Mis-hit or Mis-formed"
+      ],
+      "month": "March"
+    },
+    {
+      "part": "060923/24 BLANK@D04",
+      "qty": 541,
+      "cost": 3658.052650000001,
+      "reasons": [
+        "51 - Set Up Parts",
+        "25 - Bent or Damaged Parts",
+        "13- Fracture (trim Edge)",
+        "15- Fracture (hole / slot)",
+        "23 - Slug or Scrap Mark",
+        "28 - Dimensionally out of Tolerance",
+        "56 - Stamping Defect"
+      ],
+      "month": "March"
+    },
+    {
+      "part": "P21-B15230-09@09",
+      "qty": 439,
+      "cost": 10776.637850000003,
+      "reasons": [
+        "10 - Trial Material"
+      ],
+      "month": "April"
+    }
+  ]
+}
