@@ -42,11 +42,13 @@ export default function Login() {
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <img 
-            src="/toledo-logo.png" 
-            alt="Toledo Tool & Die" 
-            className="h-16 mx-auto mb-4"
-          />
+          <div className="bg-slate-800 p-4 rounded-lg mx-auto mb-4 inline-block">
+            <img 
+              src="/toledo-logo.png" 
+              alt="Toledo Tool & Die" 
+              className="h-16 w-auto"
+            />
+          </div>
           <CardTitle className="text-3xl font-bold text-black">Toledo Tool & Die</CardTitle>
           <CardDescription className="text-base mt-2 font-medium text-gray-700">Production Platform Login</CardDescription>
         </CardHeader>
