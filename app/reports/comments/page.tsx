@@ -155,7 +155,7 @@ export default function CommentsPage() {
     switch (priority) {
       case 'high': return 'bg-red-600 text-white border-red-700 font-semibold'
       case 'medium': return 'bg-yellow-500 text-white border-yellow-600'
-      case 'low': return 'bg-green-100 text-green-800 border-green-200'
+      case 'low': return 'bg-green-600 text-white border-green-700'
       default: return 'bg-gray-100 text-gray-800 border-gray-200'
     }
   }
