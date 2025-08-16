@@ -101,11 +101,11 @@ export async function GET(request: Request) {
     const dateFrom = searchParams.get('from')
     const dateTo = searchParams.get('to')
     
-    // Build query
+    // Build query for production_data table which has operator_comments
     let query = supabase
-      .from('hits_tracking')
+      .from('production_data')
       .select('*')
-      .not('comments', 'is', null)
+      .or('operator_comments.not.is.null,supervisor_comments.not.is.null')
       .order('date', { ascending: false })
     
     // Apply filters
@@ -125,36 +125,57 @@ export async function GET(request: Request) {
     
     if (error) throw error
     
-    // Process and categorize comments
-    const processedComments = records?.map(record => {
+    // Process and categorize comments from production_data
+    const processedComments: any[] = []
+    
+    records?.forEach(record => {
       const machineName = MACHINE_NAMES[record.machine_id] || 'Unknown'
+      const efficiency = record.actual_efficiency || 0
       
-      // Calculate efficiency from the data
-      const target = record.machine_id === 'b8e48ae1-513f-4211-aa15-a421150c15a4' ? 950 : 600
-      const dailyAvg = (record.weekly_total || 0) / 7
-      const hourlyRate = dailyAvg / 24
-      const efficiency = Math.round((hourlyRate / target) * 100)
-      
-      // Categorize the comment
-      const categories = categorizeComment(record.comments, efficiency, record.downtime_minutes)
-      const priorityLevel = calculatePriority(categories, efficiency, record.downtime_minutes)
-      
-      return {
-        id: record.id,
-        date: record.date,
-        machine: machineName,
-        machine_id: record.machine_id,
-        shift: record.shift,
-        operator: record.operator || 'Not specified',
-        comment: record.comments,
-        categories: categories,
-        priority: priorityLevel,
-        efficiency: efficiency,
-        downtime: record.downtime_minutes || 0,
-        hits: record.weekly_total || 0,
-        part_number: record.part_number || 'N/A'
+      // Process operator comments
+      if (record.operator_comments && record.operator_comments.trim() !== '') {
+        const categories = categorizeComment(record.operator_comments, efficiency, record.downtime_minutes)
+        const priorityLevel = calculatePriority(categories, efficiency, record.downtime_minutes)
+        
+        processedComments.push({
+          id: record.id + '_op',
+          date: record.date,
+          machine: machineName,
+          machine_id: record.machine_id,
+          shift: record.shift_id || 1,
+          operator: 'Operator',
+          comment: record.operator_comments,
+          categories: categories,
+          priority: priorityLevel,
+          efficiency: Math.round(efficiency),
+          downtime: record.downtime_minutes || 0,
+          hits: record.total_cycles || 0,
+          part_number: record.part_id || 'N/A'
+        })
       }
-    }).filter(comment => comment.comment && comment.comment.trim() !== '') || []
+      
+      // Process supervisor comments
+      if (record.supervisor_comments && record.supervisor_comments.trim() !== '') {
+        const categories = categorizeComment(record.supervisor_comments, efficiency, record.downtime_minutes)
+        const priorityLevel = calculatePriority(categories, efficiency, record.downtime_minutes)
+        
+        processedComments.push({
+          id: record.id + '_sup',
+          date: record.date,
+          machine: machineName,
+          machine_id: record.machine_id,
+          shift: record.shift_id || 1,
+          operator: 'Supervisor',
+          comment: record.supervisor_comments,
+          categories: categories,
+          priority: priorityLevel,
+          efficiency: Math.round(efficiency),
+          downtime: record.downtime_minutes || 0,
+          hits: record.total_cycles || 0,
+          part_number: record.part_id || 'N/A'
+        })
+      }
+    })
     
     // Apply category filter if specified
     let filteredComments = processedComments
