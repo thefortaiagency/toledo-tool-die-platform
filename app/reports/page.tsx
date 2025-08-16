@@ -121,81 +121,88 @@ export default function ReportsPage() {
   const COLORS = ['#f97316', '#10b981', '#3b82f6', '#8b5cf6']
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 md:py-8">
       {/* Header */}
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2">AI-Powered Production Reports</h1>
-        <p className="text-gray-600">Real-time analysis with machine learning insights from {totalComments} operator comments</p>
+      <div className="mb-4 sm:mb-6 md:mb-8">
+        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">AI-Powered Production Reports</h1>
+        <p className="text-sm sm:text-base text-gray-600">Real-time analysis with machine learning insights from {totalComments} operator comments</p>
       </div>
 
-      {/* Report Selector */}
-      <div className="flex space-x-4 mb-6">
-        <button
-          onClick={() => setSelectedReport('hit-tracker-table')}
-          className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center ${
-            selectedReport === 'hit-tracker-table' 
-              ? 'bg-orange-600 text-white' 
-              : 'bg-white text-gray-700 hover:bg-gray-100'
-          }`}
-        >
-          <Table className="w-4 h-4 mr-2" />
-          Hit Tracker Table
-        </button>
-        <button
-          onClick={() => setSelectedReport('hit-tracker')}
-          className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center ${
-            selectedReport === 'hit-tracker' 
-              ? 'bg-orange-600 text-white' 
-              : 'bg-white text-gray-700 hover:bg-gray-100'
-          }`}
-        >
-          <Activity className="w-4 h-4 mr-2" />
-          Shift Trends
-        </button>
-        <button
-          onClick={() => setSelectedReport('ai-insights')}
-          className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center ${
-            selectedReport === 'ai-insights' 
-              ? 'bg-orange-600 text-white' 
-              : 'bg-white text-gray-700 hover:bg-gray-100'
-          }`}
-        >
-          <Brain className="w-4 h-4 mr-2" />
-          AI Analysis
-        </button>
-        <button
-          onClick={() => setSelectedReport('comments')}
-          className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center ${
-            selectedReport === 'comments' 
-              ? 'bg-orange-600 text-white' 
-              : 'bg-white text-gray-700 hover:bg-gray-100'
-          }`}
-        >
-          <MessageSquare className="w-4 h-4 mr-2" />
-          Comments
-        </button>
-        <button
-          onClick={() => setSelectedReport('scrap-analysis')}
-          className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center ${
-            selectedReport === 'scrap-analysis' 
-              ? 'bg-orange-600 text-white' 
-              : 'bg-white text-gray-700 hover:bg-gray-100'
-          }`}
-        >
-          <AlertTriangle className="w-4 h-4 mr-2" />
-          Scrap Analysis
-        </button>
-        <button
-          onClick={() => setSelectedReport('pioneer-scrap')}
-          className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center ${
-            selectedReport === 'pioneer-scrap' 
-              ? 'bg-orange-600 text-white' 
-              : 'bg-white text-gray-700 hover:bg-gray-100'
-          }`}
-        >
-          <Factory className="w-4 h-4 mr-2" />
-          Pioneer Scrap
-        </button>
+      {/* Report Selector - Scrollable on mobile */}
+      <div className="overflow-x-auto mb-4 sm:mb-6">
+        <div className="flex space-x-2 sm:space-x-4 min-w-max pb-2">
+          <button
+            onClick={() => setSelectedReport('hit-tracker-table')}
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium transition-colors flex items-center whitespace-nowrap text-sm sm:text-base ${
+              selectedReport === 'hit-tracker-table' 
+                ? 'bg-orange-600 text-white' 
+                : 'bg-white text-gray-700 hover:bg-gray-100'
+            }`}
+          >
+            <Table className="w-4 h-4 mr-1 sm:mr-2" />
+            <span className="hidden sm:inline">Hit Tracker Table</span>
+            <span className="sm:hidden">Tracker</span>
+          </button>
+          <button
+            onClick={() => setSelectedReport('hit-tracker')}
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium transition-colors flex items-center whitespace-nowrap text-sm sm:text-base ${
+              selectedReport === 'hit-tracker' 
+                ? 'bg-orange-600 text-white' 
+                : 'bg-white text-gray-700 hover:bg-gray-100'
+            }`}
+          >
+            <Activity className="w-4 h-4 mr-1 sm:mr-2" />
+            <span className="hidden sm:inline">Shift Trends</span>
+            <span className="sm:hidden">Trends</span>
+          </button>
+          <button
+            onClick={() => setSelectedReport('ai-insights')}
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium transition-colors flex items-center whitespace-nowrap text-sm sm:text-base ${
+              selectedReport === 'ai-insights' 
+                ? 'bg-orange-600 text-white' 
+                : 'bg-white text-gray-700 hover:bg-gray-100'
+            }`}
+          >
+            <Brain className="w-4 h-4 mr-1 sm:mr-2" />
+            <span className="hidden sm:inline">AI Analysis</span>
+            <span className="sm:hidden">AI</span>
+          </button>
+          <button
+            onClick={() => setSelectedReport('comments')}
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium transition-colors flex items-center whitespace-nowrap text-sm sm:text-base ${
+              selectedReport === 'comments' 
+                ? 'bg-orange-600 text-white' 
+                : 'bg-white text-gray-700 hover:bg-gray-100'
+            }`}
+          >
+            <MessageSquare className="w-4 h-4 mr-1 sm:mr-2" />
+            Comments
+          </button>
+          <button
+            onClick={() => setSelectedReport('scrap-analysis')}
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium transition-colors flex items-center whitespace-nowrap text-sm sm:text-base ${
+              selectedReport === 'scrap-analysis' 
+                ? 'bg-orange-600 text-white' 
+                : 'bg-white text-gray-700 hover:bg-gray-100'
+            }`}
+          >
+            <AlertTriangle className="w-4 h-4 mr-1 sm:mr-2" />
+            <span className="hidden sm:inline">Scrap Analysis</span>
+            <span className="sm:hidden">Scrap</span>
+          </button>
+          <button
+            onClick={() => setSelectedReport('pioneer-scrap')}
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium transition-colors flex items-center whitespace-nowrap text-sm sm:text-base ${
+              selectedReport === 'pioneer-scrap' 
+                ? 'bg-orange-600 text-white' 
+                : 'bg-white text-gray-700 hover:bg-gray-100'
+            }`}
+          >
+            <Factory className="w-4 h-4 mr-1 sm:mr-2" />
+            <span className="hidden sm:inline">Pioneer Scrap</span>
+            <span className="sm:hidden">Pioneer</span>
+          </button>
+        </div>
       </div>
 
       {/* Hit Tracker Table Report */}
@@ -228,25 +235,25 @@ export default function ReportsPage() {
 
           {/* Quick Stats */}
           {hitTrackerStats && (
-            <div className="grid grid-cols-4 gap-4">
-              <div className="bg-white rounded-lg shadow p-4">
-                <div className="text-sm text-gray-600">Weekly Average</div>
-                <div className="text-2xl font-bold text-gray-900">{hitTrackerStats.weeklyAverage}%</div>
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+              <div className="bg-white rounded-lg shadow p-3 sm:p-4">
+                <div className="text-xs sm:text-sm text-gray-600">Weekly Average</div>
+                <div className="text-xl sm:text-2xl font-bold text-gray-900">{hitTrackerStats.weeklyAverage}%</div>
                 <div className="text-xs text-green-600">↑ 2.3% from last week</div>
               </div>
-              <div className="bg-white rounded-lg shadow p-4">
-                <div className="text-sm text-gray-600">Best Performer</div>
-                <div className="text-2xl font-bold text-gray-900">{hitTrackerStats.bestShift.name}</div>
+              <div className="bg-white rounded-lg shadow p-3 sm:p-4">
+                <div className="text-xs sm:text-sm text-gray-600">Best Performer</div>
+                <div className="text-xl sm:text-2xl font-bold text-gray-900">{hitTrackerStats.bestShift.name}</div>
                 <div className="text-xs text-blue-600">{hitTrackerStats.bestShift.avg}% average efficiency</div>
               </div>
-              <div className="bg-white rounded-lg shadow p-4">
-                <div className="text-sm text-gray-600">Total Hits</div>
-                <div className="text-2xl font-bold text-gray-900">{hitTrackerStats.totalHits.toLocaleString()}</div>
+              <div className="bg-white rounded-lg shadow p-3 sm:p-4">
+                <div className="text-xs sm:text-sm text-gray-600">Total Hits</div>
+                <div className="text-xl sm:text-2xl font-bold text-gray-900">{hitTrackerStats.totalHits.toLocaleString()}</div>
                 <div className="text-xs text-gray-600">This week</div>
               </div>
-              <div className="bg-white rounded-lg shadow p-4">
-                <div className="text-sm text-gray-600">Target Achievement</div>
-                <div className="text-2xl font-bold text-gray-900">{hitTrackerStats.targetAchievement}%</div>
+              <div className="bg-white rounded-lg shadow p-3 sm:p-4">
+                <div className="text-xs sm:text-sm text-gray-600">Target Achievement</div>
+                <div className="text-xl sm:text-2xl font-bold text-gray-900">{hitTrackerStats.targetAchievement}%</div>
                 <div className="text-xs text-orange-600">Room for improvement</div>
               </div>
             </div>
@@ -274,17 +281,17 @@ export default function ReportsPage() {
               </div>
 
               {/* Key Findings */}
-              <div className="grid grid-cols-2 gap-4">
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 {aiInsights.keyFindings.map((finding: any, index: number) => {
                   const Icon = finding.icon
                   return (
-                    <div key={index} className="bg-white rounded-xl shadow-lg p-6">
+                    <div key={index} className="bg-white rounded-xl shadow-lg p-4 sm:p-6">
                       <div className="flex items-start">
-                        <Icon className={`h-8 w-8 ${finding.color} mr-3 flex-shrink-0`} />
-                        <div>
-                          <h3 className="font-bold text-gray-900 mb-2">{finding.title}</h3>
-                          <p className="text-gray-600 text-sm mb-3">{finding.description}</p>
-                          <div className="bg-blue-50 text-blue-700 text-xs p-2 rounded">
+                        <Icon className={`h-6 sm:h-8 w-6 sm:w-8 ${finding.color} mr-2 sm:mr-3 flex-shrink-0`} />
+                        <div className="flex-1">
+                          <h3 className="font-bold text-gray-900 mb-1 sm:mb-2 text-sm sm:text-base">{finding.title}</h3>
+                          <p className="text-gray-600 text-xs sm:text-sm mb-2 sm:mb-3">{finding.description}</p>
+                          <div className="bg-blue-50 text-blue-700 text-xs p-1.5 sm:p-2 rounded">
                             <strong>Action:</strong> {finding.action}
                           </div>
                         </div>
@@ -295,23 +302,23 @@ export default function ReportsPage() {
               </div>
 
               {/* Predictions */}
-              <div className="bg-white rounded-xl shadow-lg p-6">
-                <h3 className="text-lg font-bold mb-4 text-gray-900">AI Predictions & ROI</h3>
-                <div className="grid grid-cols-3 gap-4">
-                  <div className="text-center p-4 bg-green-50 rounded-lg">
-                    <TrendingUp className="h-8 w-8 text-green-600 mx-auto mb-2" />
-                    <div className="text-sm text-gray-600">Efficiency Gain</div>
-                    <div className="text-xl font-bold text-gray-900">{aiInsights.predictions.efficiency}</div>
+              <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6">
+                <h3 className="text-base sm:text-lg font-bold mb-3 sm:mb-4 text-gray-900">AI Predictions & ROI</h3>
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">
+                  <div className="text-center p-3 sm:p-4 bg-green-50 rounded-lg">
+                    <TrendingUp className="h-6 sm:h-8 w-6 sm:w-8 text-green-600 mx-auto mb-1 sm:mb-2" />
+                    <div className="text-xs sm:text-sm text-gray-600">Efficiency Gain</div>
+                    <div className="text-base sm:text-xl font-bold text-gray-900">{aiInsights.predictions.efficiency}</div>
                   </div>
-                  <div className="text-center p-4 bg-blue-50 rounded-lg">
-                    <BarChart3 className="h-8 w-8 text-blue-600 mx-auto mb-2" />
-                    <div className="text-sm text-gray-600">Cost Savings</div>
-                    <div className="text-xl font-bold text-gray-900">{aiInsights.predictions.cost}</div>
+                  <div className="text-center p-3 sm:p-4 bg-blue-50 rounded-lg">
+                    <BarChart3 className="h-6 sm:h-8 w-6 sm:w-8 text-blue-600 mx-auto mb-1 sm:mb-2" />
+                    <div className="text-xs sm:text-sm text-gray-600">Cost Savings</div>
+                    <div className="text-base sm:text-xl font-bold text-gray-900">{aiInsights.predictions.cost}</div>
                   </div>
-                  <div className="text-center p-4 bg-purple-50 rounded-lg">
-                    <Calendar className="h-8 w-8 text-purple-600 mx-auto mb-2" />
-                    <div className="text-sm text-gray-600">Implementation</div>
-                    <div className="text-xl font-bold text-gray-900">{aiInsights.predictions.timeline}</div>
+                  <div className="text-center p-3 sm:p-4 bg-purple-50 rounded-lg">
+                    <Calendar className="h-6 sm:h-8 w-6 sm:w-8 text-purple-600 mx-auto mb-1 sm:mb-2" />
+                    <div className="text-xs sm:text-sm text-gray-600">Implementation</div>
+                    <div className="text-base sm:text-xl font-bold text-gray-900">{aiInsights.predictions.timeline}</div>
                   </div>
                 </div>
               </div>
@@ -322,12 +329,12 @@ export default function ReportsPage() {
 
       {/* Comment Analysis Report */}
       {selectedReport === 'comments' && (
-        <div className="space-y-6">
-          <div className="grid grid-cols-2 gap-6">
+        <div className="space-y-4 sm:space-y-6">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
             {/* Comment Categories */}
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h2 className="text-xl font-bold mb-4 flex items-center">
-                <MessageSquare className="mr-2 text-orange-600" />
+            <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6">
+              <h2 className="text-base sm:text-xl font-bold mb-3 sm:mb-4 flex items-center">
+                <MessageSquare className="mr-1 sm:mr-2 text-orange-600 h-5 sm:h-6 w-5 sm:w-6" />
                 Comment Pattern Analysis
               </h2>
               <ResponsiveContainer width="100%" height={300}>
@@ -352,9 +359,9 @@ export default function ReportsPage() {
             </div>
 
             {/* Pattern Trends */}
-            <div className="bg-white rounded-xl shadow-lg p-6">
-              <h2 className="text-xl font-bold mb-4">Issue Trends</h2>
-              <div className="space-y-4">
+            <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6">
+              <h2 className="text-base sm:text-xl font-bold mb-3 sm:mb-4">Issue Trends</h2>
+              <div className="space-y-3 sm:space-y-4">
                 {commentPatterns.map((pattern, index) => (
                   <div key={index} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
                     <div className="flex items-center">
@@ -363,8 +370,8 @@ export default function ReportsPage() {
                         style={{ backgroundColor: COLORS[index] }}
                       />
                       <div>
-                        <div className="font-medium text-gray-900">{pattern.category}</div>
-                        <div className="text-sm text-gray-600">{pattern.count} occurrences</div>
+                        <div className="font-medium text-gray-900 text-sm sm:text-base">{pattern.category}</div>
+                        <div className="text-xs sm:text-sm text-gray-600">{pattern.count} occurrences</div>
                       </div>
                     </div>
                     <div className={`flex items-center text-sm font-medium ${
@@ -381,64 +388,64 @@ export default function ReportsPage() {
           </div>
 
           {/* Recent Comments */}
-          <div className="bg-white rounded-xl shadow-lg p-6">
-            <h2 className="text-xl font-bold mb-4">Recent Operator Comments Requiring Action</h2>
-            <div className="space-y-3">
+          <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6">
+            <h2 className="text-base sm:text-xl font-bold mb-3 sm:mb-4">Recent Operator Comments Requiring Action</h2>
+            <div className="space-y-2 sm:space-y-3">
               {recentComments.length > 0 ? (
                 recentComments.map((comment, index) => {
                   const urgency = comment.efficiency < 85 ? 'border-red-500' : 
                                   comment.efficiency < 90 ? 'border-yellow-500' : 'border-green-500'
                   return (
-                    <div key={index} className={`border-l-4 ${urgency} pl-4 py-2`}>
-                      <div className="flex justify-between items-start">
+                    <div key={index} className={`border-l-4 ${urgency} pl-3 sm:pl-4 py-2`}>
+                      <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start">
                         <div>
-                          <span className="font-medium text-gray-900">{comment.operator}</span>
-                          <span className="text-gray-600 text-sm ml-2">
+                          <span className="font-medium text-gray-900 text-sm sm:text-base">{comment.operator}</span>
+                          <span className="text-gray-600 text-xs sm:text-sm ml-1 sm:ml-2">
                             Line {comment.line} - Part #{comment.partNumber}
                           </span>
                         </div>
-                        <span className="text-xs text-gray-500">
+                        <span className="text-xs text-gray-500 mt-1 sm:mt-0">
                           {new Date(comment.date).toLocaleDateString()}
                         </span>
                       </div>
-                      <p className="text-gray-700 mt-1">"{comment.comment}"</p>
+                      <p className="text-gray-700 mt-1 text-xs sm:text-sm">"{comment.comment}"</p>
                       <p className="text-xs text-gray-500 mt-1">Efficiency: {comment.efficiency}%</p>
                     </div>
                   )
                 })
               ) : (
                 <>
-                  <div className="border-l-4 border-red-500 pl-4 py-2">
-                    <div className="flex justify-between items-start">
+                  <div className="border-l-4 border-red-500 pl-3 sm:pl-4 py-2">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start">
                       <div>
-                        <span className="font-medium text-gray-900">Peppi Rotella</span>
-                        <span className="text-gray-600 text-sm ml-2">Line 3 - Part #07092789</span>
+                        <span className="font-medium text-gray-900 text-sm sm:text-base">Peppi Rotella</span>
+                        <span className="text-gray-600 text-xs sm:text-sm ml-1 sm:ml-2">Line 3 - Part #07092789</span>
                       </div>
-                      <span className="text-xs text-gray-500">2 hours ago</span>
+                      <span className="text-xs text-gray-500 mt-1 sm:mt-0">2 hours ago</span>
                     </div>
-                    <p className="text-gray-700 mt-1">"4 out die showing issues, 2 LH and 2 RH not aligning properly. Need engineering review."</p>
+                    <p className="text-gray-700 mt-1 text-xs sm:text-sm">"4 out die showing issues, 2 LH and 2 RH not aligning properly. Need engineering review."</p>
                   </div>
-                  <div className="border-l-4 border-yellow-500 pl-4 py-2">
-                    <div className="flex justify-between items-start">
+                  <div className="border-l-4 border-yellow-500 pl-3 sm:pl-4 py-2">
+                    <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start">
                       <div>
-                        <span className="font-medium text-gray-900">Tricia Cooper</span>
-                        <span className="text-gray-600 text-sm ml-2">Line 1 - General</span>
+                        <span className="font-medium text-gray-900 text-sm sm:text-base">Tricia Cooper</span>
+                        <span className="text-gray-600 text-xs sm:text-sm ml-1 sm:ml-2">Line 1 - General</span>
                       </div>
-                      <span className="text-xs text-gray-500">3 hours ago</span>
+                      <span className="text-xs text-gray-500 mt-1 sm:mt-0">3 hours ago</span>
                     </div>
-                    <p className="text-gray-700 mt-1">"2 OUT DIE - recurring issue from yesterday. Machine needs calibration."</p>
+                    <p className="text-gray-700 mt-1 text-xs sm:text-sm">"2 OUT DIE - recurring issue from yesterday. Machine needs calibration."</p>
                   </div>
                 </>
               )}
-              <div className="border-l-4 border-blue-500 pl-4 py-2">
-                <div className="flex justify-between items-start">
+              <div className="border-l-4 border-blue-500 pl-3 sm:pl-4 py-2">
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-start">
                   <div>
-                    <span className="font-medium text-gray-900">System AI</span>
-                    <span className="text-gray-600 text-sm ml-2">Pattern Detection</span>
+                    <span className="font-medium text-gray-900 text-sm sm:text-base">System AI</span>
+                    <span className="text-gray-600 text-xs sm:text-sm ml-1 sm:ml-2">Pattern Detection</span>
                   </div>
-                  <span className="text-xs text-gray-500">Just now</span>
+                  <span className="text-xs text-gray-500 mt-1 sm:mt-0">Just now</span>
                 </div>
-                <p className="text-gray-700 mt-1">
+                <p className="text-gray-700 mt-1 text-xs sm:text-sm">
                   "AI detected: {commentPatterns[0]?.category || 'Die configuration'} issues represent {commentPatterns[0]?.percentage || 38}% of comments. Recommend immediate maintenance schedule review."
                 </p>
               </div>
