@@ -283,9 +283,10 @@ export default function HitTrackerAccurate() {
         <div className="bg-white rounded-lg shadow p-4">
           <div className="flex items-center justify-between">
             <button
-              onClick={() => setCurrentWeekIndex(Math.max(0, currentWeekIndex - 1))}
-              disabled={currentWeekIndex === 0}
+              onClick={() => setCurrentWeekIndex(Math.min(weekData.length - 1, currentWeekIndex + 1))}
+              disabled={currentWeekIndex === weekData.length - 1}
               className="p-2 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+              title="Previous Week"
             >
               <ChevronLeft className="w-5 h-5" />
             </button>
@@ -298,9 +299,10 @@ export default function HitTrackerAccurate() {
             </div>
             
             <button
-              onClick={() => setCurrentWeekIndex(Math.min(weekData.length - 1, currentWeekIndex + 1))}
-              disabled={currentWeekIndex === weekData.length - 1}
+              onClick={() => setCurrentWeekIndex(Math.max(0, currentWeekIndex - 1))}
+              disabled={currentWeekIndex === 0}
               className="p-2 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+              title="Next Week"
             >
               <ChevronRight className="w-5 h-5" />
             </button>
@@ -362,9 +364,10 @@ export default function HitTrackerAccurate() {
       <div className="bg-white rounded-lg shadow p-4">
         <div className="flex items-center justify-between">
           <button
-            onClick={() => setCurrentWeekIndex(Math.max(0, currentWeekIndex - 1))}
-            disabled={currentWeekIndex === 0}
+            onClick={() => setCurrentWeekIndex(Math.min(weekData.length - 1, currentWeekIndex + 1))}
+            disabled={currentWeekIndex === weekData.length - 1}
             className="p-2 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+            title="Previous Week"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
@@ -377,9 +380,10 @@ export default function HitTrackerAccurate() {
           </div>
           
           <button
-            onClick={() => setCurrentWeekIndex(Math.min(weekData.length - 1, currentWeekIndex + 1))}
-            disabled={currentWeekIndex === weekData.length - 1}
+            onClick={() => setCurrentWeekIndex(Math.max(0, currentWeekIndex - 1))}
+            disabled={currentWeekIndex === 0}
             className="p-2 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+            title="Next Week"
           >
             <ChevronRight className="w-5 h-5" />
           </button>
