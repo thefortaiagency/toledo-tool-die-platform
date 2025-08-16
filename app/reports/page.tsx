@@ -132,127 +132,118 @@ export default function ReportsPage() {
         <p className="text-sm sm:text-base text-gray-600">Real-time analysis with machine learning insights from {totalComments} operator comments</p>
       </div>
 
-      {/* Report Selector - Scrollable on mobile */}
-      <div className="overflow-x-auto mb-4 sm:mb-6">
-        <div className="flex space-x-2 sm:space-x-4 min-w-max pb-2">
+      {/* Report Selector - Two rows for better fit */}
+      <div className="mb-4 sm:mb-6">
+        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 sm:gap-3">
           <button
             onClick={() => setSelectedReport('hit-tracker-table')}
-            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium transition-colors flex items-center whitespace-nowrap text-sm sm:text-base ${
+            className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg font-medium transition-colors flex flex-col sm:flex-row items-center justify-center text-xs sm:text-sm ${
               selectedReport === 'hit-tracker-table' 
                 ? 'bg-orange-600 text-white' 
-                : 'bg-white text-gray-700 hover:bg-gray-100'
+                : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
             }`}
           >
-            <Table className="w-4 h-4 mr-1 sm:mr-2" />
-            <span className="hidden sm:inline">Hit Tracker Table</span>
-            <span className="sm:hidden">Tracker</span>
+            <Table className="w-4 h-4 sm:mr-1.5 mb-1 sm:mb-0" />
+            <span className="text-center">Hit Tracker</span>
           </button>
           <button
             onClick={() => setSelectedReport('hit-tracker')}
-            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium transition-colors flex items-center whitespace-nowrap text-sm sm:text-base ${
+            className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg font-medium transition-colors flex flex-col sm:flex-row items-center justify-center text-xs sm:text-sm ${
               selectedReport === 'hit-tracker' 
                 ? 'bg-orange-600 text-white' 
-                : 'bg-white text-gray-700 hover:bg-gray-100'
+                : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
             }`}
           >
-            <Activity className="w-4 h-4 mr-1 sm:mr-2" />
-            <span className="hidden sm:inline">Shift Trends</span>
-            <span className="sm:hidden">Trends</span>
+            <Activity className="w-4 h-4 sm:mr-1.5 mb-1 sm:mb-0" />
+            <span className="text-center">Shift Trends</span>
           </button>
           <button
             onClick={() => setSelectedReport('ai-insights')}
-            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium transition-colors flex items-center whitespace-nowrap text-sm sm:text-base ${
+            className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg font-medium transition-colors flex flex-col sm:flex-row items-center justify-center text-xs sm:text-sm ${
               selectedReport === 'ai-insights' 
                 ? 'bg-orange-600 text-white' 
-                : 'bg-white text-gray-700 hover:bg-gray-100'
+                : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
             }`}
           >
-            <Brain className="w-4 h-4 mr-1 sm:mr-2" />
-            <span className="hidden sm:inline">AI Analysis</span>
-            <span className="sm:hidden">AI</span>
+            <Brain className="w-4 h-4 sm:mr-1.5 mb-1 sm:mb-0" />
+            <span className="text-center">AI Analysis</span>
           </button>
           <button
             onClick={() => setSelectedReport('comments')}
-            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium transition-colors flex items-center whitespace-nowrap text-sm sm:text-base ${
+            className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg font-medium transition-colors flex flex-col sm:flex-row items-center justify-center text-xs sm:text-sm ${
               selectedReport === 'comments' 
                 ? 'bg-orange-600 text-white' 
-                : 'bg-white text-gray-700 hover:bg-gray-100'
+                : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
             }`}
           >
-            <MessageSquare className="w-4 h-4 mr-1 sm:mr-2" />
-            Comments
+            <MessageSquare className="w-4 h-4 sm:mr-1.5 mb-1 sm:mb-0" />
+            <span className="text-center">Comments</span>
           </button>
           <button
             onClick={() => setSelectedReport('scrap-analysis')}
-            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium transition-colors flex items-center whitespace-nowrap text-sm sm:text-base ${
+            className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg font-medium transition-colors flex flex-col sm:flex-row items-center justify-center text-xs sm:text-sm ${
               selectedReport === 'scrap-analysis' 
                 ? 'bg-orange-600 text-white' 
-                : 'bg-white text-gray-700 hover:bg-gray-100'
+                : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
             }`}
           >
-            <AlertTriangle className="w-4 h-4 mr-1 sm:mr-2" />
-            <span className="hidden sm:inline">Scrap Analysis</span>
-            <span className="sm:hidden">Scrap</span>
+            <AlertTriangle className="w-4 h-4 sm:mr-1.5 mb-1 sm:mb-0" />
+            <span className="text-center">Scrap</span>
           </button>
           <button
             onClick={() => setSelectedReport('pioneer-scrap')}
-            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium transition-colors flex items-center whitespace-nowrap text-sm sm:text-base ${
+            className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg font-medium transition-colors flex flex-col sm:flex-row items-center justify-center text-xs sm:text-sm ${
               selectedReport === 'pioneer-scrap' 
                 ? 'bg-orange-600 text-white' 
-                : 'bg-white text-gray-700 hover:bg-gray-100'
+                : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
             }`}
           >
-            <Factory className="w-4 h-4 mr-1 sm:mr-2" />
-            <span className="hidden sm:inline">Pioneer Scrap</span>
-            <span className="sm:hidden">Pioneer</span>
+            <Factory className="w-4 h-4 sm:mr-1.5 mb-1 sm:mb-0" />
+            <span className="text-center">Pioneer</span>
           </button>
           <button
             onClick={() => setSelectedReport('executive')}
-            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium transition-colors flex items-center whitespace-nowrap text-sm sm:text-base ${
+            className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg font-medium transition-colors flex flex-col sm:flex-row items-center justify-center text-xs sm:text-sm ${
               selectedReport === 'executive' 
                 ? 'bg-orange-600 text-white' 
-                : 'bg-white text-gray-700 hover:bg-gray-100'
+                : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
             }`}
           >
-            <DollarSign className="w-4 h-4 mr-1 sm:mr-2" />
-            <span className="hidden sm:inline">Executive Dashboard</span>
-            <span className="sm:hidden">Executive</span>
+            <DollarSign className="w-4 h-4 sm:mr-1.5 mb-1 sm:mb-0" />
+            <span className="text-center">Executive</span>
           </button>
           <button
             onClick={() => setSelectedReport('quality')}
-            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium transition-colors flex items-center whitespace-nowrap text-sm sm:text-base ${
+            className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg font-medium transition-colors flex flex-col sm:flex-row items-center justify-center text-xs sm:text-sm ${
               selectedReport === 'quality' 
                 ? 'bg-orange-600 text-white' 
-                : 'bg-white text-gray-700 hover:bg-gray-100'
+                : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
             }`}
           >
-            <PieChartIcon className="w-4 h-4 mr-1 sm:mr-2" />
-            <span className="hidden sm:inline">Quality Report</span>
-            <span className="sm:hidden">Quality</span>
+            <PieChartIcon className="w-4 h-4 sm:mr-1.5 mb-1 sm:mb-0" />
+            <span className="text-center">Quality</span>
           </button>
           <button
             onClick={() => setSelectedReport('downtime')}
-            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium transition-colors flex items-center whitespace-nowrap text-sm sm:text-base ${
+            className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg font-medium transition-colors flex flex-col sm:flex-row items-center justify-center text-xs sm:text-sm ${
               selectedReport === 'downtime' 
                 ? 'bg-orange-600 text-white' 
-                : 'bg-white text-gray-700 hover:bg-gray-100'
+                : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
             }`}
           >
-            <Wrench className="w-4 h-4 mr-1 sm:mr-2" />
-            <span className="hidden sm:inline">Machine Downtime</span>
-            <span className="sm:hidden">Downtime</span>
+            <Wrench className="w-4 h-4 sm:mr-1.5 mb-1 sm:mb-0" />
+            <span className="text-center">Downtime</span>
           </button>
           <button
             onClick={() => setSelectedReport('quarterly')}
-            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium transition-colors flex items-center whitespace-nowrap text-sm sm:text-base ${
+            className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg font-medium transition-colors flex flex-col sm:flex-row items-center justify-center text-xs sm:text-sm ${
               selectedReport === 'quarterly' 
                 ? 'bg-orange-600 text-white' 
-                : 'bg-white text-gray-700 hover:bg-gray-100'
+                : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
             }`}
           >
-            <FileText className="w-4 h-4 mr-1 sm:mr-2" />
-            <span className="hidden sm:inline">Quarterly Review</span>
-            <span className="sm:hidden">Quarterly</span>
+            <FileText className="w-4 h-4 sm:mr-1.5 mb-1 sm:mb-0" />
+            <span className="text-center">Quarterly</span>
           </button>
         </div>
       </div>
