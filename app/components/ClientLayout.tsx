@@ -39,17 +39,15 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     <div className="min-h-screen bg-gray-50 flex flex-col">
       {/* Navigation Header */}
       <nav className="bg-slate-800 text-white shadow-lg sticky top-0 z-50">
-        <div className="max-w-full px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center">
+        <div className="w-full px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-center h-16">
+            <div className="flex items-center space-x-8">
               <img 
                 src="/toledo-logo.png" 
                 alt="Toledo Tool & Die" 
                 className="h-10 w-auto"
               />
-            </div>
-            <div className="hidden md:block">
-              <div className="flex items-baseline space-x-4">
+              <div className="hidden md:flex items-baseline space-x-4">
                 <Link href="/" className="hover:bg-orange-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center transition-colors">
                   <Home className="h-4 w-4 mr-1" /> Home
                 </Link>
