@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import ResizableChatSidebar from './ResizableChatSidebar'
 import { ChevronLeft, Home, LayoutDashboard, FileText, BarChart3, Settings, LogOut, User } from 'lucide-react'
 import Link from 'next/link'
-import { supabase } from '@/lib/supabase/client'
+import { createClient } from '@/lib/supabase/browser-client'
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter()
@@ -28,6 +28,8 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   // Check for user session
   useEffect(() => {
+    const supabase = createClient()
+    
     const checkUser = async () => {
       const { data: { session } } = await supabase.auth.getSession()
       setUser(session?.user || null)
@@ -42,6 +44,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   }, [])
 
   const handleLogout = async () => {
+    const supabase = createClient()
     await supabase.auth.signOut()
     router.push('/login')
   }

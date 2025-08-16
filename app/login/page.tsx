@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabase/client'
+import { createClient } from '@/lib/supabase/browser-client'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Loader2, Lock, Mail, AlertCircle } from 'lucide-react'
@@ -20,15 +20,23 @@ export default function Login() {
     setError('')
 
     try {
+      const supabase = createClient()
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       })
 
+      console.log('Login attempt:', { email, data, error })
+
       if (error) throw error
 
-      // Force redirect to home after successful login
-      window.location.href = '/'
+      if (data?.session) {
+        console.log('Login successful, redirecting...')
+        // Force redirect to home after successful login
+        window.location.href = '/'
+      } else {
+        throw new Error('No session returned from login')
+      }
     } catch (err: any) {
       console.error('Login error:', err)
       setError(err.message || 'Invalid email or password')
