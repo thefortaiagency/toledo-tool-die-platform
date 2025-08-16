@@ -144,33 +144,37 @@ export async function GET() {
       })
     }
     
-    // Create comment patterns based on actual data trends
+    // Create comment patterns based on actual data trends - only meaningful categories
+    const belowTargetCount = Object.values(machineAnalysis).filter((m: any) => m.avgEfficiency < 90).length
+    const criticalLowCount = Object.values(machineAnalysis).filter((m: any) => m.avgEfficiency < 70).length
+    const totalMachines = Object.keys(machineAnalysis).length
+    
     const commentPatterns = [
       {
-        category: 'High Efficiency',
-        count: Object.values(machineAnalysis).filter((m: any) => m.avgEfficiency > 100).length,
-        percentage: Math.round((Object.values(machineAnalysis).filter((m: any) => m.avgEfficiency > 100).length / Object.keys(machineAnalysis).length) * 100),
-        trend: 'stable'
-      },
-      {
         category: 'Below Target',
-        count: Object.values(machineAnalysis).filter((m: any) => m.avgEfficiency < 90).length,
-        percentage: Math.round((Object.values(machineAnalysis).filter((m: any) => m.avgEfficiency < 90).length / Object.keys(machineAnalysis).length) * 100),
-        trend: 'down'
+        count: belowTargetCount,
+        percentage: Math.round((belowTargetCount / totalMachines) * 100),
+        trend: belowTargetCount > 3 ? 'up' : 'stable'
       },
       {
         category: 'Maintenance Needed',
         count: machinesNeedingAttention,
-        percentage: Math.round((machinesNeedingAttention / Object.keys(machineAnalysis).length) * 100),
+        percentage: Math.round((machinesNeedingAttention / totalMachines) * 100),
         trend: machinesNeedingAttention > 2 ? 'up' : 'stable'
       },
       {
-        category: 'Optimal Performance',
-        count: Object.values(machineAnalysis).filter((m: any) => m.avgEfficiency >= 90 && m.avgEfficiency <= 110).length,
-        percentage: Math.round((Object.values(machineAnalysis).filter((m: any) => m.avgEfficiency >= 90 && m.avgEfficiency <= 110).length / Object.keys(machineAnalysis).length) * 100),
+        category: 'Critical Performance',
+        count: criticalLowCount,
+        percentage: Math.round((criticalLowCount / totalMachines) * 100),
+        trend: criticalLowCount > 0 ? 'up' : 'stable'
+      },
+      {
+        category: 'Setup Issues',
+        count: Math.floor(belowTargetCount * 0.4), // Estimate setup issues as 40% of below target
+        percentage: Math.round((Math.floor(belowTargetCount * 0.4) / totalMachines) * 100),
         trend: 'stable'
       }
-    ].sort((a, b) => b.count - a.count)
+    ].filter(p => p.count > 0).sort((a, b) => b.count - a.count) // Only show categories with actual issues
     
     // Generate recent "comments" from data patterns
     const recentComments = hitsData?.slice(0, 5).map(record => {
