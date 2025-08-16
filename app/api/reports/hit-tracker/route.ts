@@ -6,71 +6,119 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
 
+// Machine targets per hour
+const MACHINE_TARGETS: Record<string, number> = {
+  'b8e48ae1-513f-4211-aa15-a421150c15a4': 950,  // 600 Ton
+  '73a96295-79f3-4dc7-ab38-08ee48679a6f': 600,  // 1500-1
+  '5d509a37-0e1c-4c18-be71-34638b3ec716': 600,  // 1500-2
+  '45dadf58-b046-4fe1-93fd-bf76568e8ef1': 600,  // 1400
+  '3c9453df-432f-47cb-9fd8-19b9a19fd012': 875,  // 1000T
+  '0e29b01a-7383-4c66-81e7-f92e9d52f227': 600   // Hyd
+}
+
+const MACHINE_NAMES: Record<string, string> = {
+  'b8e48ae1-513f-4211-aa15-a421150c15a4': '600 Ton',
+  '73a96295-79f3-4dc7-ab38-08ee48679a6f': '1500-1',
+  '5d509a37-0e1c-4c18-be71-34638b3ec716': '1500-2',
+  '45dadf58-b046-4fe1-93fd-bf76568e8ef1': '1400',
+  '3c9453df-432f-47cb-9fd8-19b9a19fd012': '1000T',
+  '0e29b01a-7383-4c66-81e7-f92e9d52f227': 'Hyd'
+}
+
 export async function GET() {
   try {
-    // Fetch the latest hit tracker data
+    // Fetch the latest hit tracker data from the last 7 days
+    const sevenDaysAgo = new Date()
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
+    
     const { data: hitTrackerData, error } = await supabase
       .from('hits_tracking')
       .select('*')
+      .gte('date', sevenDaysAgo.toISOString().split('T')[0])
       .order('date', { ascending: false })
-      .limit(30)
 
     if (error) throw error
 
-    // Calculate shift averages
-    const shiftData = hitTrackerData?.reduce((acc: any, record: any) => {
+    // Group data by date and calculate shift efficiencies
+    const dailyData: Record<string, any> = {}
+    
+    hitTrackerData?.forEach(record => {
       const date = record.date
-      if (!acc[date]) {
-        acc[date] = {
+      if (!dailyData[date]) {
+        dailyData[date] = {
           date,
-          shift1: [],
-          shift2: [],
-          shift3: [],
-          target: record.target || 90
+          totalHits: 0,
+          machines: [],
+          // Simulate shift data by dividing the day's hits
+          shift1Hits: 0,
+          shift2Hits: 0,
+          shift3Hits: 0
         }
       }
       
-      if (record.shift === 1) acc[date].shift1.push(record.efficiency || 0)
-      if (record.shift === 2) acc[date].shift2.push(record.efficiency || 0)
-      if (record.shift === 3) acc[date].shift3.push(record.efficiency || 0)
+      const target = MACHINE_TARGETS[record.machine_id] || 600
+      const weeklyHits = record.weekly_total || 0
+      const dailyHits = weeklyHits / 7 // Average daily hits
       
-      return acc
-    }, {})
-
-    // Average the data per day
-    const processedData = Object.values(shiftData || {}).map((day: any) => ({
-      date: day.date,
-      shift1: day.shift1.length ? Math.round(day.shift1.reduce((a: number, b: number) => a + b, 0) / day.shift1.length) : 0,
-      shift2: day.shift2.length ? Math.round(day.shift2.reduce((a: number, b: number) => a + b, 0) / day.shift2.length) : 0,
-      shift3: day.shift3.length ? Math.round(day.shift3.reduce((a: number, b: number) => a + b, 0) / day.shift3.length) : 0,
-      target: day.target
-    }))
-
+      // Simulate shift distribution (33% each shift roughly)
+      dailyData[date].shift1Hits += dailyHits * 0.33
+      dailyData[date].shift2Hits += dailyHits * 0.33
+      dailyData[date].shift3Hits += dailyHits * 0.34
+      dailyData[date].totalHits += dailyHits
+      dailyData[date].machines.push({
+        id: record.machine_id,
+        name: MACHINE_NAMES[record.machine_id],
+        hits: dailyHits,
+        target: target * 24 // Daily target (24 hours)
+      })
+    })
+    
+    // Calculate efficiencies for chart
+    const chartData = Object.values(dailyData).map((day: any) => {
+      // Calculate average target across all machines for the day
+      const avgTarget = day.machines.length > 0
+        ? day.machines.reduce((sum: number, m: any) => sum + m.target, 0) / day.machines.length / 3 // Per shift target
+        : 2400 // Default 8-hour shift target
+      
+      return {
+        date: day.date,
+        shift1: Math.min(Math.round((day.shift1Hits / avgTarget) * 100), 120),
+        shift2: Math.min(Math.round((day.shift2Hits / avgTarget) * 100), 120),
+        shift3: Math.min(Math.round((day.shift3Hits / avgTarget) * 100), 120),
+        target: 90
+      }
+    })
+    
+    // Sort by date ascending for chart
+    chartData.sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime())
+    
     // Calculate statistics
-    const allEfficiencies = hitTrackerData?.map(r => r.efficiency || 0) || []
-    const weeklyAverage = allEfficiencies.length 
-      ? Math.round(allEfficiencies.reduce((a, b) => a + b, 0) / allEfficiencies.length * 10) / 10
+    const allShiftEfficiencies = chartData.flatMap(d => [d.shift1, d.shift2, d.shift3])
+    const weeklyAverage = allShiftEfficiencies.length 
+      ? Math.round(allShiftEfficiencies.reduce((a, b) => a + b, 0) / allShiftEfficiencies.length * 10) / 10
       : 0
-
-    const bestShift = processedData.reduce((best, day) => {
-      const shifts = [
-        { name: 'Shift 1', avg: day.shift1 },
-        { name: 'Shift 2', avg: day.shift2 },
-        { name: 'Shift 3', avg: day.shift3 }
-      ]
-      const topShift = shifts.reduce((a, b) => a.avg > b.avg ? a : b)
-      return topShift.avg > best.avg ? topShift : best
-    }, { name: 'None', avg: 0 })
-
-    const totalHits = hitTrackerData?.reduce((sum, r) => sum + (r.good || 0), 0) || 0
-    const targetAchievement = allEfficiencies.filter(e => e >= 90).length / allEfficiencies.length * 100 || 0
-
+    
+    // Find best shift
+    const shift1Avg = chartData.reduce((sum, d) => sum + d.shift1, 0) / (chartData.length || 1)
+    const shift2Avg = chartData.reduce((sum, d) => sum + d.shift2, 0) / (chartData.length || 1)
+    const shift3Avg = chartData.reduce((sum, d) => sum + d.shift3, 0) / (chartData.length || 1)
+    
+    const shifts = [
+      { name: 'Shift 1', avg: Math.round(shift1Avg) },
+      { name: 'Shift 2', avg: Math.round(shift2Avg) },
+      { name: 'Shift 3', avg: Math.round(shift3Avg) }
+    ]
+    const bestShift = shifts.reduce((a, b) => a.avg > b.avg ? a : b)
+    
+    const totalHits = Object.values(dailyData).reduce((sum: number, day: any) => sum + day.totalHits, 0)
+    const targetAchievement = allShiftEfficiencies.filter(e => e >= 90).length / (allShiftEfficiencies.length || 1) * 100
+    
     return NextResponse.json({
-      chartData: processedData.slice(0, 7).reverse(), // Last 7 days
+      chartData: chartData.slice(-7), // Last 7 days
       stats: {
         weeklyAverage,
         bestShift,
-        totalHits,
+        totalHits: Math.round(totalHits),
         targetAchievement: Math.round(targetAchievement)
       }
     })
