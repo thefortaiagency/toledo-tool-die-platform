@@ -49,9 +49,9 @@ export async function GET() {
       
       if (machine) {
         // Build day data from the record
-        const days = []
+        const days: any[] = []
         const dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday']
-        const dayFields = ['monday_hits', 'tuesday_hits', 'wednesday_hits', 'thursday_hits', 'friday_hits', 'saturday_hits', 'sunday_hits']
+        const dayFields = ['monday_hits', 'tuesday_hits', 'wednesday_hits', 'thursday_hits', 'friday_hits', 'saturday_hits', 'sunday_hits'] as const
         
         let weeklyHits = 0
         let weeklyHours = 0
