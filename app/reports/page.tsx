@@ -352,6 +352,16 @@ export default function ReportsPage() {
       {/* Comment Analysis Report */}
       {selectedReport === 'comments' && (
         <div className="space-y-4 sm:space-y-6">
+          {/* View All Comments Button */}
+          <div className="flex justify-end mb-4">
+            <a
+              href="/reports/comments"
+              className="inline-flex items-center px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700 transition-colors font-medium text-sm"
+            >
+              <MessageSquare className="h-4 w-4 mr-2" />
+              View All Comments
+            </a>
+          </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
             {/* Comment Categories */}
             <div className="bg-white rounded-xl shadow-lg p-4 sm:p-6">
