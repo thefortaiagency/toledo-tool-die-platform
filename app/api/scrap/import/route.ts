@@ -26,7 +26,7 @@ export async function POST(req: NextRequest) {
     const sheet = workbook.Sheets[sheetName]
     
     // Convert to JSON
-    const jsonData = xlsx.utils.sheet_to_json(sheet)
+    const jsonData = xlsx.utils.sheet_to_json(sheet) as any[]
     
     // Process and insert data
     const scrapRecords = []
