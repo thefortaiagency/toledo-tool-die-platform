@@ -1,11 +1,15 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import ResizableChatSidebar from './ResizableChatSidebar'
-import { ChevronLeft, Home, LayoutDashboard, FileText, BarChart3, Settings } from 'lucide-react'
+import { ChevronLeft, Home, LayoutDashboard, FileText, BarChart3, Settings, LogOut, User } from 'lucide-react'
 import Link from 'next/link'
+import { supabase } from '@/lib/supabase/client'
 
 export default function ClientLayout({ children }: { children: React.ReactNode }) {
+  const router = useRouter()
+  const [user, setUser] = useState<any>(null)
   const [isChatCollapsed, setIsChatCollapsed] = useState(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('toledo-chat-collapsed')
@@ -21,6 +25,26 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
     }
     return 380
   })
+
+  // Check for user session
+  useEffect(() => {
+    const checkUser = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
+      setUser(session?.user || null)
+    }
+    checkUser()
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUser(session?.user || null)
+    })
+
+    return () => subscription.unsubscribe()
+  }, [])
+
+  const handleLogout = async () => {
+    await supabase.auth.signOut()
+    router.push('/login')
+  }
 
   // Save state to localStorage
   useEffect(() => {
@@ -64,6 +88,20 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                   <Settings className="h-4 w-4 mr-1" /> Settings
                 </Link>
               </div>
+              {user && (
+                <div className="flex items-center space-x-4 ml-8">
+                  <div className="flex items-center text-sm">
+                    <User className="h-4 w-4 mr-1" />
+                    <span className="hidden lg:inline">{user.email}</span>
+                  </div>
+                  <button
+                    onClick={handleLogout}
+                    className="hover:bg-orange-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center transition-colors"
+                  >
+                    <LogOut className="h-4 w-4 mr-1" /> Logout
+                  </button>
+                </div>
+              )}
             </div>
           </div>
         </div>
