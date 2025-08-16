@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Calendar, TrendingUp, AlertCircle, CheckCircle, Activity, Users, Package, BarChart3, MessageSquare, Brain, Table, AlertTriangle, Factory, PieChart as PieChartIcon, TrendingDown, Wrench, FileText, DollarSign } from 'lucide-react'
+import { Calendar, TrendingUp, AlertCircle, CheckCircle, Activity, Users, Package, BarChart3, MessageSquare, Brain, Table, AlertTriangle, Factory, PieChart as PieChartIcon, TrendingDown, Wrench, FileText, DollarSign, Upload } from 'lucide-react'
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts'
 import HitTrackerTable from './hit-tracker-table'
 import HitTrackerAccurate from './hit-tracker-accurate'
@@ -128,9 +128,18 @@ export default function ReportsPage() {
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6 md:py-8">
       {/* Header */}
-      <div className="mb-4 sm:mb-6 md:mb-8">
-        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">AI-Powered Production Reports</h1>
-        <p className="text-sm sm:text-base text-gray-600">Real-time analysis with machine learning insights from {totalComments} operator comments</p>
+      <div className="mb-4 sm:mb-6 md:mb-8 flex justify-between items-start">
+        <div>
+          <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-1 sm:mb-2">AI-Powered Production Reports</h1>
+          <p className="text-sm sm:text-base text-gray-600">Real-time analysis with machine learning insights from {totalComments} operator comments</p>
+        </div>
+        <a
+          href="/reports/import"
+          className="inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors font-medium text-sm"
+        >
+          <Upload className="h-4 w-4 mr-2" />
+          Import Data
+        </a>
       </div>
 
       {/* Report Selector - Two rows for better fit */}
