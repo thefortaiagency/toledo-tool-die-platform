@@ -66,13 +66,23 @@ export default function HitTrackerAccurate() {
   const generateMockData = (): WeekData[] => {
     const weeks: WeekData[] = []
     
-    // Generate 4 weeks of data
-    const weekStarts = [
-      { start: '2024-12-30', end: '2025-01-05' },
-      { start: '2025-01-06', end: '2025-01-12' },
-      { start: '2025-01-13', end: '2025-01-19' },
-      { start: '2025-01-20', end: '2025-01-26' }
-    ]
+    // Generate 4 weeks of data starting from current week
+    const today = new Date()
+    const currentMonday = new Date(today)
+    currentMonday.setDate(today.getDate() - today.getDay() + 1) // Get Monday of current week
+    
+    const weekStarts: { start: string, end: string }[] = []
+    for (let w = 0; w < 4; w++) {
+      const weekStart = new Date(currentMonday)
+      weekStart.setDate(currentMonday.getDate() - (w * 7))
+      const weekEnd = new Date(weekStart)
+      weekEnd.setDate(weekStart.getDate() + 6)
+      
+      weekStarts.unshift({
+        start: weekStart.toISOString().split('T')[0],
+        end: weekEnd.toISOString().split('T')[0]
+      })
+    }
 
     weekStarts.forEach(({ start, end }) => {
       const machines: MachineWeekData[] = []
@@ -193,11 +203,28 @@ export default function HitTrackerAccurate() {
   }
 
   useEffect(() => {
-    // Simulate loading data
-    setTimeout(() => {
-      setWeekData(generateMockData())
-      setLoading(false)
-    }, 500)
+    // Fetch real data from the database
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/api/reports/hit-tracker-weeks')
+        const data = await response.json()
+        
+        if (data.weeks && data.weeks.length > 0) {
+          setWeekData(data.weeks)
+        } else {
+          // Fallback to mock data if no real data available
+          setWeekData(generateMockData())
+        }
+      } catch (error) {
+        console.error('Error fetching hit tracker data:', error)
+        // Fallback to mock data on error
+        setWeekData(generateMockData())
+      } finally {
+        setLoading(false)
+      }
+    }
+    
+    fetchData()
   }, [])
 
   const getEfficiencyColor = (efficiency: number | null) => {
