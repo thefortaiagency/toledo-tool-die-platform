@@ -174,7 +174,7 @@ export default function MachineDetailModal({ machine, onClose, allWeeksData }: M
                     cx="50%"
                     cy="50%"
                     labelLine={false}
-                    label={(entry) => `${entry.name}: ${entry.value.toFixed(1)}%`}
+                    label={(entry: any) => `${entry.name}: ${entry.value?.toFixed(1) || 0}%`}
                     outerRadius={80}
                     fill="#8884d8"
                     dataKey="value"

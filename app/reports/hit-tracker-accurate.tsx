@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { ChevronLeft, ChevronRight, TrendingUp, TrendingDown, AlertCircle, CheckCircle, Loader2, Info } from 'lucide-react'
 import MachineDetailModal from './machine-detail-modal'
 
