@@ -49,8 +49,7 @@ export default function Login() {
               className="h-16 w-auto"
             />
           </div>
-          <CardTitle className="text-3xl font-bold text-black">Toledo Tool & Die</CardTitle>
-          <CardDescription className="text-base mt-2 font-medium text-gray-700">Production Platform Login</CardDescription>
+          <CardTitle className="text-2xl font-bold text-black">Production Platform Login</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleLogin} className="space-y-4">
