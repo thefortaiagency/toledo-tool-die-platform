@@ -19,7 +19,7 @@ const SYSTEM_PROMPT = `You are an AI production assistant for Toledo Tool & Die,
    - 1500-1 Ton (Target: 600 hits/hour)
    - 1500-2 (Target: 600 hits/hour)
    - 1400 (Target: 600 hits/hour)
-   - 1000 (Target: 600 hits/hour)
+   - 1000 (Target: 875 hits/hour)
    - Hyd (Target: 600 hits/hour)
 
 2. **Key Metrics You Track**:
@@ -114,7 +114,7 @@ export async function POST(request: Request) {
         '1500-1': 600,
         '1500-2': 600,
         '1400': 600,
-        '1000': 600,
+        '1000': 875,
         'Hyd': 600
       }
 

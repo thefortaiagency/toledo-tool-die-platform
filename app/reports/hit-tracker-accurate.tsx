@@ -10,7 +10,7 @@ const MACHINES = [
   { id: '1500-1', name: '1500-1 Ton', target: 600, color: 'green' },
   { id: '1500-2', name: '1500-2', target: 600, color: 'purple' },
   { id: '1400', name: '1400', target: 600, color: 'orange' },
-  { id: '1000', name: '1000', target: 600, color: 'red' },
+  { id: '1000', name: '1000T', target: 875, color: 'red' },
   { id: 'hyd', name: 'Hyd', target: 600, color: 'indigo' }
 ]
 

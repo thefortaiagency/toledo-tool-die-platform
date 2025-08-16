@@ -45,7 +45,7 @@ export default function HitTrackerTable() {
       { name: '1500-1', target: 600 },
       { name: '1500-2', target: 600 },
       { name: '1400', target: 600 },
-      { name: '1000', target: 600 }
+      { name: '1000T', target: 875 }
     ]
 
     const today = new Date()
