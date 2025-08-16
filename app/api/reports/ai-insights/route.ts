@@ -7,9 +7,10 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY!
 )
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY!
-})
+// Initialize OpenAI only if API key is available
+const openai = process.env.OPENAI_API_KEY 
+  ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+  : null
 
 export async function GET() {
   try {
@@ -28,25 +29,33 @@ export async function GET() {
       `${c.operator} (Line ${c.line}, Part ${c.part_number}): ${c.comments}`
     ).join('\n') || ''
 
-    // Use OpenAI to analyze patterns
-    const completion = await openai.chat.completions.create({
-      model: "gpt-4-turbo-preview",
-      messages: [
-        {
-          role: "system",
-          content: "You are an expert manufacturing analyst. Analyze these operator comments from a tool and die factory to identify patterns, issues, and opportunities for improvement. Focus on die configuration issues, machine problems, quality concerns, and operator training needs."
-        },
-        {
-          role: "user",
-          content: `Analyze these ${comments?.length || 0} operator comments and identify the top patterns and actionable insights:\n\n${commentText}\n\nProvide a JSON response with: summary, keyFindings (array with icon type, title, description, action), and predictions (efficiency, cost, timeline).`
-        }
-      ],
-      temperature: 0.7,
-      max_tokens: 1500,
-      response_format: { type: "json_object" }
-    })
+    // Use OpenAI to analyze patterns if available
+    let aiAnalysis: any = {}
+    
+    if (openai && comments && comments.length > 0) {
+      try {
+        const completion = await openai.chat.completions.create({
+          model: "gpt-4-turbo-preview",
+          messages: [
+            {
+              role: "system",
+              content: "You are an expert manufacturing analyst. Analyze these operator comments from a tool and die factory to identify patterns, issues, and opportunities for improvement. Focus on die configuration issues, machine problems, quality concerns, and operator training needs."
+            },
+            {
+              role: "user",
+              content: `Analyze these ${comments?.length || 0} operator comments and identify the top patterns and actionable insights:\n\n${commentText}\n\nProvide a JSON response with: summary, keyFindings (array with icon type, title, description, action), and predictions (efficiency, cost, timeline).`
+            }
+          ],
+          temperature: 0.7,
+          max_tokens: 1500,
+          response_format: { type: "json_object" }
+        })
 
-    const aiAnalysis = JSON.parse(completion.choices[0].message.content || '{}')
+        aiAnalysis = JSON.parse(completion.choices[0].message.content || '{}')
+      } catch (openAiError) {
+        console.log('OpenAI analysis skipped:', openAiError)
+      }
+    }
 
     // Count comment patterns
     const patterns = [
