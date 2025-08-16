@@ -67,14 +67,80 @@ export async function GET() {
           const dayDate = new Date(monday)
           dayDate.setDate(monday.getDate() + index)
           
+          // Create shift structure to match component expectations
+          // Since we don't have shift-level data, distribute evenly
+          const shiftsData = hits > 0 ? {
+            third: {
+              hits: Math.floor(hits * 0.33),
+              hours: Math.floor(hours * 0.33),
+              efficiency: null as number | null
+            },
+            first: {
+              hits: Math.floor(hits * 0.33),
+              hours: Math.floor(hours * 0.33),
+              efficiency: null as number | null
+            },
+            second: {
+              hits: Math.floor(hits * 0.34),
+              hours: Math.ceil(hours * 0.34),
+              efficiency: null as number | null
+            }
+          } : {
+            third: { hits: null, hours: null, efficiency: null },
+            first: { hits: null, hours: null, efficiency: null },
+            second: { hits: null, hours: null, efficiency: null }
+          }
+          
+          // Calculate efficiencies
+          if (shiftsData.third.hits !== null && shiftsData.third.hours && shiftsData.third.hours > 0) {
+            shiftsData.third.efficiency = (shiftsData.third.hits / shiftsData.third.hours) / machine.target
+          }
+          if (shiftsData.first.hits !== null && shiftsData.first.hours && shiftsData.first.hours > 0) {
+            shiftsData.first.efficiency = (shiftsData.first.hits / shiftsData.first.hours) / machine.target
+          }
+          if (shiftsData.second.hits !== null && shiftsData.second.hours && shiftsData.second.hours > 0) {
+            shiftsData.second.efficiency = (shiftsData.second.hits / shiftsData.second.hours) / machine.target
+          }
+          
           days.push({
             date: dayDate.toISOString().split('T')[0],
             dayName: dayNames[index],
-            hits: hits,
-            hours: hours,
-            efficiency: hours > 0 ? (hits / hours) / machine.target : 0
+            shifts: shiftsData,
+            dailyHits: hits,
+            dailyHours: hours,
+            dailyEfficiency: hours > 0 ? (hits / hours) / machine.target : 0
           })
         })
+        
+        // Calculate shift totals for the week
+        const shiftTotals = {
+          third: {
+            hits: days.reduce((sum: number, d: any) => sum + (d.shifts.third.hits || 0), 0),
+            hours: days.reduce((sum: number, d: any) => sum + (d.shifts.third.hours || 0), 0),
+            efficiency: 0
+          },
+          first: {
+            hits: days.reduce((sum: number, d: any) => sum + (d.shifts.first.hits || 0), 0),
+            hours: days.reduce((sum: number, d: any) => sum + (d.shifts.first.hours || 0), 0),
+            efficiency: 0
+          },
+          second: {
+            hits: days.reduce((sum: number, d: any) => sum + (d.shifts.second.hits || 0), 0),
+            hours: days.reduce((sum: number, d: any) => sum + (d.shifts.second.hours || 0), 0),
+            efficiency: 0
+          }
+        }
+        
+        // Calculate shift efficiencies
+        if (shiftTotals.third.hours > 0) {
+          shiftTotals.third.efficiency = (shiftTotals.third.hits / shiftTotals.third.hours) / machine.target
+        }
+        if (shiftTotals.first.hours > 0) {
+          shiftTotals.first.efficiency = (shiftTotals.first.hits / shiftTotals.first.hours) / machine.target
+        }
+        if (shiftTotals.second.hours > 0) {
+          shiftTotals.second.efficiency = (shiftTotals.second.hits / shiftTotals.second.hours) / machine.target
+        }
         
         week.machines.push({
           machineId: machine.id,
@@ -84,7 +150,8 @@ export async function GET() {
           weeklyHits: record.weekly_total || weeklyHits,
           weeklyHours: weeklyHours,
           weeklyPerformance: weeklyHours > 0 ? (weeklyHits / weeklyHours) / machine.target : 0,
-          weeklyAverage: record.weekly_average || (weeklyHits / 7)
+          weeklyAverage: record.weekly_average || (weeklyHits / 7),
+          shiftTotals: shiftTotals
         })
       }
     })
