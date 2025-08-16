@@ -125,26 +125,40 @@ export default function DataEntry() {
       const totalCycles = parseInt(formData.total_cycles) || 0
       const actualEfficiency = totalCycles > 0 ? (goodParts / totalCycles) * 100 : 0
 
+      // Prepare data object - include new fields only if they have values
+      const dataToInsert: any = {
+        date: formData.date,
+        shift_id: formData.shift_id,
+        machine_id: formData.machine_id,
+        part_id: partId,
+        operator_id: operatorId,
+        total_cycles: parseInt(formData.total_cycles) || 0,
+        good_parts: goodParts,
+        scrap_parts: parseInt(formData.scrap_parts) || 0,
+        downtime_minutes: parseInt(formData.downtime_minutes) || 0,
+        scheduled_hours: parseFloat(formData.scheduled_hours) || 8,
+        actual_hours: parseFloat(formData.actual_hours) || 0,
+        actual_efficiency: actualEfficiency,
+        operator_comments: formData.operator_comments,
+        supervisor_comments: formData.supervisor_comments,
+        manning_status: formData.manning_status
+      }
+      
+      // Add new fields if they have values (this prevents errors if columns don't exist yet)
+      if (formData.issue_category) {
+        dataToInsert.issue_category = formData.issue_category
+        dataToInsert.severity_level = formData.severity_level
+        dataToInsert.actions_taken = formData.actions_taken
+        dataToInsert.root_cause = formData.root_cause
+        dataToInsert.parts_replaced = formData.parts_replaced
+        dataToInsert.follow_up_required = formData.follow_up_required
+        dataToInsert.safety_concern = formData.safety_concern
+      }
+
       // Insert production data
       const { error: prodError } = await supabase
         .from('production_data')
-        .insert({
-          date: formData.date,
-          shift_id: formData.shift_id,
-          machine_id: formData.machine_id,
-          part_id: partId,
-          operator_id: operatorId,
-          total_cycles: parseInt(formData.total_cycles) || 0,
-          good_parts: goodParts,
-          scrap_parts: parseInt(formData.scrap_parts) || 0,
-          downtime_minutes: parseInt(formData.downtime_minutes) || 0,
-          scheduled_hours: parseFloat(formData.scheduled_hours) || 8,
-          actual_hours: parseFloat(formData.actual_hours) || 0,
-          actual_efficiency: actualEfficiency,
-          operator_comments: formData.operator_comments,
-          supervisor_comments: formData.supervisor_comments,
-          manning_status: formData.manning_status
-        })
+        .insert(dataToInsert)
 
       if (prodError) throw prodError
 
