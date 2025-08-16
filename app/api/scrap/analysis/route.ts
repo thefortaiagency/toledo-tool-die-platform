@@ -41,8 +41,29 @@ export async function GET(req: NextRequest) {
       query = query.ilike('source_sheet', `%${source}%`)
     }
     
-    const { data: scrapData, error } = await query
-      .order('month', { ascending: false })
+    // Get summary data using aggregation
+    let summaryQuery = supabase
+      .from('scrap_data')
+      .select('quantity, extended_cost')
+    
+    // Apply same filters for summary
+    if (startDate && endDate) {
+      summaryQuery = summaryQuery.gte('month', startDate).lte('month', endDate)
+    }
+    if (month && month !== 'all') {
+      summaryQuery = summaryQuery.eq('month', month)
+    }
+    if (workcenter && workcenter !== 'all') {
+      summaryQuery = summaryQuery.eq('workcenter', workcenter)
+    }
+    if (partNumber) {
+      summaryQuery = summaryQuery.ilike('part_number', `%${partNumber}%`)
+    }
+    if (source) {
+      summaryQuery = summaryQuery.ilike('source_sheet', `%${source}%`)
+    }
+
+    const { data: scrapData, error } = await summaryQuery.limit(5000)
     
     if (error) throw error
     
@@ -164,9 +185,33 @@ export async function GET(req: NextRequest) {
       .sort((a, b) => b.quantity - a.quantity)
       .slice(0, 20)
     
+    // Get monthly trends using database aggregation
+    let monthlyQuery = supabase
+      .from('scrap_data')
+      .select('month, quantity, extended_cost')
+    
+    // Apply same filters
+    if (startDate && endDate) {
+      monthlyQuery = monthlyQuery.gte('month', startDate).lte('month', endDate)
+    }
+    if (month && month !== 'all') {
+      monthlyQuery = monthlyQuery.eq('month', month)
+    }
+    if (workcenter && workcenter !== 'all') {
+      monthlyQuery = monthlyQuery.eq('workcenter', workcenter)
+    }
+    if (partNumber) {
+      monthlyQuery = monthlyQuery.ilike('part_number', `%${partNumber}%`)
+    }
+    if (source) {
+      monthlyQuery = monthlyQuery.ilike('source_sheet', `%${source}%`)
+    }
+    
+    const { data: monthlyData } = await monthlyQuery.limit(10000)
+    
     // Monthly trend
     const monthlyTrend: Record<string, any> = {}
-    scrapData?.forEach(record => {
+    monthlyData?.forEach(record => {
       const month = record.month || 'Unknown'
       if (!monthlyTrend[month]) {
         monthlyTrend[month] = {
