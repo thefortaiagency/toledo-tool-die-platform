@@ -32,7 +32,15 @@ export default function DataEntry() {
     actual_hours: '',
     operator_comments: '',
     supervisor_comments: '',
-    manning_status: 'Have'
+    manning_status: 'Have',
+    // New fields based on comment analysis
+    issue_category: '',
+    severity_level: '',
+    actions_taken: [] as string[],
+    root_cause: '',
+    parts_replaced: '',
+    follow_up_required: false,
+    safety_concern: false
   })
 
   useEffect(() => {
@@ -172,7 +180,14 @@ export default function DataEntry() {
         downtime_minutes: '',
         actual_hours: '',
         operator_comments: '',
-        supervisor_comments: ''
+        supervisor_comments: '',
+        issue_category: '',
+        severity_level: '',
+        actions_taken: [],
+        root_cause: '',
+        parts_replaced: '',
+        follow_up_required: false,
+        safety_concern: false
       })
 
       // Reload parts and operators in case new ones were added
@@ -563,6 +578,171 @@ export default function DataEntry() {
                   </div>
                 )}
               </div>
+            </CardContent>
+          </Card>
+
+          {/* Issue Tracking - New Section */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <AlertTriangle className="h-5 w-5 mr-2 text-orange-600" />
+                Issue Tracking
+              </CardTitle>
+              <CardDescription>Categorize and track production issues</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">Issue Category</label>
+                <select
+                  name="issue_category"
+                  value={formData.issue_category}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="">No Issue / Normal Operation</option>
+                  <option value="die_tooling">Die/Tooling Issue</option>
+                  <option value="material_feed">Material Feed Problem</option>
+                  <option value="hydraulic_pressure">Hydraulic/Pressure Issue</option>
+                  <option value="quality_defect">Quality/Defect Issue</option>
+                  <option value="electrical_sensor">Electrical/Sensor Problem</option>
+                  <option value="setup_changeover">Setup/Changeover</option>
+                  <option value="maintenance">Maintenance Required</option>
+                  <option value="machine_overload">Machine Overload</option>
+                  <option value="component_failure">Component Failure</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+
+              {formData.issue_category && (
+                <>
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Severity Level</label>
+                    <div className="space-y-2">
+                      <label className="flex items-center">
+                        <input
+                          type="radio"
+                          name="severity_level"
+                          value="critical"
+                          checked={formData.severity_level === 'critical'}
+                          onChange={handleChange}
+                          className="mr-2"
+                        />
+                        <span className="text-red-600 font-medium">Critical</span>
+                        <span className="text-sm text-gray-500 ml-2">(stopped production)</span>
+                      </label>
+                      <label className="flex items-center">
+                        <input
+                          type="radio"
+                          name="severity_level"
+                          value="major"
+                          checked={formData.severity_level === 'major'}
+                          onChange={handleChange}
+                          className="mr-2"
+                        />
+                        <span className="text-yellow-600 font-medium">Major</span>
+                        <span className="text-sm text-gray-500 ml-2">(slowed production)</span>
+                      </label>
+                      <label className="flex items-center">
+                        <input
+                          type="radio"
+                          name="severity_level"
+                          value="minor"
+                          checked={formData.severity_level === 'minor'}
+                          onChange={handleChange}
+                          className="mr-2"
+                        />
+                        <span className="text-green-600 font-medium">Minor</span>
+                        <span className="text-sm text-gray-500 ml-2">(no impact)</span>
+                      </label>
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Actions Taken</label>
+                    <div className="space-y-2">
+                      {[
+                        { value: 'adjusted_settings', label: 'Adjusted settings' },
+                        { value: 'called_maintenance', label: 'Called maintenance' },
+                        { value: 'replaced_component', label: 'Replaced component' },
+                        { value: 'cleared_jam', label: 'Cleaned/cleared jam' },
+                        { value: 'temp_fix', label: 'Temporary fix applied' },
+                        { value: 'stopped_safety', label: 'Stopped for safety' },
+                        { value: 'continued', label: 'Continued with issue' }
+                      ].map(action => (
+                        <label key={action.value} className="flex items-center">
+                          <input
+                            type="checkbox"
+                            value={action.value}
+                            checked={formData.actions_taken.includes(action.value)}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setFormData(prev => ({
+                                  ...prev,
+                                  actions_taken: [...prev.actions_taken, action.value]
+                                }))
+                              } else {
+                                setFormData(prev => ({
+                                  ...prev,
+                                  actions_taken: prev.actions_taken.filter(a => a !== action.value)
+                                }))
+                              }
+                            }}
+                            className="mr-2"
+                          />
+                          {action.label}
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Root Cause (if known)</label>
+                    <input
+                      type="text"
+                      name="root_cause"
+                      value={formData.root_cause}
+                      onChange={handleChange}
+                      className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder="e.g., Worn die spring, sensor calibration, etc."
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium mb-2">Parts Replaced</label>
+                    <input
+                      type="text"
+                      name="parts_replaced"
+                      value={formData.parts_replaced}
+                      onChange={handleChange}
+                      className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                      placeholder="e.g., Die spring, sensor, hydraulic fitting"
+                    />
+                  </div>
+
+                  <div className="flex items-center space-x-6">
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        name="follow_up_required"
+                        checked={formData.follow_up_required}
+                        onChange={(e) => setFormData(prev => ({ ...prev, follow_up_required: e.target.checked }))}
+                        className="mr-2"
+                      />
+                      <span className="font-medium">Follow-up Required</span>
+                    </label>
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        name="safety_concern"
+                        checked={formData.safety_concern}
+                        onChange={(e) => setFormData(prev => ({ ...prev, safety_concern: e.target.checked }))}
+                        className="mr-2"
+                      />
+                      <span className="font-medium text-red-600">Safety Concern</span>
+                    </label>
+                  </div>
+                </>
+              )}
             </CardContent>
           </Card>
 
