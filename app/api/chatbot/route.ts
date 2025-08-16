@@ -137,8 +137,8 @@ function parseUserIntent(message: string) {
   const lower = message.toLowerCase()
   
   const intents = {
-    currentEfficiency: /current|now|today|latest|real.?time/i.test(message) && /efficiency|performance/i.test(message),
-    machineStatus: /machine|600|1500|1400|1000|hyd/i.test(message) && /status|how|performance/i.test(message),
+    currentEfficiency: /current|now|today|latest|real.?time|compare|all/i.test(message) && /efficiency|performance/i.test(message),
+    machineStatus: /machine|600|1500|1400|1000|hyd|all.?machine/i.test(message) || /compare.*efficiency.*machine/i.test(message),
     shiftComparison: /shift|first|second|third/i.test(message) && /compar|best|worst|analys/i.test(message),
     comments: /comment|note|issue|problem|concern/i.test(message),
     safety: /safety|hazard|danger|risk|accident/i.test(message),
@@ -598,14 +598,41 @@ export async function POST(request: Request) {
       { role: 'user' as const, content: message }
     ]
     
-    // Get AI response - using GPT-5 with PhD-level reasoning!
-    const completion = await openai.chat.completions.create({
-      model: 'gpt-5-2025-08-07', // GPT-5 released August 2025!
-      messages,
-      temperature: 0.7,
-      max_completion_tokens: 1000 // GPT-5 uses max_completion_tokens
-    })
+    // Try GPT-5 first, fallback to GPT-4 if empty response
+    console.log('Sending to AI with context data keys:', Object.keys(contextData))
+    console.log('Data context length:', dataContext.length)
     
+    let completion
+    try {
+      // Try GPT-5 first
+      completion = await openai.chat.completions.create({
+        model: 'gpt-5-2025-08-07', 
+        messages,
+        max_completion_tokens: 2000
+      })
+      
+      // If GPT-5 returns empty, fallback to GPT-4
+      if (!completion.choices[0].message.content) {
+        console.log('GPT-5 returned empty, falling back to GPT-4-turbo')
+        completion = await openai.chat.completions.create({
+          model: 'gpt-4-turbo',
+          messages,
+          temperature: 0.7,
+          max_tokens: 1500
+        })
+      }
+    } catch (error: any) {
+      // If GPT-5 fails, try GPT-4
+      console.log('GPT-5 error, using GPT-4:', error.message)
+      completion = await openai.chat.completions.create({
+        model: 'gpt-4-turbo',
+        messages,
+        temperature: 0.7,
+        max_tokens: 1500
+      })
+    }
+    
+    console.log('AI Response length:', completion.choices[0].message.content?.length)
     let aiResponse = completion.choices[0].message.content || ""
     
     // Add relevant links to the response
