@@ -1,13 +1,14 @@
 'use client'
 
 import { useState, useRef, useEffect } from 'react'
-import { MessageCircle, Send, X, Loader2, Factory, TrendingUp, AlertCircle, HelpCircle, BarChart3 } from 'lucide-react'
+import { MessageCircle, Send, X, Loader2, Factory, TrendingUp, AlertCircle, HelpCircle, BarChart3, AlertTriangle, Shield, ClipboardList, Activity, Users, Settings } from 'lucide-react'
 
 interface Message {
   role: 'user' | 'assistant' | 'system'
   content: string
   timestamp: Date
   data?: any
+  links?: string[]
 }
 
 // Simple function to strip markdown formatting
@@ -21,6 +22,24 @@ const stripMarkdown = (text: string) => {
     .replace(/#{1,6}\s/g, '')      // Remove # headers
 }
 
+// Convert markdown links to HTML
+const renderContent = (content: string) => {
+  // Replace markdown links [text](url) with HTML links
+  const withLinks = content.replace(
+    /\[([^\]]+)\]\(([^)]+)\)/g,
+    '<a href="$2" class="text-orange-600 hover:text-orange-700 underline">$1</a>'
+  )
+  
+  // Strip other markdown but keep the HTML links
+  const stripped = withLinks
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
+    .replace(/`(.*?)`/g, '<code class="bg-gray-200 px-1 rounded">$1</code>')
+    .replace(/#{1,6}\s/g, '')
+  
+  return stripped
+}
+
 interface ProductionChatbotProps {
   isNavbar?: boolean
 }
@@ -30,7 +49,16 @@ export default function ProductionChatbot({ isNavbar = false }: ProductionChatbo
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'assistant',
-      content: "👋 Hi! I'm your Toledo Tool & Die production assistant. I can help you with:\n\n• Current machine efficiency and performance\n• Hit tracker analysis and trends\n• Shift comparisons and recommendations\n• Die issues and maintenance alerts\n• Production targets and forecasts\n\nWhat would you like to know about your production floor?",
+      content: `👋 Hi! I'm your Toledo Tool & Die production assistant with enhanced capabilities!
+
+I can help you with:
+• **Real-time Production Data** - Machine efficiency, shift performance, operator metrics
+• **Issue Tracking** - Die problems, safety concerns, maintenance needs
+• **Comments Analysis** - AI-categorized operator and supervisor comments
+• **Predictive Insights** - Maintenance predictions and anomaly detection
+• **Quality Metrics** - Scrap rates, defect tracking, quality trends
+
+What would you like to know about your production floor?`,
       timestamp: new Date()
     }
   ])
@@ -46,12 +74,13 @@ export default function ProductionChatbot({ isNavbar = false }: ProductionChatbo
     scrollToBottom()
   }, [messages])
 
-  const handleSend = async () => {
-    if (!input.trim() || loading) return
+  const handleSend = async (customMessage?: string) => {
+    const messageToSend = customMessage || input
+    if (!messageToSend.trim() || loading) return
 
     const userMessage: Message = {
       role: 'user',
-      content: input,
+      content: messageToSend,
       timestamp: new Date()
     }
 
@@ -66,7 +95,7 @@ export default function ProductionChatbot({ isNavbar = false }: ProductionChatbo
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          message: input,
+          message: messageToSend,
           history: messages.slice(-10) // Send last 10 messages for context
         })
       })
@@ -77,7 +106,8 @@ export default function ProductionChatbot({ isNavbar = false }: ProductionChatbo
         role: 'assistant',
         content: data.message,
         timestamp: new Date(),
-        data: data.data
+        data: data.data,
+        links: data.links
       }
 
       setMessages(prev => [...prev, assistantMessage])
@@ -100,12 +130,59 @@ export default function ProductionChatbot({ isNavbar = false }: ProductionChatbo
     }
   }
 
+  // Enhanced suggestion cards with new features
+  const suggestionCards = [
+    {
+      icon: <TrendingUp className="w-5 h-5" />,
+      title: "Current Efficiency",
+      subtitle: "Real-time machine performance",
+      query: "What's the current efficiency for all machines?",
+      color: "bg-gradient-to-br from-green-500 to-green-600"
+    },
+    {
+      icon: <Users className="w-5 h-5" />,
+      title: "Shift Analysis",
+      subtitle: "Compare shift performance",
+      query: "Which shift is performing best this week?",
+      color: "bg-gradient-to-br from-blue-500 to-blue-600"
+    },
+    {
+      icon: <AlertTriangle className="w-5 h-5" />,
+      title: "Safety Concerns",
+      subtitle: "Critical safety issues",
+      query: "Show me recent safety concerns that need attention",
+      color: "bg-gradient-to-br from-red-500 to-red-600"
+    },
+    {
+      icon: <ClipboardList className="w-5 h-5" />,
+      title: "Follow-up Items",
+      subtitle: "Issues requiring action",
+      query: "What issues need follow-up?",
+      color: "bg-gradient-to-br from-orange-500 to-orange-600"
+    },
+    {
+      icon: <Settings className="w-5 h-5" />,
+      title: "Die Issues",
+      subtitle: "Tooling problems analysis",
+      query: "Analyze die tooling problems from this week",
+      color: "bg-gradient-to-br from-purple-500 to-purple-600"
+    },
+    {
+      icon: <Activity className="w-5 h-5" />,
+      title: "AI Insights",
+      subtitle: "Predictive analytics",
+      query: "Show me AI-generated insights and predictions",
+      color: "bg-gradient-to-br from-indigo-500 to-indigo-600"
+    }
+  ]
+
+  // Quick questions for first-time users
   const quickQuestions = [
-    "What's the current efficiency for 600 Ton?",
-    "Which shift is performing best today?",
-    "Show me die issues from this week",
-    "What machines need maintenance?",
-    "Compare this week to last week"
+    "What machines are below target?",
+    "Show operator comments from today",
+    "Compare this week to last week",
+    "What's the scrap rate by shift?",
+    "Which machine has the most downtime?"
   ]
 
   return (
@@ -131,14 +208,14 @@ export default function ProductionChatbot({ isNavbar = false }: ProductionChatbo
 
       {/* Chat Window */}
       {isOpen && (
-        <div className="fixed top-20 right-4 w-96 h-[600px] bg-white rounded-xl shadow-2xl z-50 flex flex-col">
+        <div className="fixed top-20 right-4 w-[480px] h-[700px] bg-white rounded-xl shadow-2xl z-50 flex flex-col">
           {/* Header */}
           <div className="bg-gradient-to-r from-orange-600 to-orange-700 text-white p-4 rounded-t-xl flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <Factory className="w-6 h-6" />
               <div>
-                <h3 className="font-bold">Production Assistant</h3>
-                <p className="text-xs text-orange-100">Toledo Tool & Die AI</p>
+                <h3 className="font-bold">AI Production Assistant</h3>
+                <p className="text-xs text-orange-100">Toledo Tool & Die - Enhanced with Issue Tracking</p>
               </div>
             </div>
             <button
@@ -157,7 +234,7 @@ export default function ProductionChatbot({ isNavbar = false }: ProductionChatbo
                 className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-[80%] rounded-lg p-3 ${
+                  className={`max-w-[85%] rounded-lg p-3 ${
                     msg.role === 'user'
                       ? 'bg-orange-600 text-white'
                       : 'bg-gray-100 text-gray-800'
@@ -169,7 +246,10 @@ export default function ProductionChatbot({ isNavbar = false }: ProductionChatbo
                       <span className="text-xs font-semibold text-orange-600">AI Assistant</span>
                     </div>
                   )}
-                  <div className="whitespace-pre-wrap">{stripMarkdown(msg.content)}</div>
+                  <div 
+                    className="whitespace-pre-wrap"
+                    dangerouslySetInnerHTML={{ __html: renderContent(msg.content) }}
+                  />
                   <div className={`text-xs mt-1 ${msg.role === 'user' ? 'text-orange-100' : 'text-gray-500'}`}>
                     {msg.timestamp.toLocaleTimeString()}
                   </div>
@@ -187,19 +267,36 @@ export default function ProductionChatbot({ isNavbar = false }: ProductionChatbo
             <div ref={messagesEndRef} />
           </div>
 
-          {/* Quick Questions */}
-          {messages.length === 1 && (
-            <div className="px-4 pb-2">
+          {/* Suggestion Cards - Show when conversation is just starting */}
+          {messages.length <= 2 && !loading && (
+            <div className="px-4 pb-3">
+              <p className="text-xs text-gray-500 mb-2 font-semibold">Popular Queries:</p>
+              <div className="grid grid-cols-2 gap-2 mb-3">
+                {suggestionCards.map((card, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => handleSend(card.query)}
+                    className={`${card.color} text-white rounded-lg p-3 text-left hover:opacity-90 transition-opacity`}
+                  >
+                    <div className="flex items-start space-x-2">
+                      <div className="mt-0.5">{card.icon}</div>
+                      <div className="flex-1">
+                        <div className="font-semibold text-sm">{card.title}</div>
+                        <div className="text-xs opacity-90">{card.subtitle}</div>
+                      </div>
+                    </div>
+                  </button>
+                ))}
+              </div>
+              
+              {/* Quick Questions */}
               <p className="text-xs text-gray-500 mb-2">Quick questions:</p>
               <div className="flex flex-wrap gap-2">
                 {quickQuestions.map((question, idx) => (
                   <button
                     key={idx}
-                    onClick={() => {
-                      setInput(question)
-                      handleSend()
-                    }}
-                    className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-2 py-1 rounded-lg transition-colors"
+                    onClick={() => handleSend(question)}
+                    className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded-lg transition-colors"
                   >
                     {question}
                   </button>
@@ -216,21 +313,27 @@ export default function ProductionChatbot({ isNavbar = false }: ProductionChatbo
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 onKeyPress={handleKeyPress}
-                placeholder="Ask about production metrics..."
+                placeholder="Ask about production, safety, issues..."
                 className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-600"
                 disabled={loading}
               />
               <button
-                onClick={handleSend}
+                onClick={() => handleSend()}
                 disabled={loading || !input.trim()}
                 className="bg-orange-600 text-white p-2 rounded-lg hover:bg-orange-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               >
                 <Send className="w-5 h-5" />
               </button>
             </div>
-            <p className="text-xs text-gray-500 mt-2">
-              Press Enter to send • Shift+Enter for new line
-            </p>
+            <div className="flex items-center justify-between mt-2">
+              <p className="text-xs text-gray-500">
+                Press Enter to send • Shift+Enter for new line
+              </p>
+              <div className="flex items-center space-x-2 text-xs text-gray-500">
+                <Shield className="w-3 h-3" />
+                <span>Enhanced with safety tracking</span>
+              </div>
+            </div>
           </div>
         </div>
       )}
