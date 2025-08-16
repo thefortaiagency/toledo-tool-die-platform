@@ -5,7 +5,7 @@ import { supabase } from '@/lib/supabase/client'
 import type { ProductionData, AIInsight } from '@/lib/supabase/client'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
-import { Activity, TrendingUp, AlertCircle, CheckCircle, Factory, Users, Package, Clock } from 'lucide-react'
+import { Activity, TrendingUp, AlertCircle, CheckCircle, Factory, Users, Package, Clock, X } from 'lucide-react'
 import { formatNumber, formatPercent, formatDate, getEfficiencyColor, getEfficiencyBgColor } from '@/lib/utils'
 
 export default function Dashboard() {
@@ -25,6 +25,8 @@ export default function Dashboard() {
   const [shiftData, setShiftData] = useState<any[]>([])
   const [insights, setInsights] = useState<AIInsight[]>([])
   const [recentProduction, setRecentProduction] = useState<any[]>([])
+  const [selectedMetric, setSelectedMetric] = useState<string | null>(null)
+  const [detailData, setDetailData] = useState<any>(null)
 
   useEffect(() => {
     fetchDashboardData()
@@ -211,7 +213,154 @@ export default function Dashboard() {
     }
   }
 
-  if (loading) {
+  const handleMetricClick = async (metricType: string) => {
+    setSelectedMetric(metricType)
+    setLoading(true)
+    
+    try {
+      // Get 30 days of detailed data for the specific metric
+      const thirtyDaysAgo = new Date()
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+
+      const { data: productionData, error } = await supabase
+        .from('production_data')
+        .select(`
+          *,
+          machines(machine_number),
+          shifts(shift_name)
+        `)
+        .gte('date', thirtyDaysAgo.toISOString())
+        .order('date', { ascending: true })
+
+      if (error) throw error
+
+      // Process data based on metric type
+      let detailChartData = []
+      let insights = []
+
+      switch (metricType) {
+        case 'cycles':
+          // Daily cycle trends
+          const cyclesByDay = productionData?.reduce((acc: any, curr) => {
+            const date = new Date(curr.date).toLocaleDateString()
+            if (!acc[date]) acc[date] = { date, cycles: 0, machines: new Set() }
+            acc[date].cycles += curr.total_cycles || 0
+            acc[date].machines.add(curr.machines?.machine_number)
+            return acc
+          }, {})
+          
+          detailChartData = Object.values(cyclesByDay || {}).map((d: any) => ({
+            ...d,
+            machineCount: d.machines.size
+          }))
+          
+          insights = [
+            { title: 'Peak Day', value: detailChartData.reduce((max: any, day: any) => day.cycles > max.cycles ? day : max, { cycles: 0 }) },
+            { title: 'Daily Average', value: Math.round(detailChartData.reduce((sum: number, day: any) => sum + day.cycles, 0) / detailChartData.length) },
+            { title: 'Total Days', value: detailChartData.length }
+          ]
+          break
+
+        case 'efficiency':
+          // Daily efficiency trends by machine
+          const efficiencyByDay = productionData?.reduce((acc: any, curr) => {
+            const date = new Date(curr.date).toLocaleDateString()
+            if (!acc[date]) acc[date] = { date, totalEff: 0, count: 0, machines: [] }
+            acc[date].totalEff += curr.actual_efficiency || 0
+            acc[date].count++
+            acc[date].machines.push({ 
+              machine: curr.machines?.machine_number, 
+              efficiency: curr.actual_efficiency 
+            })
+            return acc
+          }, {})
+          
+          detailChartData = Object.values(efficiencyByDay || {}).map((d: any) => ({
+            date: d.date,
+            avgEfficiency: parseFloat((d.totalEff / d.count).toFixed(1)),
+            machineCount: d.machines.length,
+            bestMachine: d.machines.reduce((best: any, m: any) => m.efficiency > best.efficiency ? m : best, { efficiency: 0 }),
+            worstMachine: d.machines.reduce((worst: any, m: any) => m.efficiency < worst.efficiency ? m : worst, { efficiency: 100 })
+          }))
+          
+          insights = [
+            { title: 'Best Day', value: detailChartData.reduce((max: any, day: any) => day.avgEfficiency > max.avgEfficiency ? day : max, { avgEfficiency: 0 }) },
+            { title: 'Trend', value: detailChartData.length > 1 ? (detailChartData[detailChartData.length - 1].avgEfficiency - detailChartData[0].avgEfficiency > 0 ? 'Improving' : 'Declining') : 'Stable' }
+          ]
+          break
+
+        case 'goodParts':
+          // Daily good parts production
+          const goodPartsByDay = productionData?.reduce((acc: any, curr) => {
+            const date = new Date(curr.date).toLocaleDateString()
+            if (!acc[date]) acc[date] = { date, goodParts: 0, totalParts: 0 }
+            acc[date].goodParts += curr.good_parts || 0
+            acc[date].totalParts += (curr.good_parts || 0) + (curr.scrap_parts || 0)
+            return acc
+          }, {})
+          
+          detailChartData = Object.values(goodPartsByDay || {}).map((d: any) => ({
+            date: d.date,
+            goodParts: d.goodParts,
+            yield: parseFloat(((d.goodParts / d.totalParts) * 100).toFixed(1))
+          }))
+          
+          insights = [
+            { title: 'Best Yield Day', value: detailChartData.reduce((max: any, day: any) => day.yield > max.yield ? day : max, { yield: 0 }) },
+            { title: 'Worst Yield Day', value: detailChartData.reduce((min: any, day: any) => day.yield < min.yield ? day : min, { yield: 100 }) }
+          ]
+          break
+
+        case 'downtime':
+          // Daily downtime by machine
+          const downtimeByDay = productionData?.reduce((acc: any, curr) => {
+            const date = new Date(curr.date).toLocaleDateString()
+            if (!acc[date]) acc[date] = { date, totalDowntime: 0, machines: [] }
+            acc[date].totalDowntime += curr.downtime_minutes || 0
+            acc[date].machines.push({ 
+              machine: curr.machines?.machine_number, 
+              downtime: curr.downtime_minutes || 0 
+            })
+            return acc
+          }, {})
+          
+          detailChartData = Object.values(downtimeByDay || {}).map((d: any) => ({
+            date: d.date,
+            totalDowntime: d.totalDowntime,
+            avgDowntime: parseFloat((d.totalDowntime / d.machines.length).toFixed(1)),
+            worstMachine: d.machines.reduce((worst: any, m: any) => m.downtime > worst.downtime ? m : worst, { downtime: 0 })
+          }))
+          
+          insights = [
+            { title: 'Worst Day', value: detailChartData.reduce((max: any, day: any) => day.totalDowntime > max.totalDowntime ? day : max, { totalDowntime: 0 }) },
+            { title: 'Best Day', value: detailChartData.reduce((min: any, day: any) => day.totalDowntime < min.totalDowntime ? day : min, { totalDowntime: 1000 }) }
+          ]
+          break
+
+        default:
+          detailChartData = []
+          insights = []
+      }
+
+      setDetailData({
+        type: metricType,
+        chartData: detailChartData,
+        insights: insights
+      })
+
+    } catch (error) {
+      console.error('Error fetching metric details:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const closeDetailView = () => {
+    setSelectedMetric(null)
+    setDetailData(null)
+  }
+
+  if (loading && !selectedMetric) {
     return (
       <div className="flex items-center justify-center h-screen">
         <div className="text-center">
@@ -233,18 +382,24 @@ export default function Dashboard() {
       
       {/* Key Metrics Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <Card>
+        <Card 
+          className="cursor-pointer hover:shadow-lg transition-shadow" 
+          onClick={() => handleMetricClick('cycles')}
+        >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Total Cycles</CardTitle>
             <Activity className="h-4 w-4 text-orange-600" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatNumber(metrics.totalCycles)}</div>
-            <p className="text-xs text-gray-500">Last 30 days</p>
+            <p className="text-xs text-gray-500">Last 30 days • Click for details</p>
           </CardContent>
         </Card>
         
-        <Card>
+        <Card 
+          className="cursor-pointer hover:shadow-lg transition-shadow" 
+          onClick={() => handleMetricClick('efficiency')}
+        >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Avg Efficiency</CardTitle>
             <TrendingUp className={`h-4 w-4 ${getEfficiencyColor(metrics.averageEfficiency)}`} />
@@ -253,11 +408,14 @@ export default function Dashboard() {
             <div className={`text-2xl font-bold ${getEfficiencyColor(metrics.averageEfficiency)}`}>
               {formatPercent(metrics.averageEfficiency)}
             </div>
-            <p className="text-xs text-gray-500">Last 30 days avg</p>
+            <p className="text-xs text-gray-500">Last 30 days avg • Click for details</p>
           </CardContent>
         </Card>
         
-        <Card>
+        <Card 
+          className="cursor-pointer hover:shadow-lg transition-shadow" 
+          onClick={() => handleMetricClick('goodParts')}
+        >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Good Parts</CardTitle>
             <Package className="h-4 w-4 text-orange-600" />
@@ -265,7 +423,7 @@ export default function Dashboard() {
           <CardContent>
             <div className="text-2xl font-bold">{formatNumber(metrics.totalGoodParts)}</div>
             <p className="text-xs text-gray-500">
-              Last 30 days • {formatPercent((metrics.totalGoodParts / (metrics.totalGoodParts + metrics.totalScrapParts)) * 100)} yield
+              Last 30 days • {formatPercent((metrics.totalGoodParts / (metrics.totalGoodParts + metrics.totalScrapParts)) * 100)} yield • Click for details
             </p>
           </CardContent>
         </Card>
@@ -319,14 +477,17 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card 
+          className="cursor-pointer hover:shadow-lg transition-shadow" 
+          onClick={() => handleMetricClick('downtime')}
+        >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Avg Downtime</CardTitle>
             <Clock className="h-4 w-4 text-red-600" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{Math.round(metrics.averageDowntime)}</div>
-            <p className="text-xs text-gray-500">Last 30 days avg</p>
+            <div className="text-2xl font-bold">{Math.round(metrics.averageDowntime)}m</div>
+            <p className="text-xs text-gray-500">Last 30 days avg • Click for details</p>
           </CardContent>
         </Card>
       </div>
@@ -511,6 +672,168 @@ export default function Dashboard() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Detail Modal */}
+      {selectedMetric && detailData && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+            <div className="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between">
+              <h2 className="text-2xl font-bold text-gray-900">
+                {detailData.type === 'cycles' && 'Total Cycles - 30 Day Analysis'}
+                {detailData.type === 'efficiency' && 'Efficiency Trends - 30 Day Analysis'}
+                {detailData.type === 'goodParts' && 'Good Parts Production - 30 Day Analysis'}
+                {detailData.type === 'downtime' && 'Downtime Analysis - 30 Day Analysis'}
+              </h2>
+              <button
+                onClick={closeDetailView}
+                className="text-gray-500 hover:text-gray-700 p-2"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            
+            <div className="p-6">
+              {/* Key Insights */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+                {detailData.insights.map((insight: any, idx: number) => (
+                  <div key={idx} className="bg-gray-50 rounded-lg p-4">
+                    <h3 className="font-semibold text-gray-900 mb-2">{insight.title}</h3>
+                    <div className="text-lg font-bold text-orange-600">
+                      {typeof insight.value === 'object' 
+                        ? `${insight.value.date}: ${
+                            detailData.type === 'cycles' ? formatNumber(insight.value.cycles) :
+                            detailData.type === 'efficiency' ? `${insight.value.avgEfficiency}%` :
+                            detailData.type === 'goodParts' ? `${insight.value.yield}%` :
+                            `${insight.value.totalDowntime}m`
+                          }`
+                        : insight.value
+                      }
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Chart */}
+              <div className="bg-white rounded-lg border p-6">
+                <h3 className="text-lg font-semibold mb-4">Daily Trend</h3>
+                <ResponsiveContainer width="100%" height={400}>
+                  {detailData.type === 'cycles' && (
+                    <BarChart data={detailData.chartData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="date" />
+                      <YAxis />
+                      <Tooltip formatter={(value) => [formatNumber(value), 'Cycles']} />
+                      <Bar dataKey="cycles" fill="#f97316" name="Daily Cycles" />
+                    </BarChart>
+                  )}
+                  {detailData.type === 'efficiency' && (
+                    <LineChart data={detailData.chartData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="date" />
+                      <YAxis domain={[0, 100]} />
+                      <Tooltip formatter={(value) => [`${value}%`, 'Efficiency']} />
+                      <Line type="monotone" dataKey="avgEfficiency" stroke="#2563eb" strokeWidth={2} name="Average Efficiency" />
+                    </LineChart>
+                  )}
+                  {detailData.type === 'goodParts' && (
+                    <LineChart data={detailData.chartData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="date" />
+                      <YAxis yAxisId="left" />
+                      <YAxis yAxisId="right" orientation="right" />
+                      <Tooltip />
+                      <Bar dataKey="goodParts" fill="#10b981" name="Good Parts" yAxisId="left" />
+                      <Line type="monotone" dataKey="yield" stroke="#ef4444" strokeWidth={2} name="Yield %" yAxisId="right" />
+                    </LineChart>
+                  )}
+                  {detailData.type === 'downtime' && (
+                    <BarChart data={detailData.chartData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="date" />
+                      <YAxis />
+                      <Tooltip formatter={(value) => [`${value} minutes`, 'Downtime']} />
+                      <Bar dataKey="totalDowntime" fill="#dc2626" name="Total Downtime" />
+                    </BarChart>
+                  )}
+                </ResponsiveContainer>
+              </div>
+
+              {/* Additional Details Table */}
+              <div className="mt-6">
+                <h3 className="text-lg font-semibold mb-4">Detailed Breakdown</h3>
+                <div className="overflow-x-auto">
+                  <table className="min-w-full bg-white border border-gray-200">
+                    <thead className="bg-gray-50">
+                      <tr>
+                        <th className="px-4 py-2 text-left text-sm font-medium text-gray-900">Date</th>
+                        {detailData.type === 'cycles' && (
+                          <>
+                            <th className="px-4 py-2 text-left text-sm font-medium text-gray-900">Total Cycles</th>
+                            <th className="px-4 py-2 text-left text-sm font-medium text-gray-900">Active Machines</th>
+                          </>
+                        )}
+                        {detailData.type === 'efficiency' && (
+                          <>
+                            <th className="px-4 py-2 text-left text-sm font-medium text-gray-900">Avg Efficiency</th>
+                            <th className="px-4 py-2 text-left text-sm font-medium text-gray-900">Best Machine</th>
+                            <th className="px-4 py-2 text-left text-sm font-medium text-gray-900">Worst Machine</th>
+                          </>
+                        )}
+                        {detailData.type === 'goodParts' && (
+                          <>
+                            <th className="px-4 py-2 text-left text-sm font-medium text-gray-900">Good Parts</th>
+                            <th className="px-4 py-2 text-left text-sm font-medium text-gray-900">Yield %</th>
+                          </>
+                        )}
+                        {detailData.type === 'downtime' && (
+                          <>
+                            <th className="px-4 py-2 text-left text-sm font-medium text-gray-900">Total Downtime</th>
+                            <th className="px-4 py-2 text-left text-sm font-medium text-gray-900">Avg Per Machine</th>
+                            <th className="px-4 py-2 text-left text-sm font-medium text-gray-900">Worst Machine</th>
+                          </>
+                        )}
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-gray-200">
+                      {detailData.chartData.slice(0, 10).map((row: any, idx: number) => (
+                        <tr key={idx} className="hover:bg-gray-50">
+                          <td className="px-4 py-2 text-sm text-gray-900">{row.date}</td>
+                          {detailData.type === 'cycles' && (
+                            <>
+                              <td className="px-4 py-2 text-sm text-gray-900">{formatNumber(row.cycles)}</td>
+                              <td className="px-4 py-2 text-sm text-gray-900">{row.machineCount}</td>
+                            </>
+                          )}
+                          {detailData.type === 'efficiency' && (
+                            <>
+                              <td className="px-4 py-2 text-sm text-gray-900">{row.avgEfficiency}%</td>
+                              <td className="px-4 py-2 text-sm text-gray-900">{row.bestMachine.machine} ({row.bestMachine.efficiency}%)</td>
+                              <td className="px-4 py-2 text-sm text-gray-900">{row.worstMachine.machine} ({row.worstMachine.efficiency}%)</td>
+                            </>
+                          )}
+                          {detailData.type === 'goodParts' && (
+                            <>
+                              <td className="px-4 py-2 text-sm text-gray-900">{formatNumber(row.goodParts)}</td>
+                              <td className="px-4 py-2 text-sm text-gray-900">{row.yield}%</td>
+                            </>
+                          )}
+                          {detailData.type === 'downtime' && (
+                            <>
+                              <td className="px-4 py-2 text-sm text-gray-900">{row.totalDowntime}m</td>
+                              <td className="px-4 py-2 text-sm text-gray-900">{row.avgDowntime}m</td>
+                              <td className="px-4 py-2 text-sm text-gray-900">{row.worstMachine.machine} ({row.worstMachine.downtime}m)</td>
+                            </>
+                          )}
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
