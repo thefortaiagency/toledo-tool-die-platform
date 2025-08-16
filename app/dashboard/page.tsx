@@ -52,7 +52,11 @@ export default function Dashboard() {
 
       const { data: productionData, error } = await supabase
         .from('production_data')
-        .select('*')
+        .select(`
+          *,
+          machines(machine_number),
+          shifts(shift_name)
+        `)
         .gte('date', thirtyDaysAgo.toISOString())
         .order('date', { ascending: false })
 
