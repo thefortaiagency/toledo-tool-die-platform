@@ -24,22 +24,19 @@ const stripMarkdown = (text: string) => {
     .replace(/#{1,6}\s/g, '')      // Remove # headers
 }
 
-export default function ResizableChatSidebar() {
-  const [isCollapsed, setIsCollapsed] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('toledo-chat-collapsed')
-      return saved === 'true'
-    }
-    return false
-  })
-  
-  const [width, setWidth] = useState(() => {
-    if (typeof window !== 'undefined') {
-      const saved = localStorage.getItem('toledo-chat-width')
-      return saved ? parseInt(saved) : 380
-    }
-    return 380
-  })
+interface ResizableChatSidebarProps {
+  isCollapsed: boolean
+  onCollapsedChange: (collapsed: boolean) => void
+  width: number
+  onWidthChange: (width: number) => void
+}
+
+export default function ResizableChatSidebar({ 
+  isCollapsed,
+  onCollapsedChange,
+  width,
+  onWidthChange
+}: ResizableChatSidebarProps) {
   const [messages, setMessages] = useState<Message[]>(() => {
     // Load messages from localStorage
     if (typeof window !== 'undefined') {
@@ -77,19 +74,6 @@ export default function ResizableChatSidebar() {
     }
   }, [messages])
 
-  // Save collapsed state to localStorage
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('toledo-chat-collapsed', String(isCollapsed))
-    }
-  }, [isCollapsed])
-
-  // Save width to localStorage
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('toledo-chat-width', String(width))
-    }
-  }, [width])
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -103,13 +87,13 @@ export default function ResizableChatSidebar() {
     const handleKeyDown = (e: KeyboardEvent) => {
       if ((e.metaKey || e.ctrlKey) && e.key === '/') {
         e.preventDefault()
-        setIsCollapsed(!isCollapsed)
+        onCollapsedChange(!isCollapsed)
       }
     }
 
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [isCollapsed])
+  }, [isCollapsed, onCollapsedChange])
 
   // Handle resize
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
@@ -122,9 +106,9 @@ export default function ResizableChatSidebar() {
     
     const newWidth = window.innerWidth - e.clientX
     if (newWidth >= 320 && newWidth <= 600) {
-      setWidth(newWidth)
+      onWidthChange(newWidth)
     }
-  }, [isResizing])
+  }, [isResizing, onWidthChange])
 
   const handleMouseUp = useCallback(() => {
     setIsResizing(false)
@@ -207,25 +191,15 @@ export default function ResizableChatSidebar() {
     "What machines need maintenance?"
   ]
 
-  // Collapsed state - show toggle button
+  // Collapsed state - return null, button will be in main layout
   if (isCollapsed) {
-    return (
-      <div className="fixed right-0 top-1/2 -translate-y-1/2 z-40">
-        <button
-          onClick={() => setIsCollapsed(false)}
-          className="bg-orange-600 text-white p-2 rounded-l-lg shadow-lg hover:bg-orange-700 transition-all"
-          title="Open AI Assistant (⌘/)"
-        >
-          <ChevronLeft className="w-5 h-5" />
-        </button>
-      </div>
-    )
+    return null
   }
 
   return (
     <div 
-      className="fixed right-0 top-16 bottom-0 bg-white shadow-xl z-40 flex flex-col"
-      style={{ width: `${width}px` }}
+      className="h-full bg-white border-l border-gray-200 flex flex-col relative"
+      style={{ width: `${width}px`, flexShrink: 0 }}
     >
       {/* Resize Handle */}
       <div
@@ -263,7 +237,7 @@ export default function ResizableChatSidebar() {
             <Trash2 className="w-4 h-4" />
           </button>
           <button
-            onClick={() => setIsCollapsed(true)}
+            onClick={() => onCollapsedChange(true)}
             className="p-1.5 hover:bg-orange-800/50 rounded-lg transition-colors"
             title="Collapse (⌘/)"
           >
