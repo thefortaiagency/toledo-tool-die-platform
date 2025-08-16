@@ -598,9 +598,9 @@ export async function POST(request: Request) {
       { role: 'user' as const, content: message }
     ]
     
-    // Get AI response
+    // Get AI response - using latest GPT-4 Turbo model
     const completion = await openai.chat.completions.create({
-      model: 'gpt-4-turbo-preview',
+      model: 'gpt-4-turbo', // Latest GPT-4 Turbo model (most capable)
       messages,
       temperature: 0.7,
       max_tokens: 1000
