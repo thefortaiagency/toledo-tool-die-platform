@@ -74,7 +74,6 @@ export default function ResizableChatSidebar({
     }
   }, [messages])
 
-
   // Auto-scroll to bottom
   useEffect(() => {
     if (scrollAreaRef.current) {
@@ -130,17 +129,94 @@ export default function ResizableChatSidebar({
     }
   }, [isResizing, handleMouseMove, handleMouseUp])
 
-  const handleSend = async () => {
-    if (!input.trim() || loading) return
-
-    const userMessage: Message = {
-      role: 'user',
-      content: input,
-      timestamp: new Date()
+  // Dynamic suggestions based on context
+  const getSuggestions = (lastMessageContent?: string) => {
+    const lastMessage = lastMessageContent || messages[messages.length - 1]?.content?.toLowerCase() || ''
+    
+    // Context-aware suggestions
+    if (lastMessage.includes('efficiency') || lastMessage.includes('performance')) {
+      return [
+        "Compare efficiency across all machines",
+        "Show me today's performance trends",
+        "What's causing efficiency drops?",
+        "How can we improve efficiency?",
+        "Which machine has best efficiency?",
+        "Show efficiency by shift"
+      ]
+    }
+    
+    if (lastMessage.includes('shift') || lastMessage.includes('operator')) {
+      return [
+        "Which operators are performing best?",
+        "Compare all shifts this week",
+        "Show shift change impact on production",
+        "Who needs additional training?",
+        "Best shift for each machine",
+        "Operator efficiency rankings"
+      ]
+    }
+    
+    if (lastMessage.includes('die') || lastMessage.includes('maintenance')) {
+      return [
+        "What dies need replacement?",
+        "Show maintenance schedule",
+        "Which machines have most downtime?",
+        "Predict next maintenance needs",
+        "Die change frequency analysis",
+        "Maintenance cost breakdown"
+      ]
+    }
+    
+    if (lastMessage.includes('scrap') || lastMessage.includes('quality')) {
+      return [
+        "What's our scrap rate trend?",
+        "Which parts have highest scrap?",
+        "Root cause of quality issues",
+        "Compare scrap rates by shift",
+        "Quality improvement suggestions",
+        "Scrap cost analysis"
+      ]
     }
 
-    setMessages(prev => [...prev, userMessage])
-    setInput('')
+    if (lastMessage.includes('production') || lastMessage.includes('target')) {
+      return [
+        "Are we meeting production targets?",
+        "Show target vs actual by machine",
+        "Weekly production summary",
+        "Which machines are behind target?",
+        "Production forecast for this week",
+        "Target achievement by shift"
+      ]
+    }
+    
+    // Default suggestions
+    return [
+      "What's the current efficiency for 600 Ton?",
+      "Which shift is performing best today?",
+      "Show me die issues from this week",
+      "What machines need maintenance?",
+      "Compare this week to last week",
+      "Show production targets vs actual"
+    ]
+  }
+
+  const handleSend = async (customMessage?: string) => {
+    const messageToSend = customMessage || input
+    if (!messageToSend.trim() || loading) return
+
+    let userMessage: Message | null = null
+    
+    // Only add message if not already added (when using custom message)
+    if (!customMessage) {
+      userMessage = {
+        role: 'user',
+        content: messageToSend,
+        timestamp: new Date()
+      }
+      setMessages(prev => [...prev, userMessage!])
+      setInput('')
+    }
+    
     setLoading(true)
 
     try {
@@ -150,7 +226,7 @@ export default function ResizableChatSidebar({
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          message: input,
+          message: messageToSend,
           history: messages.slice(-10)
         })
       })
@@ -184,12 +260,15 @@ export default function ResizableChatSidebar({
     }
   }
 
-  const quickQuestions = [
-    "What's the current efficiency for 600 Ton?",
-    "Which shift is performing best today?",
-    "Show me die issues from this week",
-    "What machines need maintenance?"
-  ]
+  const handleSuggestionClick = (suggestion: string) => {
+    const userMessage: Message = {
+      role: 'user',
+      content: suggestion,
+      timestamp: new Date()
+    }
+    setMessages(prev => [...prev, userMessage])
+    handleSend(suggestion)
+  }
 
   // Collapsed state - return null, button will be in main layout
   if (isCollapsed) {
@@ -249,30 +328,50 @@ export default function ResizableChatSidebar({
       {/* Messages */}
       <div ref={scrollAreaRef} className="flex-1 overflow-y-auto p-4 space-y-4">
         {messages.map((msg, idx) => (
-          <div
-            key={idx}
-            className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-          >
+          <div key={idx}>
             <div
-              className={`max-w-[80%] rounded-lg p-3 ${
-                msg.role === 'user'
-                  ? 'bg-orange-600 text-white'
-                  : 'bg-gray-100 text-gray-800'
-              }`}
+              className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
             >
-              {msg.role === 'assistant' && (
-                <div className="flex items-center space-x-2 mb-1">
-                  <Factory className="w-4 h-4 text-orange-600" />
-                  <span className="text-xs font-semibold text-orange-600">AI Assistant</span>
+              <div
+                className={`max-w-[80%] rounded-lg p-3 ${
+                  msg.role === 'user'
+                    ? 'bg-orange-600 text-white'
+                    : 'bg-gray-100 text-gray-800'
+                }`}
+              >
+                {msg.role === 'assistant' && (
+                  <div className="flex items-center space-x-2 mb-1">
+                    <Factory className="w-4 h-4 text-orange-600" />
+                    <span className="text-xs font-semibold text-orange-600">AI Assistant</span>
+                  </div>
+                )}
+                <div className="whitespace-pre-wrap">{stripMarkdown(msg.content)}</div>
+                <div className={`text-xs mt-1 ${msg.role === 'user' ? 'text-orange-100' : 'text-gray-500'}`}>
+                  {msg.timestamp.toLocaleTimeString()}
                 </div>
-              )}
-              <div className="whitespace-pre-wrap">{stripMarkdown(msg.content)}</div>
-              <div className={`text-xs mt-1 ${msg.role === 'user' ? 'text-orange-100' : 'text-gray-500'}`}>
-                {msg.timestamp.toLocaleTimeString()}
               </div>
             </div>
+            
+            {/* Show suggestions after assistant messages */}
+            {msg.role === 'assistant' && idx === messages.length - 1 && !loading && (
+              <div className="mt-3 pl-4">
+                <p className="text-xs text-gray-500 mb-2">Related questions:</p>
+                <div className="flex flex-wrap gap-1.5">
+                  {getSuggestions(msg.content).slice(0, 4).map((suggestion, sIdx) => (
+                    <button
+                      key={sIdx}
+                      onClick={() => handleSuggestionClick(suggestion)}
+                      className="text-xs bg-white hover:bg-orange-50 text-gray-600 hover:text-orange-700 px-2.5 py-1.5 rounded-md transition-all border border-gray-200 hover:border-orange-300 hover:shadow-sm"
+                    >
+                      {suggestion}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         ))}
+        
         {loading && (
           <div className="flex justify-start">
             <div className="bg-gray-100 rounded-lg p-3 flex items-center space-x-2">
@@ -283,19 +382,16 @@ export default function ResizableChatSidebar({
         )}
       </div>
 
-      {/* Quick Questions */}
-      {messages.length === 1 && (
-        <div className="px-4 pb-2">
-          <p className="text-xs text-gray-500 mb-2">Quick questions:</p>
-          <div className="flex flex-wrap gap-2">
-            {quickQuestions.map((question, idx) => (
+      {/* Quick Questions - Show at bottom when it's the first message */}
+      {messages.length === 1 && !loading && (
+        <div className="px-4 pb-2 border-t pt-3">
+          <p className="text-xs text-gray-500 mb-2">Quick questions to get started:</p>
+          <div className="flex flex-wrap gap-1.5">
+            {getSuggestions().map((question, idx) => (
               <button
                 key={idx}
-                onClick={() => {
-                  setInput(question)
-                  handleSend()
-                }}
-                className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-2 py-1 rounded-lg transition-colors"
+                onClick={() => handleSuggestionClick(question)}
+                className="text-xs bg-gray-100 hover:bg-gray-200 text-gray-700 px-2.5 py-1.5 rounded-lg transition-colors border border-gray-200 hover:border-orange-300"
               >
                 {question}
               </button>
@@ -317,7 +413,7 @@ export default function ResizableChatSidebar({
             disabled={loading}
           />
           <button
-            onClick={handleSend}
+            onClick={() => handleSend()}
             disabled={loading || !input.trim()}
             className="bg-orange-600 text-white p-2 rounded-lg hover:bg-orange-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
