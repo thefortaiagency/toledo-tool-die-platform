@@ -124,15 +124,36 @@ export async function POST(request: Request) {
           const machineName = machineMap[h.machine_id] || h.machine_id
           const target = machineTargets[machineName] || 600
           
-          // Assuming 40 hours per week (5 days * 8 hours)
-          const weeklyHours = 40
-          const actualHitsPerHour = h.weekly_total > 0 ? h.weekly_total / weeklyHours : 0
+          // Calculate actual operating hours based on the data
+          // If we have 7 days of data with hits, calculate hours based on that
+          // Typical production: 24 hours/day for active days
+          let activeDays = 0
+          if (h.monday_hits > 0) activeDays++
+          if (h.tuesday_hits > 0) activeDays++
+          if (h.wednesday_hits > 0) activeDays++
+          if (h.thursday_hits > 0) activeDays++
+          if (h.friday_hits > 0) activeDays++
+          if (h.saturday_hits > 0) activeDays++
+          if (h.sunday_hits > 0) activeDays++
+          
+          // If no active days recorded but we have a weekly total, assume 5-day operation
+          if (activeDays === 0 && h.weekly_total > 0) {
+            activeDays = 5
+          }
+          
+          // Calculate hours based on 24-hour operations for active days
+          const weeklyHours = activeDays * 24
+          const actualHitsPerHour = weeklyHours > 0 ? h.weekly_total / weeklyHours : 0
           const efficiency = (actualHitsPerHour / target) * 100
           
           return {
             machine: machineName,
             weekTotal: h.weekly_total,
             avgPerDay: h.weekly_average,
+            activeDays: activeDays,
+            weeklyHours: weeklyHours,
+            hitsPerHour: actualHitsPerHour.toFixed(0),
+            target: target,
             efficiency: efficiency.toFixed(1),
             status: efficiency >= 90 ? '✅' : efficiency >= 80 ? '⚠️' : '❌'
           }
@@ -140,13 +161,24 @@ export async function POST(request: Request) {
 
         dataContext = `\n\nCurrent Production Data (Week of ${hitData[0]?.date}):
 ${machineStats.map((m: any) => 
-  `- ${m.status} ${m.machine}: ${m.weekTotal.toLocaleString()} hits total, ${m.avgPerDay?.toFixed(0) || 0} hits/day, Efficiency: ${m.efficiency}%`
+  `- ${m.status} ${m.machine} (Target: ${m.target}/hr):
+    • Total Hits: ${m.weekTotal.toLocaleString()}
+    • Daily Average: ${m.avgPerDay?.toFixed(0) || 0} hits
+    • Active Days: ${m.activeDays} days (${m.weeklyHours} hours)
+    • Actual Rate: ${m.hitsPerHour} hits/hour
+    • Efficiency: ${m.efficiency}%`
 ).join('\n')}
 
 Machine Performance Summary:
-- 600 Ton (Target: 950/hr): ${machineStats.find((m: any) => m.machine === '600 Ton')?.weekTotal || 0} hits, ${machineStats.find((m: any) => m.machine === '600 Ton')?.efficiency || 0}% efficiency
-- Best Performer: ${machineStats.sort((a: any, b: any) => parseFloat(b.efficiency) - parseFloat(a.efficiency))[0]?.machine || 'N/A'}
-- Needs Attention: ${machineStats.filter((m: any) => parseFloat(m.efficiency) < 90).map((m: any) => m.machine).join(', ') || 'All machines running well'}
+- 600 Ton: ${(() => {
+  const machine = machineStats.find((m: any) => m.machine === '600 Ton')
+  if (machine) {
+    return `${machine.hitsPerHour} hits/hr actual vs ${machine.target} target = ${machine.efficiency}% efficiency`
+  }
+  return 'No data'
+})()}
+- Best Performer: ${machineStats.sort((a: any, b: any) => parseFloat(b.efficiency) - parseFloat(a.efficiency))[0]?.machine || 'N/A'} at ${machineStats[0]?.efficiency || 0}%
+- Machines Below Target (<100%): ${machineStats.filter((m: any) => parseFloat(m.efficiency) < 100).map((m: any) => `${m.machine} (${m.efficiency}%)`).join(', ') || 'All machines exceeding targets!'}
 
 Recent Comments/Issues:
 ${comments?.map((c: any) => `- ${machineMap[c.machine_id] || c.machine_id} (${c.date}): ${c.comments}`).join('\n') || 'No recent comments'}
