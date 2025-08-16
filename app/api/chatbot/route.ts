@@ -147,10 +147,12 @@ function parseUserIntent(message: string) {
     operators: /operator|employee|worker|staff/i.test(message),
     trends: /trend|pattern|history|compare|week|month/i.test(message),
     insights: /insight|predict|recommend|suggest|ai|anomaly/i.test(message),
-    issues: /issue|problem|fix|trouble|error/i.test(message),
+    issues: /issue|problem|fix|trouble|error|causing|drop/i.test(message),
     followUp: /follow.?up|pending|need.?attention|critical/i.test(message),
     targets: /target|goal|meeting|achieve|quota/i.test(message),
-    bestShift: /best|top|highest.*shift|shift.*best|which shift/i.test(message)
+    bestShift: /best|top|highest.*shift|shift.*best|which shift/i.test(message),
+    improvement: /improve|increase|boost|enhance|better|optimize/i.test(message) && /efficiency|performance|production/i.test(message),
+    causation: /what.*caus|why.*drop|reason.*low|cause.*efficiency/i.test(message)
   }
   
   return intents
@@ -376,8 +378,8 @@ export async function POST(request: Request) {
     let dataContext = ""
     let relevantLinks: string[] = []
     
-    // Fetch production data if needed
-    if (intent.currentEfficiency || intent.machineStatus || intent.targets) {
+    // Fetch production data if needed (expanded to include improvement/causation queries)
+    if (intent.currentEfficiency || intent.machineStatus || intent.targets || intent.improvement || intent.causation) {
       const { data: productionData } = await supabase
         .from('production_data')
         .select(`
@@ -424,8 +426,8 @@ export async function POST(request: Request) {
       }
     }
     
-    // Fetch comments if needed
-    if (intent.comments || intent.issues) {
+    // Fetch comments if needed (including for causation/improvement queries)
+    if (intent.comments || intent.issues || intent.causation || intent.improvement) {
       const { data: comments } = await supabase
         .from('production_data')
         .select('operator_comments, supervisor_comments, issue_category, severity_level, safety_concern, follow_up_required, date, machine_id')
