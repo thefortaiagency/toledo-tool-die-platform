@@ -148,10 +148,210 @@ function parseUserIntent(message: string) {
     trends: /trend|pattern|history|compare|week|month/i.test(message),
     insights: /insight|predict|recommend|suggest|ai|anomaly/i.test(message),
     issues: /issue|problem|fix|trouble|error/i.test(message),
-    followUp: /follow.?up|pending|need.?attention|critical/i.test(message)
+    followUp: /follow.?up|pending|need.?attention|critical/i.test(message),
+    targets: /target|goal|meeting|achieve|quota/i.test(message),
+    bestShift: /best|top|highest.*shift|shift.*best|which shift/i.test(message)
   }
   
   return intents
+}
+
+// Function to provide intelligent fallback responses without OpenAI
+async function generateFallbackResponse(message: string, intent: any) {
+  let response = ""
+  const relevantLinks: string[] = []
+  
+  try {
+    // Query database based on intent
+    if (intent.targets || intent.currentEfficiency || intent.machineStatus) {
+      // Get recent production data
+      const { data: productionData } = await supabase
+        .from('production_data')
+        .select(`
+          *,
+          machines!inner(machine_number, machine_name),
+          shifts!inner(shift_name)
+        `)
+        .order('date', { ascending: false })
+        .limit(30)
+      
+      if (productionData && productionData.length > 0) {
+        // Calculate average efficiency by machine
+        const machineStats: Record<string, { total: number, count: number, downtime: number }> = {}
+        
+        productionData.forEach((record: any) => {
+          const machine = record.machines.machine_number
+          if (!machineStats[machine]) {
+            machineStats[machine] = { total: 0, count: 0, downtime: 0 }
+          }
+          machineStats[machine].total += record.actual_efficiency || 0
+          machineStats[machine].count++
+          machineStats[machine].downtime += record.downtime_minutes || 0
+        })
+        
+        response = "📊 **Current Production Status:**\n\n"
+        
+        // Machine targets
+        const targets: Record<string, number> = {
+          '600': 950,
+          '1500-1': 600,
+          '1500-2': 600,
+          '1400': 600,
+          '1000': 875,
+          'Hyd': 600
+        }
+        
+        Object.entries(machineStats).forEach(([machine, stats]) => {
+          const avgEfficiency = stats.count > 0 ? (stats.total / stats.count).toFixed(1) : '0'
+          const target = targets[machine] || 600
+          const status = parseFloat(avgEfficiency) >= 90 ? '✅' : parseFloat(avgEfficiency) >= 80 ? '⚠️' : '❌'
+          
+          response += `${status} **${machine}**: ${avgEfficiency}% efficiency (Target based on ${target} hits/hr)\n`
+          response += `   Downtime: ${stats.downtime} minutes total\n\n`
+        })
+        
+        // Check if meeting targets
+        const avgOverall = Object.values(machineStats).reduce((sum, s) => sum + (s.total / s.count), 0) / Object.keys(machineStats).length
+        
+        if (intent.targets) {
+          response += avgOverall >= 90 
+            ? "✅ **Overall: Meeting production targets** (Average efficiency: " + avgOverall.toFixed(1) + "%)\n"
+            : "⚠️ **Overall: Below production targets** (Average efficiency: " + avgOverall.toFixed(1) + "%)\n"
+        }
+      }
+      
+      relevantLinks.push(generateReportLink('machine'))
+      relevantLinks.push(generateReportLink('daily'))
+    }
+    
+    if (intent.bestShift || intent.shiftComparison) {
+      // Get shift performance data
+      const { data: shiftData } = await supabase
+        .from('production_data')
+        .select(`
+          shift_id,
+          shifts!inner(shift_name),
+          actual_efficiency,
+          downtime_minutes,
+          good_parts,
+          scrap_parts
+        `)
+        .gte('date', new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString())
+      
+      if (shiftData && shiftData.length > 0) {
+        const shiftStats: Record<string, any> = {}
+        
+        shiftData.forEach((record: any) => {
+          const shiftName = record.shifts.shift_name
+          if (!shiftStats[shiftName]) {
+            shiftStats[shiftName] = {
+              totalEfficiency: 0,
+              count: 0,
+              totalDowntime: 0,
+              totalGoodParts: 0,
+              totalScrapParts: 0
+            }
+          }
+          
+          shiftStats[shiftName].totalEfficiency += record.actual_efficiency || 0
+          shiftStats[shiftName].count++
+          shiftStats[shiftName].totalDowntime += record.downtime_minutes || 0
+          shiftStats[shiftName].totalGoodParts += record.good_parts || 0
+          shiftStats[shiftName].totalScrapParts += record.scrap_parts || 0
+        })
+        
+        // Find best performing shift
+        let bestShift = { name: '', efficiency: 0 }
+        
+        response += "\n📈 **Shift Performance (Last 7 Days):**\n\n"
+        
+        Object.entries(shiftStats).forEach(([shift, stats]) => {
+          const avgEfficiency = stats.count > 0 ? stats.totalEfficiency / stats.count : 0
+          const scrapRate = stats.totalGoodParts > 0 
+            ? (stats.totalScrapParts / (stats.totalGoodParts + stats.totalScrapParts)) * 100
+            : 0
+          
+          if (avgEfficiency > bestShift.efficiency) {
+            bestShift = { name: shift, efficiency: avgEfficiency }
+          }
+          
+          response += `**${shift} Shift:**\n`
+          response += `• Efficiency: ${avgEfficiency.toFixed(1)}%\n`
+          response += `• Downtime: ${stats.totalDowntime} minutes\n`
+          response += `• Scrap Rate: ${scrapRate.toFixed(1)}%\n\n`
+        })
+        
+        if (intent.bestShift) {
+          response += `🏆 **Best Performing Shift: ${bestShift.name}** (${bestShift.efficiency.toFixed(1)}% efficiency)\n`
+        }
+      }
+      
+      relevantLinks.push(generateReportLink('shift'))
+    }
+    
+    if (intent.safety || intent.followUp) {
+      // Check for safety concerns and follow-up items
+      const { data: issues } = await supabase
+        .from('production_data')
+        .select('*')
+        .or('safety_concern.eq.true,follow_up_required.eq.true')
+        .order('date', { ascending: false })
+        .limit(10)
+      
+      if (issues && issues.length > 0) {
+        const safetyCount = issues.filter(i => i.safety_concern).length
+        const followUpCount = issues.filter(i => i.follow_up_required).length
+        
+        if (safetyCount > 0) {
+          response += `\n🚨 **SAFETY ALERT:** ${safetyCount} safety concern(s) require immediate attention!\n`
+        }
+        if (followUpCount > 0) {
+          response += `📋 **FOLLOW-UP:** ${followUpCount} issue(s) need follow-up action.\n`
+        }
+      }
+      
+      relevantLinks.push(generateReportLink('comments', { category: 'safety' }))
+    }
+    
+    if (intent.comments || intent.issues) {
+      response += "\n💬 **Recent Issues & Comments:**\n"
+      response += "View the Comments Report to see all categorized operator feedback and issues.\n"
+      relevantLinks.push(generateReportLink('comments'))
+    }
+    
+  } catch (error) {
+    console.error('Error querying database:', error)
+  }
+  
+  // If no specific response was generated, provide general guidance
+  if (!response) {
+    response = "I can help you analyze production data. Here's what I can do:\n\n"
+    response += "• Check if you're meeting production targets\n"
+    response += "• Compare shift performance\n"
+    response += "• Review safety concerns and issues\n"
+    response += "• Analyze machine efficiency\n"
+    response += "• Track downtime and quality metrics\n"
+  }
+  
+  // Always add relevant links
+  if (relevantLinks.length > 0) {
+    response += "\n\n📊 **View Detailed Reports:**\n"
+    relevantLinks.forEach(link => {
+      if (link.includes('machine-performance')) {
+        response += `• [Machine Performance Report](${link})\n`
+      } else if (link.includes('shift-analysis')) {
+        response += `• [Shift Analysis Report](${link})\n`
+      } else if (link.includes('comments')) {
+        response += `• [Comments & Issues Report](${link})\n`
+      } else if (link.includes('daily')) {
+        response += `• [Daily Production Report](${link})\n`
+      } else if (link.includes('weekly')) {
+        response += `• [Weekly Analysis](${link})\n`
+      }
+    })
+  }
+  
+  return { response, links: relevantLinks }
 }
 
 export async function POST(request: Request) {
@@ -161,13 +361,23 @@ export async function POST(request: Request) {
     // Parse user intent
     const intent = parseUserIntent(message)
     
+    // If no OpenAI, use intelligent fallback
+    if (!openai) {
+      const { response: fallbackResponse, links } = await generateFallbackResponse(message, intent)
+      
+      return NextResponse.json({
+        message: fallbackResponse,
+        links
+      })
+    }
+    
     // Determine what data to fetch based on intent
     let contextData: any = {}
     let dataContext = ""
     let relevantLinks: string[] = []
     
     // Fetch production data if needed
-    if (intent.currentEfficiency || intent.machineStatus) {
+    if (intent.currentEfficiency || intent.machineStatus || intent.targets) {
       const { data: productionData } = await supabase
         .from('production_data')
         .select(`
@@ -249,7 +459,7 @@ export async function POST(request: Request) {
     }
     
     // Fetch shift data if needed
-    if (intent.shiftComparison) {
+    if (intent.shiftComparison || intent.bestShift) {
       const { data: shiftData } = await supabase
         .from('production_data')
         .select(`
@@ -378,31 +588,6 @@ export async function POST(request: Request) {
       }
     }
     
-    // Prepare fallback response if no OpenAI
-    if (!openai) {
-      let fallbackResponse = "I'm currently running in offline mode. Based on your question:\n\n"
-      
-      if (intent.currentEfficiency) {
-        fallbackResponse += "• For current efficiency data, visit the [Machine Performance Report](/reports/machine-performance)\n"
-      }
-      if (intent.shiftComparison) {
-        fallbackResponse += "• For shift comparisons, check the [Shift Analysis Report](/reports/shift-analysis)\n"
-      }
-      if (intent.comments || intent.issues) {
-        fallbackResponse += "• To view all comments and issues, see the [Comments Report](/reports/comments)\n"
-      }
-      if (intent.safety || intent.followUp) {
-        fallbackResponse += "• For safety concerns and pending issues, visit [Comments Report - Pending](/reports/comments?priority=high)\n"
-      }
-      
-      fallbackResponse += "\nFor real-time AI analysis, please ensure OpenAI is configured."
-      
-      return NextResponse.json({
-        message: fallbackResponse,
-        links: relevantLinks
-      })
-    }
-    
     // Prepare messages for OpenAI
     const messages = [
       { role: 'system' as const, content: SYSTEM_PROMPT + dataContext },
@@ -464,8 +649,8 @@ export async function POST(request: Request) {
     return NextResponse.json({
       message: `I can help you with production questions. Try asking:
       
-• "What's the current efficiency for all machines?"
-• "Which shift is performing best this week?"
+• "Are we meeting production targets?"
+• "Which shift is performing best?"
 • "Show me recent safety concerns"
 • "What issues need follow-up?"
 • "Analyze die tooling problems"
