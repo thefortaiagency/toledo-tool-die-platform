@@ -38,6 +38,12 @@ A comprehensive production metrics and efficiency tracking platform built for To
 - **Hits Tracking**: Import weekly hit count data
 - **Export Capabilities**: Generate Excel reports from platform data
 
+## 🌐 Live Production URL
+
+🚀 **Production**: https://toledo-tool-die-platform-eta.vercel.app
+
+✅ **Deployment Status**: Automatically deploys on push to `master` branch via GitHub integration with Vercel Pro account.
+
 ## 🚀 Quick Start
 
 ### Prerequisites
