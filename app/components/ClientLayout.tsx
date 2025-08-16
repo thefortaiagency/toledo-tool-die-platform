@@ -82,9 +82,12 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
 
   return (
     <div 
-      className="min-h-screen flex flex-col"
+      className="min-h-screen flex flex-col bg-gray-100"
       style={{
         background: 'linear-gradient(135deg, #e5e7eb 0%, #d1d5db 40%, #9ca3af 60%, #d1d5db 100%)',
+        backgroundAttachment: 'fixed',
+        backgroundSize: 'cover',
+        minHeight: '100vh'
       }}
     >
       {/* Navigation Header */}
@@ -219,10 +222,10 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       </nav>
       
       {/* Main Content Area with Sidebar */}
-      <div className="flex flex-1 relative">
+      <div className="flex flex-1 relative overflow-hidden">
         {/* Main Content - adjusts width based on sidebar state */}
         <main 
-          className="flex-1 transition-all duration-300"
+          className="flex-1 transition-all duration-300 overflow-x-hidden overflow-y-auto"
           style={{ 
             marginRight: (user && !isChatCollapsed && !isMobile) ? chatWidth : 0,
           }}
