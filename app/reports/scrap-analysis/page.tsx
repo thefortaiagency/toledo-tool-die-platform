@@ -101,7 +101,7 @@ export default function ScrapAnalysisPage() {
       setTopReasons(data.topReasons || [])
       setWorkcenterSummary(data.workcenterSummary || [])
       setTopParts(data.topParts || [])
-      setMonthlyTrend(data.monthlyTrend || [])
+      setMonthlyTrend(data.monthlyTrends || [])
       setInsights(data.insights || [])
     } catch (error) {
       console.error('Error fetching scrap data:', error)
