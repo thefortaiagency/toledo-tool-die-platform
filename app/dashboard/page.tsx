@@ -38,12 +38,7 @@ export default function Dashboard() {
         .on('postgres_changes', { event: '*', schema: 'public', table: 'production_data' }, () => {
           fetchDashboardData()
         })
-        .subscribe((status) => {
-          // Only log errors if not a connection issue
-          if (status === 'SUBSCRIPTION_ERROR') {
-            console.log('Real-time updates not available - dashboard will still work')
-          }
-        })
+        .subscribe()
     } catch (error) {
       // Silently fail - real-time is optional
       console.log('Real-time connection not established - using manual refresh')

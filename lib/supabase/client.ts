@@ -8,7 +8,7 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     params: {
       eventsPerSecond: 2
     },
-    reconnectAfterMs: (retries) => {
+    reconnectAfterMs: (retries: number) => {
       // Exponential backoff: 1s, 2s, 4s, 8s, then stop trying
       if (retries > 4) return -1
       return Math.min(1000 * Math.pow(2, retries), 8000)
