@@ -311,6 +311,34 @@ export default function Dashboard() {
           ]
           break
 
+        case 'scrapParts':
+          // Daily scrap parts analysis
+          const scrapByDay = productionData?.reduce((acc: any, curr) => {
+            const date = new Date(curr.date).toLocaleDateString()
+            if (!acc[date]) acc[date] = { date, scrapParts: 0, totalParts: 0, machines: [] }
+            acc[date].scrapParts += curr.scrap_parts || 0
+            acc[date].totalParts += (curr.good_parts || 0) + (curr.scrap_parts || 0)
+            acc[date].machines.push({
+              machine: curr.machines?.machine_number,
+              scrapParts: curr.scrap_parts || 0
+            })
+            return acc
+          }, {})
+          
+          detailChartData = Object.values(scrapByDay || {}).map((d: any) => ({
+            date: d.date,
+            scrapParts: d.scrapParts,
+            scrapRate: parseFloat(((d.scrapParts / d.totalParts) * 100).toFixed(1)),
+            worstMachine: d.machines.reduce((worst: any, m: any) => m.scrapParts > worst.scrapParts ? m : worst, { scrapParts: 0 })
+          }))
+          
+          insights = [
+            { title: 'Worst Scrap Day', value: detailChartData.reduce((max: any, day: any) => day.scrapParts > max.scrapParts ? day : max, { scrapParts: 0 }) },
+            { title: 'Best Scrap Day', value: detailChartData.reduce((min: any, day: any) => day.scrapParts < min.scrapParts ? day : min, { scrapParts: 10000 }) },
+            { title: 'Avg Scrap Rate', value: `${(detailChartData.reduce((sum: number, day: any) => sum + day.scrapRate, 0) / detailChartData.length).toFixed(1)}%` }
+          ]
+          break
+
         case 'downtime':
           // Daily downtime by machine
           const downtimeByDay = productionData?.reduce((acc: any, curr) => {
@@ -381,7 +409,7 @@ export default function Dashboard() {
       </div>
       
       {/* Key Metrics Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-8">
         <Card 
           className="cursor-pointer hover:shadow-lg transition-shadow" 
           onClick={() => handleMetricClick('cycles')}
@@ -427,44 +455,11 @@ export default function Dashboard() {
             </p>
           </CardContent>
         </Card>
-        
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Alerts</CardTitle>
-            <AlertCircle className={`h-4 w-4 ${metrics.alerts > 0 ? 'text-red-600' : 'text-orange-600'}`} />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{metrics.alerts}</div>
-            <p className="text-xs text-gray-500">Current active</p>
-          </CardContent>
-        </Card>
-      </div>
 
-      {/* Secondary Metrics */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Active Machines</CardTitle>
-            <Factory className="h-4 w-4 text-slate-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{metrics.activeMachines}</div>
-            <p className="text-xs text-gray-500">Last 30 days</p>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Shifts Completed</CardTitle>
-            <Users className="h-4 w-4 text-purple-600" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold">{metrics.shiftsCompleted}</div>
-            <p className="text-xs text-gray-500">Last 30 days</p>
-          </CardContent>
-        </Card>
-
-        <Card>
+        <Card 
+          className="cursor-pointer hover:shadow-lg transition-shadow" 
+          onClick={() => handleMetricClick('scrapParts')}
+        >
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">Scrap Parts</CardTitle>
             <AlertCircle className="h-4 w-4 text-amber-600" />
@@ -472,7 +467,7 @@ export default function Dashboard() {
           <CardContent>
             <div className="text-2xl font-bold">{formatNumber(metrics.totalScrapParts)}</div>
             <p className="text-xs text-gray-500">
-              Last 30 days • {formatPercent((metrics.totalScrapParts / (metrics.totalGoodParts + metrics.totalScrapParts)) * 100)} rate
+              Last 30 days • {formatPercent((metrics.totalScrapParts / (metrics.totalGoodParts + metrics.totalScrapParts)) * 100)} rate • Click for details
             </p>
           </CardContent>
         </Card>
@@ -682,6 +677,7 @@ export default function Dashboard() {
                 {detailData.type === 'cycles' && 'Total Cycles - 30 Day Analysis'}
                 {detailData.type === 'efficiency' && 'Efficiency Trends - 30 Day Analysis'}
                 {detailData.type === 'goodParts' && 'Good Parts Production - 30 Day Analysis'}
+                {detailData.type === 'scrapParts' && 'Scrap Parts Analysis - 30 Day Analysis'}
                 {detailData.type === 'downtime' && 'Downtime Analysis - 30 Day Analysis'}
               </h2>
               <button
@@ -704,6 +700,7 @@ export default function Dashboard() {
                             detailData.type === 'cycles' ? formatNumber(insight.value.cycles) :
                             detailData.type === 'efficiency' ? `${insight.value.avgEfficiency}%` :
                             detailData.type === 'goodParts' ? `${insight.value.yield}%` :
+                            detailData.type === 'scrapParts' ? formatNumber(insight.value.scrapParts) :
                             `${insight.value.totalDowntime}m`
                           }`
                         : insight.value
@@ -750,6 +747,17 @@ export default function Dashboard() {
                     </LineChart>
                   </ResponsiveContainer>
                 )}
+                {detailData.type === 'scrapParts' && (
+                  <ResponsiveContainer width="100%" height={400}>
+                    <BarChart data={detailData.chartData}>
+                      <CartesianGrid strokeDasharray="3 3" />
+                      <XAxis dataKey="date" />
+                      <YAxis />
+                      <Tooltip formatter={(value) => [formatNumber(Number(value)), 'Scrap Parts']} />
+                      <Bar dataKey="scrapParts" fill="#dc2626" name="Daily Scrap Parts" />
+                    </BarChart>
+                  </ResponsiveContainer>
+                )}
                 {detailData.type === 'downtime' && (
                   <ResponsiveContainer width="100%" height={400}>
                     <BarChart data={detailData.chartData}>
@@ -790,6 +798,13 @@ export default function Dashboard() {
                             <th className="px-4 py-2 text-left text-sm font-medium text-gray-900">Yield %</th>
                           </>
                         )}
+                        {detailData.type === 'scrapParts' && (
+                          <>
+                            <th className="px-4 py-2 text-left text-sm font-medium text-gray-900">Scrap Parts</th>
+                            <th className="px-4 py-2 text-left text-sm font-medium text-gray-900">Scrap Rate %</th>
+                            <th className="px-4 py-2 text-left text-sm font-medium text-gray-900">Worst Machine</th>
+                          </>
+                        )}
                         {detailData.type === 'downtime' && (
                           <>
                             <th className="px-4 py-2 text-left text-sm font-medium text-gray-900">Total Downtime</th>
@@ -820,6 +835,13 @@ export default function Dashboard() {
                             <>
                               <td className="px-4 py-2 text-sm text-gray-900">{formatNumber(row.goodParts)}</td>
                               <td className="px-4 py-2 text-sm text-gray-900">{row.yield}%</td>
+                            </>
+                          )}
+                          {detailData.type === 'scrapParts' && (
+                            <>
+                              <td className="px-4 py-2 text-sm text-gray-900">{formatNumber(row.scrapParts)}</td>
+                              <td className="px-4 py-2 text-sm text-gray-900">{row.scrapRate}%</td>
+                              <td className="px-4 py-2 text-sm text-gray-900">{row.worstMachine.machine} ({row.worstMachine.scrapParts})</td>
                             </>
                           )}
                           {detailData.type === 'downtime' && (
