@@ -27,9 +27,8 @@ export default function Login() {
 
       if (error) throw error
 
-      // Redirect to dashboard after successful login
-      router.push('/dashboard')
-      router.refresh()
+      // Force redirect to home after successful login
+      window.location.href = '/'
     } catch (err: any) {
       console.error('Login error:', err)
       setError(err.message || 'Invalid email or password')
