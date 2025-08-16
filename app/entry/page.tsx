@@ -5,7 +5,7 @@ import { supabase } from '@/lib/supabase/client'
 import type { Machine, Shift, Part, Operator } from '@/lib/supabase/client'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { CheckCircle, AlertCircle, Save, RefreshCw, Calculator, Clock, TrendingUp, AlertTriangle } from 'lucide-react'
+import { CheckCircle, AlertCircle, Save, RefreshCw, Calculator, Clock, TrendingUp, AlertTriangle, Users, UserCheck, UserX } from 'lucide-react'
 
 export default function DataEntry() {
   const [loading, setLoading] = useState(false)
@@ -40,7 +40,14 @@ export default function DataEntry() {
     root_cause: '',
     parts_replaced: '',
     follow_up_required: false,
-    safety_concern: false
+    safety_concern: false,
+    // Manning/Attendance fields
+    operators_scheduled: '',
+    operators_present: '',
+    operators_absent: '',
+    temp_operators: '',
+    overtime_hours: '',
+    attendance_notes: ''
   })
 
   useEffect(() => {
@@ -154,6 +161,16 @@ export default function DataEntry() {
         dataToInsert.follow_up_required = formData.follow_up_required
         dataToInsert.safety_concern = formData.safety_concern
       }
+      
+      // Add manning/attendance fields if they have values
+      if (formData.operators_scheduled || formData.operators_present) {
+        dataToInsert.operators_scheduled = parseInt(formData.operators_scheduled) || 0
+        dataToInsert.operators_present = parseInt(formData.operators_present) || 0
+        dataToInsert.operators_absent = parseInt(formData.operators_absent) || 0
+        dataToInsert.temp_operators = parseInt(formData.temp_operators) || 0
+        dataToInsert.overtime_hours = parseFloat(formData.overtime_hours) || 0
+        dataToInsert.attendance_notes = formData.attendance_notes
+      }
 
       // Insert production data
       const { error: prodError } = await supabase
@@ -201,7 +218,13 @@ export default function DataEntry() {
         root_cause: '',
         parts_replaced: '',
         follow_up_required: false,
-        safety_concern: false
+        safety_concern: false,
+        operators_scheduled: '',
+        operators_present: '',
+        operators_absent: '',
+        temp_operators: '',
+        overtime_hours: '',
+        attendance_notes: ''
       })
 
       // Reload parts and operators in case new ones were added
@@ -350,21 +373,6 @@ export default function DataEntry() {
                 </select>
               </div>
 
-              <div>
-                <label className="block text-sm font-medium mb-2">Manning Status</label>
-                <select
-                  name="manning_status"
-                  value={formData.manning_status}
-                  onChange={handleChange}
-                  className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                >
-                  <option value="Have">Have</option>
-                  <option value="Need">Need</option>
-                  <option value="Call-in">Call-in</option>
-                  <option value="NCNS">NCNS</option>
-                  <option value="PTO">PTO</option>
-                </select>
-              </div>
             </CardContent>
           </Card>
 
@@ -592,6 +600,155 @@ export default function DataEntry() {
                   </div>
                 )}
               </div>
+            </CardContent>
+          </Card>
+
+          {/* Manning & Attendance */}
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center">
+                <Users className="h-5 w-5 mr-2 text-blue-600" />
+                Manning & Attendance
+              </CardTitle>
+              <CardDescription>Track operator attendance and coverage</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium mb-2">Manning Status</label>
+                <select
+                  name="manning_status"
+                  value={formData.manning_status}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="Have">Have - Fully Staffed</option>
+                  <option value="Need">Need - Short Staffed</option>
+                  <option value="Call-in">Call-in - Absence Called In</option>
+                  <option value="NCNS">NCNS - No Call No Show</option>
+                  <option value="PTO">PTO - Planned Time Off</option>
+                </select>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    <UserCheck className="inline h-4 w-4 mr-1" />
+                    Operators Scheduled
+                  </label>
+                  <input
+                    type="number"
+                    name="operators_scheduled"
+                    value={formData.operators_scheduled}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    min="0"
+                    placeholder="e.g., 8"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    <UserCheck className="inline h-4 w-4 mr-1 text-green-600" />
+                    Operators Present
+                  </label>
+                  <input
+                    type="number"
+                    name="operators_present"
+                    value={formData.operators_present}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    min="0"
+                    placeholder="e.g., 7"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    <UserX className="inline h-4 w-4 mr-1 text-red-600" />
+                    Operators Absent
+                  </label>
+                  <input
+                    type="number"
+                    name="operators_absent"
+                    value={formData.operators_absent}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    min="0"
+                    placeholder="e.g., 1"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium mb-2">
+                    <Users className="inline h-4 w-4 mr-1 text-orange-600" />
+                    Temp Operators
+                  </label>
+                  <input
+                    type="number"
+                    name="temp_operators"
+                    value={formData.temp_operators}
+                    onChange={handleChange}
+                    className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    min="0"
+                    placeholder="e.g., 0"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">
+                  <Clock className="inline h-4 w-4 mr-1" />
+                  Total Overtime Hours
+                </label>
+                <input
+                  type="number"
+                  name="overtime_hours"
+                  value={formData.overtime_hours}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  step="0.5"
+                  min="0"
+                  placeholder="e.g., 2.5"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium mb-2">Attendance Notes</label>
+                <textarea
+                  name="attendance_notes"
+                  value={formData.attendance_notes}
+                  onChange={handleChange}
+                  className="w-full px-3 py-2 border rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  rows={2}
+                  placeholder="e.g., John called in sick, temporary operator from 1st shift helping..."
+                />
+              </div>
+
+              {/* Attendance Metrics Display */}
+              {(formData.operators_scheduled && formData.operators_present) && (
+                <div className="p-4 bg-blue-50 rounded-md">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium flex items-center">
+                      <Users className="h-4 w-4 mr-1" />
+                      Attendance Rate:
+                    </span>
+                    <span className={`text-lg font-bold ${
+                      (parseInt(formData.operators_present) / parseInt(formData.operators_scheduled)) * 100 >= 95 ? 'text-green-600' :
+                      (parseInt(formData.operators_present) / parseInt(formData.operators_scheduled)) * 100 >= 90 ? 'text-yellow-600' :
+                      'text-red-600'
+                    }`}>
+                      {((parseInt(formData.operators_present) / parseInt(formData.operators_scheduled)) * 100).toFixed(1)}%
+                    </span>
+                  </div>
+                  {parseInt(formData.temp_operators) > 0 && (
+                    <div className="mt-2 text-sm text-gray-600">
+                      Coverage supplemented with {formData.temp_operators} temp operator{parseInt(formData.temp_operators) > 1 ? 's' : ''}
+                    </div>
+                  )}
+                </div>
+              )}
             </CardContent>
           </Card>
 

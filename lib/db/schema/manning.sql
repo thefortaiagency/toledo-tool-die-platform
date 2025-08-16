@@ -96,7 +96,6 @@ SELECT
   s.start_time as shift_start,
   s.end_time as shift_end,
   mc.machine_name,
-  mc.target_rate_per_hour,
   CASE 
     WHEN m.attendance_status = 'present' THEN 'Present ✓'
     WHEN m.attendance_status = 'absent' THEN 'Absent ✗'
