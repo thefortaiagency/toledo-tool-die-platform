@@ -1,13 +1,14 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Calendar, TrendingUp, AlertCircle, CheckCircle, Activity, Users, Package, BarChart3, MessageSquare, Brain, Table, AlertTriangle } from 'lucide-react'
+import { Calendar, TrendingUp, AlertCircle, CheckCircle, Activity, Users, Package, BarChart3, MessageSquare, Brain, Table, AlertTriangle, Factory } from 'lucide-react'
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts'
 import HitTrackerTable from './hit-tracker-table'
 import HitTrackerAccurate from './hit-tracker-accurate'
 import dynamic from 'next/dynamic'
 
 const ScrapAnalysis = dynamic(() => import('./scrap-analysis/page'), { ssr: false })
+const PioneerScrapAnalysis = dynamic(() => import('./pioneer-scrap/page'), { ssr: false })
 
 export default function ReportsPage() {
   const [selectedReport, setSelectedReport] = useState('hit-tracker-table')
@@ -183,6 +184,17 @@ export default function ReportsPage() {
         >
           <AlertTriangle className="w-4 h-4 mr-2" />
           Scrap Analysis
+        </button>
+        <button
+          onClick={() => setSelectedReport('pioneer-scrap')}
+          className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center ${
+            selectedReport === 'pioneer-scrap' 
+              ? 'bg-orange-600 text-white' 
+              : 'bg-white text-gray-700 hover:bg-gray-100'
+          }`}
+        >
+          <Factory className="w-4 h-4 mr-2" />
+          Pioneer Scrap
         </button>
       </div>
 
@@ -438,6 +450,11 @@ export default function ReportsPage() {
       {/* Scrap Analysis Report */}
       {selectedReport === 'scrap-analysis' && (
         <ScrapAnalysis />
+      )}
+
+      {/* Pioneer Scrap Analysis Report */}
+      {selectedReport === 'pioneer-scrap' && (
+        <PioneerScrapAnalysis />
       )}
     </div>
   )

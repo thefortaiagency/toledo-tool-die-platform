@@ -13,6 +13,8 @@ export async function GET(req: NextRequest) {
     const endDate = searchParams.get('endDate')
     const workcenter = searchParams.get('workcenter')
     const partNumber = searchParams.get('partNumber')
+    const source = searchParams.get('source') // New: Filter by Pioneer/Main
+    const month = searchParams.get('month') // New: Single month filter
     
     // Build query
     let query = supabase
@@ -23,12 +25,20 @@ export async function GET(req: NextRequest) {
       query = query.gte('month', startDate).lte('month', endDate)
     }
     
-    if (workcenter) {
+    if (month && month !== 'all') {
+      query = query.eq('month', month)
+    }
+    
+    if (workcenter && workcenter !== 'all') {
       query = query.eq('workcenter', workcenter)
     }
     
     if (partNumber) {
       query = query.ilike('part_number', `%${partNumber}%`)
+    }
+    
+    if (source) {
+      query = query.ilike('source_sheet', `%${source}%`)
     }
     
     const { data: scrapData, error } = await query
@@ -92,6 +102,36 @@ export async function GET(req: NextRequest) {
     const workcenterSummary = Object.values(workcenterAnalysis)
       .sort((a, b) => b.quantity - a.quantity)
     
+    // Group by operation (important for Pioneer data since no reason codes)
+    const operationAnalysis: Record<string, any> = {}
+    scrapData?.forEach(record => {
+      const operation = record.operation || 'Unknown'
+      if (!operationAnalysis[operation]) {
+        operationAnalysis[operation] = {
+          operation,
+          quantity: 0,
+          cost: 0,
+          records: 0,
+          parts: new Set()
+        }
+      }
+      operationAnalysis[operation].quantity += record.quantity || 0
+      operationAnalysis[operation].cost += record.extended_cost || 0
+      operationAnalysis[operation].records++
+      operationAnalysis[operation].parts.add(record.part_number)
+    })
+    
+    const operationSummary = Object.values(operationAnalysis)
+      .map(op => ({
+        operation: op.operation,
+        quantity: op.quantity,
+        cost: op.cost,
+        records: op.records,
+        uniqueParts: op.parts.size,
+        percentage: ((op.quantity / totalScrap) * 100).toFixed(1)
+      }))
+      .sort((a, b) => b.quantity - a.quantity)
+
     // Group by part number
     const partAnalysis: Record<string, any> = {}
     scrapData?.forEach(record => {
@@ -194,6 +234,8 @@ export async function GET(req: NextRequest) {
     }
     
     return NextResponse.json({
+      success: true,
+      data: scrapData,
       summary: {
         totalScrap,
         totalCost,
@@ -205,8 +247,9 @@ export async function GET(req: NextRequest) {
       },
       topReasons,
       workcenterSummary,
+      operationAnalysis: operationSummary,
       topParts,
-      monthlyTrend: trend,
+      monthlyTrends: trend,
       insights
     })
     
