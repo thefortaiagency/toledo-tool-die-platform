@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Calendar, TrendingUp, AlertCircle, CheckCircle, Activity, Users, Package, BarChart3, MessageSquare, Brain, Table, AlertTriangle, Factory } from 'lucide-react'
+import { Calendar, TrendingUp, AlertCircle, CheckCircle, Activity, Users, Package, BarChart3, MessageSquare, Brain, Table, AlertTriangle, Factory, PieChart as PieChartIcon, TrendingDown, Wrench, FileText, DollarSign } from 'lucide-react'
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts'
 import HitTrackerTable from './hit-tracker-table'
 import HitTrackerAccurate from './hit-tracker-accurate'
@@ -9,6 +9,10 @@ import dynamic from 'next/dynamic'
 
 const ScrapAnalysis = dynamic(() => import('./scrap-analysis/page'), { ssr: false })
 const PioneerScrapAnalysis = dynamic(() => import('./pioneer-scrap/page'), { ssr: false })
+const ExecutiveDashboard = dynamic(() => import('./executive-dashboard'), { ssr: false })
+const QualityPerformance = dynamic(() => import('./quality-performance'), { ssr: false })
+const MachineDowntime = dynamic(() => import('./machine-downtime'), { ssr: false })
+const QuarterlyReview = dynamic(() => import('./quarterly-review'), { ssr: false })
 
 export default function ReportsPage() {
   const [selectedReport, setSelectedReport] = useState('hit-tracker-table')
@@ -201,6 +205,54 @@ export default function ReportsPage() {
             <Factory className="w-4 h-4 mr-1 sm:mr-2" />
             <span className="hidden sm:inline">Pioneer Scrap</span>
             <span className="sm:hidden">Pioneer</span>
+          </button>
+          <button
+            onClick={() => setSelectedReport('executive')}
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium transition-colors flex items-center whitespace-nowrap text-sm sm:text-base ${
+              selectedReport === 'executive' 
+                ? 'bg-orange-600 text-white' 
+                : 'bg-white text-gray-700 hover:bg-gray-100'
+            }`}
+          >
+            <DollarSign className="w-4 h-4 mr-1 sm:mr-2" />
+            <span className="hidden sm:inline">Executive Dashboard</span>
+            <span className="sm:hidden">Executive</span>
+          </button>
+          <button
+            onClick={() => setSelectedReport('quality')}
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium transition-colors flex items-center whitespace-nowrap text-sm sm:text-base ${
+              selectedReport === 'quality' 
+                ? 'bg-orange-600 text-white' 
+                : 'bg-white text-gray-700 hover:bg-gray-100'
+            }`}
+          >
+            <PieChartIcon className="w-4 h-4 mr-1 sm:mr-2" />
+            <span className="hidden sm:inline">Quality Report</span>
+            <span className="sm:hidden">Quality</span>
+          </button>
+          <button
+            onClick={() => setSelectedReport('downtime')}
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium transition-colors flex items-center whitespace-nowrap text-sm sm:text-base ${
+              selectedReport === 'downtime' 
+                ? 'bg-orange-600 text-white' 
+                : 'bg-white text-gray-700 hover:bg-gray-100'
+            }`}
+          >
+            <Wrench className="w-4 h-4 mr-1 sm:mr-2" />
+            <span className="hidden sm:inline">Machine Downtime</span>
+            <span className="sm:hidden">Downtime</span>
+          </button>
+          <button
+            onClick={() => setSelectedReport('quarterly')}
+            className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium transition-colors flex items-center whitespace-nowrap text-sm sm:text-base ${
+              selectedReport === 'quarterly' 
+                ? 'bg-orange-600 text-white' 
+                : 'bg-white text-gray-700 hover:bg-gray-100'
+            }`}
+          >
+            <FileText className="w-4 h-4 mr-1 sm:mr-2" />
+            <span className="hidden sm:inline">Quarterly Review</span>
+            <span className="sm:hidden">Quarterly</span>
           </button>
         </div>
       </div>
@@ -462,6 +514,26 @@ export default function ReportsPage() {
       {/* Pioneer Scrap Analysis Report */}
       {selectedReport === 'pioneer-scrap' && (
         <PioneerScrapAnalysis />
+      )}
+
+      {/* Executive Dashboard */}
+      {selectedReport === 'executive' && (
+        <ExecutiveDashboard />
+      )}
+
+      {/* Quality Performance Report */}
+      {selectedReport === 'quality' && (
+        <QualityPerformance />
+      )}
+
+      {/* Machine Downtime Analysis */}
+      {selectedReport === 'downtime' && (
+        <MachineDowntime />
+      )}
+
+      {/* Quarterly Business Review */}
+      {selectedReport === 'quarterly' && (
+        <QuarterlyReview />
       )}
     </div>
   )

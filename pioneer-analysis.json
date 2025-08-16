@@ -1,0 +1,409 @@
+{
+  "Overall": {
+    "rowCount": 57,
+    "columnCount": 24,
+    "headers": [
+      "Pioneer",
+      null,
+      "2024 Results",
+      "Annual Goal",
+      "January",
+      "February",
+      "March",
+      "Q1 Goal",
+      "Actual",
+      "April",
+      "May",
+      "June",
+      "Q2 Goal",
+      "Actual",
+      "July ",
+      "August",
+      "September",
+      "Q3 Total",
+      "Actual",
+      "October",
+      "November",
+      "December ",
+      "Q4 Total ",
+      "Actual"
+    ],
+    "sampleData": [
+      [],
+      [
+        "Quality",
+        "Scrap Costs",
+        566951,
+        425000,
+        29610,
+        25946,
+        25273,
+        106250,
+        80829,
+        26588,
+        27641,
+        28958,
+        106250,
+        83187,
+        null,
+        null,
+        null,
+        106250,
+        0,
+        null,
+        null,
+        null,
+        106250,
+        0
+      ],
+      [
+        null,
+        "External Sort Cost",
+        188435,
+        100000,
+        270,
+        1841,
+        2478.86,
+        25000,
+        4589.860000000001,
+        5097.33,
+        1543,
+        null,
+        25000,
+        6640.33,
+        null,
+        null,
+        null,
+        25000,
+        0,
+        null,
+        null,
+        null,
+        25000,
+        0
+      ],
+      [
+        null,
+        "Unplanned Internal Sort Cost (Start tracking in 2025)",
+        "NA",
+        null,
+        null,
+        1268.92,
+        null,
+        1268.92,
+        null,
+        null,
+        null,
+        null,
+        0,
+        null,
+        null,
+        null,
+        null,
+        0,
+        null,
+        null,
+        null,
+        null,
+        0
+      ],
+      [
+        null,
+        "PPM",
+        129,
+        25,
+        30.5,
+        16.63,
+        2.23,
+        25,
+        16.45333333333333,
+        7.73,
+        1.06,
+        2.21,
+        6.25,
+        11,
+        null,
+        null,
+        null,
+        6.25,
+        0,
+        null,
+        null,
+        null,
+        6.25,
+        0
+      ]
+    ]
+  },
+  "Management review 6.13": {
+    "rowCount": 157,
+    "columnCount": 4,
+    "headers": [
+      "Date",
+      "Name",
+      "In Person",
+      "Teams"
+    ],
+    "sampleData": [
+      [
+        null,
+        "Harper"
+      ],
+      [
+        null,
+        "Peppi"
+      ],
+      [
+        null,
+        "Jon Green"
+      ],
+      [
+        null,
+        null,
+        "Hannah"
+      ],
+      [
+        null,
+        null,
+        "Amy"
+      ]
+    ]
+  },
+  "Corrective Actions": {
+    "rowCount": 31,
+    "columnCount": 7,
+    "headers": [
+      null,
+      null,
+      null,
+      "ACTION LIST",
+      null,
+      null,
+      "Legend:"
+    ],
+    "sampleData": [
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        "B",
+        "Task comments"
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        "C",
+        "- Task is completed/closed"
+      ],
+      [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        "Y",
+        "- In jeopardy, may be late/re-timed"
+      ],
+      [
+        null,
+        "MEETING / PROG./ C.I. NUMBER:",
+        null,
+        null,
+        null,
+        null,
+        "R",
+        "- Task is late"
+      ],
+      [
+        null,
+        "MEETING / PROG./ C.I. DESCRIPTION:",
+        null,
+        null,
+        null,
+        null,
+        "G",
+        "- On schedule, no roadblocks"
+      ]
+    ]
+  },
+  "January Notes": {
+    "rowCount": 45,
+    "columnCount": 1,
+    "headers": [
+      "Maintenance"
+    ],
+    "sampleData": [
+      [],
+      [
+        "1500-1 Downtime",
+        "Hours"
+      ],
+      [
+        "Repair - Bolster",
+        2.6333300000000004
+      ],
+      [
+        "Repair - Press",
+        2.51665
+      ],
+      [
+        "Repair - Transfer System",
+        1.9333200000000001
+      ]
+    ]
+  },
+  "February Notes": {
+    "rowCount": 76,
+    "columnCount": 1,
+    "headers": [
+      "Maintenance"
+    ],
+    "sampleData": [
+      [],
+      [
+        "600T Downtime",
+        "Hours"
+      ],
+      [
+        62070,
+        0.93333
+      ],
+      [
+        "60847/947-3A0",
+        0.93333
+      ],
+      [
+        "K00824/825A49P",
+        0.86667
+      ]
+    ]
+  },
+  "March Notes": {
+    "rowCount": 42,
+    "columnCount": 1,
+    "headers": [
+      "Maintenance"
+    ],
+    "sampleData": [
+      [],
+      [
+        "1500-1 Downtime",
+        "Hours"
+      ],
+      [
+        "Repair - Bolster",
+        3.623
+      ],
+      [
+        "Repair - Press",
+        2.98
+      ],
+      [
+        "Repair - Transfer System",
+        1.8234
+      ]
+    ]
+  },
+  "April Notes": {
+    "rowCount": 76,
+    "columnCount": 1,
+    "headers": [
+      "Maintenance"
+    ],
+    "sampleData": [
+      [],
+      [
+        "600T Downtime",
+        "Hours"
+      ],
+      [
+        62070,
+        0.93333
+      ],
+      [
+        "60847/947-3A0",
+        0.93333
+      ],
+      [
+        "K00824/825A49P",
+        0.86667
+      ]
+    ]
+  },
+  "May Notes": {
+    "rowCount": 45,
+    "columnCount": 1,
+    "headers": [
+      "Maintenance"
+    ],
+    "sampleData": [
+      [],
+      [
+        "1500-1 Downtime",
+        "Hours"
+      ],
+      [
+        "Repair - Bolster",
+        2.6333300000000004
+      ],
+      [
+        "Repair - Press",
+        2.51665
+      ],
+      [
+        "Repair - Transfer System",
+        1.9333200000000001
+      ]
+    ]
+  },
+  "June Notes": {
+    "rowCount": 0,
+    "columnCount": 0,
+    "headers": [],
+    "sampleData": []
+  },
+  "July Notes": {
+    "rowCount": 0,
+    "columnCount": 0,
+    "headers": [],
+    "sampleData": []
+  },
+  "August Notes": {
+    "rowCount": 0,
+    "columnCount": 0,
+    "headers": [],
+    "sampleData": []
+  },
+  "September Notes": {
+    "rowCount": 0,
+    "columnCount": 0,
+    "headers": [],
+    "sampleData": []
+  },
+  "Ocotber Notes": {
+    "rowCount": 0,
+    "columnCount": 0,
+    "headers": [],
+    "sampleData": []
+  },
+  "November Notes": {
+    "rowCount": 0,
+    "columnCount": 0,
+    "headers": [],
+    "sampleData": []
+  },
+  "December Notes": {
+    "rowCount": 0,
+    "columnCount": 0,
+    "headers": [],
+    "sampleData": []
+  }
+}

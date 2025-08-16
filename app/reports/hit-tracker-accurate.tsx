@@ -760,7 +760,7 @@ export default function HitTrackerAccurate() {
             </div>
           </div>
         ))}
-        </div>
+      </div>
       )}
 
       {/* Machine Detail Modal */}
