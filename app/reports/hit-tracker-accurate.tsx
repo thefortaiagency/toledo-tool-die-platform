@@ -61,6 +61,7 @@ export default function HitTrackerAccurate() {
   const [loading, setLoading] = useState(true)
   const [viewMode, setViewMode] = useState<'all' | 'single'>('all')
   const [detailModalMachine, setDetailModalMachine] = useState<MachineWeekData | null>(null)
+  const [isMobile, setIsMobile] = useState(false)
 
   // NO MOCK DATA - Only use real database data
   const generateMockData = (): WeekData[] => {
@@ -209,6 +210,13 @@ export default function HitTrackerAccurate() {
   }
 
   useEffect(() => {
+    // Check if mobile
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    
     // Fetch ONLY real data from the database - NO MOCK DATA
     const fetchData = async () => {
       try {
@@ -232,6 +240,8 @@ export default function HitTrackerAccurate() {
     }
     
     fetchData()
+    
+    return () => window.removeEventListener('resize', checkMobile)
   }, [])
 
   const getEfficiencyColor = (efficiency: number | null) => {
@@ -361,20 +371,20 @@ export default function HitTrackerAccurate() {
   return (
     <div className="space-y-4">
       {/* Week Navigation Header */}
-      <div className="bg-white rounded-lg shadow p-4">
+      <div className="bg-white rounded-lg shadow p-3 sm:p-4">
         <div className="flex items-center justify-between">
           <button
             onClick={() => setCurrentWeekIndex(Math.min(weekData.length - 1, currentWeekIndex + 1))}
             disabled={currentWeekIndex === weekData.length - 1}
-            className="p-2 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-1.5 sm:p-2 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
             title="Previous Week"
           >
-            <ChevronLeft className="w-5 h-5" />
+            <ChevronLeft className="w-4 sm:w-5 h-4 sm:h-5" />
           </button>
           
-          <div className="text-center">
-            <h2 className="text-xl font-bold">Hit Tracker - Week of {currentWeek.weekStart}</h2>
-            <p className="text-sm text-gray-600">
+          <div className="text-center px-2">
+            <h2 className="text-sm sm:text-xl font-bold">Hit Tracker - Week of {currentWeek.weekStart}</h2>
+            <p className="text-xs sm:text-sm text-gray-600">
               {currentWeek.weekStart} to {currentWeek.weekEnd}
             </p>
           </div>
@@ -382,67 +392,130 @@ export default function HitTrackerAccurate() {
           <button
             onClick={() => setCurrentWeekIndex(Math.max(0, currentWeekIndex - 1))}
             disabled={currentWeekIndex === 0}
-            className="p-2 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="p-1.5 sm:p-2 rounded hover:bg-gray-100 disabled:opacity-50 disabled:cursor-not-allowed"
             title="Next Week"
           >
-            <ChevronRight className="w-5 h-5" />
+            <ChevronRight className="w-4 sm:w-5 h-4 sm:h-5" />
           </button>
         </div>
       </div>
 
-      {/* Machine Filter Buttons */}
-      <div className="bg-white rounded-lg shadow p-4">
-        <div className="flex flex-wrap gap-2">
-          <button
-            onClick={() => {
-              setSelectedMachine(null)
-              setViewMode('all')
-            }}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-              !selectedMachine 
-                ? 'bg-orange-600 text-white' 
-                : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
-            }`}
-          >
-            All Machines
-          </button>
-          {MACHINES.map(machine => (
+      {/* Machine Filter Buttons - Scrollable on mobile */}
+      <div className="bg-white rounded-lg shadow p-3 sm:p-4">
+        <div className="overflow-x-auto">
+          <div className="flex gap-2 min-w-max pb-2">
             <button
-              key={machine.id}
               onClick={() => {
-                setSelectedMachine(machine.id)
-                setViewMode('single')
+                setSelectedMachine(null)
+                setViewMode('all')
               }}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-                selectedMachine === machine.id 
+              className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium transition-colors text-sm sm:text-base whitespace-nowrap ${
+                !selectedMachine 
                   ? 'bg-orange-600 text-white' 
                   : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
               }`}
             >
-              {machine.name}
-              <span className="ml-2 text-xs opacity-75">({machine.target}/hr)</span>
+              All Machines
             </button>
-          ))}
+            {MACHINES.map(machine => (
+              <button
+                key={machine.id}
+                onClick={() => {
+                  setSelectedMachine(machine.id)
+                  setViewMode('single')
+                }}
+                className={`px-3 sm:px-4 py-1.5 sm:py-2 rounded-lg font-medium transition-colors text-sm sm:text-base whitespace-nowrap ${
+                  selectedMachine === machine.id 
+                    ? 'bg-orange-600 text-white' 
+                    : 'bg-gray-100 hover:bg-gray-200 text-gray-700'
+                }`}
+              >
+                {machine.name}
+                <span className="ml-1 sm:ml-2 text-xs opacity-75">({machine.target}/hr)</span>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* Main Hit Tracker Table */}
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      {/* Mobile Card View */}
+      {isMobile && (
+        <div className="space-y-4 md:hidden">
+          {displayMachines.map((machine) => (
+            <div key={machine.machineId} className="bg-white rounded-lg shadow p-4">
+              <div className="flex justify-between items-center mb-3">
+                <h3 className="font-bold text-gray-900">{machine.machineName}</h3>
+                <button 
+                  onClick={() => setDetailModalMachine(machine)}
+                  className="text-blue-600 text-sm"
+                >
+                  Details →
+                </button>
+              </div>
+              <div className="space-y-2 text-sm">
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Weekly Hits:</span>
+                  <span className="font-semibold">{machine.weeklyHits.toLocaleString()}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Weekly Hours:</span>
+                  <span className="font-semibold">{machine.weeklyHours}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-gray-600">Efficiency:</span>
+                  <span className={`font-semibold px-2 rounded ${getEfficiencyColor(machine.weeklyPerformance)}`}>
+                    {formatEfficiency(machine.weeklyPerformance)}
+                  </span>
+                </div>
+                <div className="pt-2 border-t">
+                  <div className="text-xs text-gray-600 mb-1">Shift Performance:</div>
+                  <div className="grid grid-cols-3 gap-2 text-xs">
+                    <div className="text-center">
+                      <div className="font-semibold">3rd</div>
+                      <div className={`px-1 rounded ${getEfficiencyColor(machine.shiftTotals.third.efficiency)}`}>
+                        {formatEfficiency(machine.shiftTotals.third.efficiency)}
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <div className="font-semibold">1st</div>
+                      <div className={`px-1 rounded ${getEfficiencyColor(machine.shiftTotals.first.efficiency)}`}>
+                        {formatEfficiency(machine.shiftTotals.first.efficiency)}
+                      </div>
+                    </div>
+                    <div className="text-center">
+                      <div className="font-semibold">2nd</div>
+                      <div className={`px-1 rounded ${getEfficiencyColor(machine.shiftTotals.second.efficiency)}`}>
+                        {formatEfficiency(machine.shiftTotals.second.efficiency)}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Main Hit Tracker Table - Desktop only */}
+      <div className={`bg-white rounded-lg shadow overflow-hidden ${isMobile ? 'hidden' : ''}`}>
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full text-xs sm:text-sm">
             <thead className="bg-gray-100 sticky top-0 z-10">
               <tr>
-                <th className="px-3 py-2 text-left font-medium text-gray-700 border-r-2 border-gray-300 min-w-[140px]">
-                  Machine / Shift
+                <th className="px-2 sm:px-3 py-1 sm:py-2 text-left font-medium text-gray-700 border-r-2 border-gray-300 min-w-[100px] sm:min-w-[140px]">
+                  <span className="hidden sm:inline">Machine / Shift</span>
+                  <span className="sm:hidden">Machine</span>
                 </th>
                 {currentWeek.machines[0]?.days?.map((day, idx) => (
-                  <th key={idx} className="px-2 py-2 text-center font-medium text-gray-700 border-r border-gray-200 min-w-[100px]">
-                    <div className="text-xs">{day.dayName}</div>
+                  <th key={idx} className="px-1 sm:px-2 py-1 sm:py-2 text-center font-medium text-gray-700 border-r border-gray-200 min-w-[60px] sm:min-w-[100px]">
+                    <div className="text-xs hidden sm:block">{day.dayName}</div>
+                    <div className="text-xs sm:hidden">{day.dayName.slice(0, 3)}</div>
                     <div className="text-xs text-gray-500">{day.date.slice(5)}</div>
                   </th>
                 ))}
-                <th className="px-3 py-2 text-center font-medium text-gray-700 bg-orange-50 min-w-[120px]">
-                  Weekly Total
+                <th className="px-2 sm:px-3 py-1 sm:py-2 text-center font-medium text-gray-700 bg-orange-50 min-w-[80px] sm:min-w-[120px]">
+                  <span className="hidden sm:inline">Weekly Total</span>
+                  <span className="sm:hidden">Total</span>
                 </th>
               </tr>
             </thead>
@@ -454,14 +527,16 @@ export default function HitTrackerAccurate() {
                     className="bg-gray-50 border-t-2 border-gray-400 cursor-pointer hover:bg-gray-100"
                     onClick={() => setDetailModalMachine(machine)}
                   >
-                    <td colSpan={9} className="px-3 py-2">
+                    <td colSpan={9} className="px-2 sm:px-3 py-1 sm:py-2">
                       <div className="flex items-center justify-between">
-                        <span className="font-bold text-gray-900">
-                          {machine.machineName} (Target: {machine.target}/hr)
+                        <span className="font-bold text-gray-900 text-xs sm:text-base">
+                          {machine.machineName} 
+                          <span className="hidden sm:inline"> (Target: {machine.target}/hr)</span>
                         </span>
-                        <button className="text-blue-600 hover:text-blue-800 flex items-center text-sm">
-                          <Info className="w-4 h-4 mr-1" />
-                          View Details
+                        <button className="text-blue-600 hover:text-blue-800 flex items-center text-xs sm:text-sm">
+                          <Info className="w-3 sm:w-4 h-3 sm:h-4 mr-1" />
+                          <span className="hidden sm:inline">View Details</span>
+                          <span className="sm:hidden">Details</span>
                         </button>
                       </div>
                     </td>
@@ -469,15 +544,16 @@ export default function HitTrackerAccurate() {
 
                   {/* 3rd Shift */}
                   <tr className="hover:bg-gray-50">
-                    <td className="px-3 py-1 text-gray-700 border-r-2 border-gray-300 font-medium">
-                      3rd Shift Hits
+                    <td className="px-2 sm:px-3 py-0.5 sm:py-1 text-gray-700 border-r-2 border-gray-300 font-medium text-xs sm:text-sm">
+                      <span className="hidden sm:inline">3rd Shift Hits</span>
+                      <span className="sm:hidden">3rd Hits</span>
                     </td>
                     {machine.days.map((day, idx) => (
-                      <td key={idx} className="px-2 py-1 text-center border-r border-gray-200">
+                      <td key={idx} className="px-1 sm:px-2 py-0.5 sm:py-1 text-center border-r border-gray-200 text-xs sm:text-sm">
                         {formatNumber(day.shifts.third.hits)}
                       </td>
                     ))}
-                    <td className="px-3 py-1 text-center font-semibold bg-orange-50">
+                    <td className="px-2 sm:px-3 py-0.5 sm:py-1 text-center font-semibold bg-orange-50 text-xs sm:text-sm">
                       {formatNumber(machine.shiftTotals.third.hits)}
                     </td>
                   </tr>
@@ -646,12 +722,13 @@ export default function HitTrackerAccurate() {
         </div>
       </div>
 
-      {/* Weekly Summary Statistics */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      {/* Weekly Summary Statistics - Desktop only */}
+      {!isMobile && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
         {displayMachines.map(machine => (
-          <div key={machine.machineId} className="bg-white rounded-lg shadow p-4">
-            <h3 className="font-bold text-gray-900 mb-2">{machine.machineName}</h3>
-            <div className="space-y-1 text-sm">
+          <div key={machine.machineId} className="bg-white rounded-lg shadow p-3 sm:p-4">
+            <h3 className="font-bold text-gray-900 mb-1 sm:mb-2 text-sm sm:text-base">{machine.machineName}</h3>
+            <div className="space-y-1 text-xs sm:text-sm">
               <div className="flex justify-between">
                 <span className="text-gray-600">Weekly Hits:</span>
                 <span className="font-semibold">{machine.weeklyHits.toLocaleString()}</span>
@@ -683,7 +760,8 @@ export default function HitTrackerAccurate() {
             </div>
           </div>
         ))}
-      </div>
+        </div>
+      )}
 
       {/* Machine Detail Modal */}
       {detailModalMachine && (
