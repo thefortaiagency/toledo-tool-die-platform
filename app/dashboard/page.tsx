@@ -224,7 +224,7 @@ export default function Dashboard() {
     <div className="p-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Production Dashboard</h1>
-        <p className="text-gray-600 mt-2">Real-time manufacturing metrics and insights</p>
+        <p className="text-gray-600 mt-2">Manufacturing metrics from the last 7 days</p>
       </div>
       
       {/* Key Metrics Grid */}
@@ -249,7 +249,7 @@ export default function Dashboard() {
             <div className={`text-2xl font-bold ${getEfficiencyColor(metrics.averageEfficiency)}`}>
               {formatPercent(metrics.averageEfficiency)}
             </div>
-            <p className="text-xs text-gray-500">All machines</p>
+            <p className="text-xs text-gray-500">Last 7 days avg</p>
           </CardContent>
         </Card>
         
@@ -261,7 +261,7 @@ export default function Dashboard() {
           <CardContent>
             <div className="text-2xl font-bold">{formatNumber(metrics.totalGoodParts)}</div>
             <p className="text-xs text-gray-500">
-              {formatPercent((metrics.totalGoodParts / (metrics.totalGoodParts + metrics.totalScrapParts)) * 100)} yield
+              Last 7 days • {formatPercent((metrics.totalGoodParts / (metrics.totalGoodParts + metrics.totalScrapParts)) * 100)} yield
             </p>
           </CardContent>
         </Card>
@@ -273,7 +273,7 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{metrics.alerts}</div>
-            <p className="text-xs text-gray-500">Requires attention</p>
+            <p className="text-xs text-gray-500">Current active</p>
           </CardContent>
         </Card>
       </div>
@@ -287,7 +287,7 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{metrics.activeMachines}</div>
-            <p className="text-xs text-gray-500">Reporting data</p>
+            <p className="text-xs text-gray-500">Last 7 days</p>
           </CardContent>
         </Card>
 
@@ -310,7 +310,7 @@ export default function Dashboard() {
           <CardContent>
             <div className="text-2xl font-bold">{formatNumber(metrics.totalScrapParts)}</div>
             <p className="text-xs text-gray-500">
-              {formatPercent((metrics.totalScrapParts / (metrics.totalGoodParts + metrics.totalScrapParts)) * 100)} rate
+              Last 7 days • {formatPercent((metrics.totalScrapParts / (metrics.totalGoodParts + metrics.totalScrapParts)) * 100)} rate
             </p>
           </CardContent>
         </Card>
@@ -322,7 +322,7 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{Math.round(metrics.averageDowntime)}</div>
-            <p className="text-xs text-gray-500">Minutes per shift</p>
+            <p className="text-xs text-gray-500">Last 7 days avg</p>
           </CardContent>
         </Card>
       </div>
@@ -332,7 +332,7 @@ export default function Dashboard() {
         <Card>
           <CardHeader>
             <CardTitle>Efficiency Trend</CardTitle>
-            <CardDescription>Daily average efficiency over the past week</CardDescription>
+            <CardDescription>Daily average efficiency (Last 7 days)</CardDescription>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
@@ -366,7 +366,7 @@ export default function Dashboard() {
         <Card>
           <CardHeader>
             <CardTitle>Production Volume</CardTitle>
-            <CardDescription>Daily production cycles and parts</CardDescription>
+            <CardDescription>Daily production cycles and parts (Last 7 days)</CardDescription>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
@@ -389,7 +389,7 @@ export default function Dashboard() {
         <Card>
           <CardHeader>
             <CardTitle>Machine Performance</CardTitle>
-            <CardDescription>Efficiency by machine</CardDescription>
+            <CardDescription>Average efficiency by machine (Last 7 days)</CardDescription>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={250}>
@@ -499,7 +499,7 @@ export default function Dashboard() {
         <Card>
           <CardHeader>
             <CardTitle>Recent Production</CardTitle>
-            <CardDescription>Latest production entries</CardDescription>
+            <CardDescription>Most recent production records (Last 7 days)</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
