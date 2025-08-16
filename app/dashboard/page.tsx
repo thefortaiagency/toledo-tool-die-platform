@@ -46,14 +46,14 @@ export default function Dashboard() {
     try {
       setLoading(true)
 
-      // Fetch production data from last 7 days
-      const sevenDaysAgo = new Date()
-      sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7)
+      // Fetch production data from last 30 days
+      const thirtyDaysAgo = new Date()
+      thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
 
       const { data: productionData, error } = await supabase
         .from('production_data')
         .select('*')
-        .gte('date', sevenDaysAgo.toISOString())
+        .gte('date', thirtyDaysAgo.toISOString())
         .order('date', { ascending: false })
 
       // Don't throw on error, just log it
@@ -236,7 +236,7 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{formatNumber(metrics.totalCycles)}</div>
-            <p className="text-xs text-gray-500">Last 7 days</p>
+            <p className="text-xs text-gray-500">Last 30 days</p>
           </CardContent>
         </Card>
         
@@ -249,7 +249,7 @@ export default function Dashboard() {
             <div className={`text-2xl font-bold ${getEfficiencyColor(metrics.averageEfficiency)}`}>
               {formatPercent(metrics.averageEfficiency)}
             </div>
-            <p className="text-xs text-gray-500">Last 7 days avg</p>
+            <p className="text-xs text-gray-500">Last 30 days avg</p>
           </CardContent>
         </Card>
         
@@ -261,7 +261,7 @@ export default function Dashboard() {
           <CardContent>
             <div className="text-2xl font-bold">{formatNumber(metrics.totalGoodParts)}</div>
             <p className="text-xs text-gray-500">
-              Last 7 days • {formatPercent((metrics.totalGoodParts / (metrics.totalGoodParts + metrics.totalScrapParts)) * 100)} yield
+              Last 30 days • {formatPercent((metrics.totalGoodParts / (metrics.totalGoodParts + metrics.totalScrapParts)) * 100)} yield
             </p>
           </CardContent>
         </Card>
@@ -287,7 +287,7 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{metrics.activeMachines}</div>
-            <p className="text-xs text-gray-500">Last 7 days</p>
+            <p className="text-xs text-gray-500">Last 30 days</p>
           </CardContent>
         </Card>
 
@@ -298,7 +298,7 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{metrics.shiftsCompleted}</div>
-            <p className="text-xs text-gray-500">Last 7 days</p>
+            <p className="text-xs text-gray-500">Last 30 days</p>
           </CardContent>
         </Card>
 
@@ -310,7 +310,7 @@ export default function Dashboard() {
           <CardContent>
             <div className="text-2xl font-bold">{formatNumber(metrics.totalScrapParts)}</div>
             <p className="text-xs text-gray-500">
-              Last 7 days • {formatPercent((metrics.totalScrapParts / (metrics.totalGoodParts + metrics.totalScrapParts)) * 100)} rate
+              Last 30 days • {formatPercent((metrics.totalScrapParts / (metrics.totalGoodParts + metrics.totalScrapParts)) * 100)} rate
             </p>
           </CardContent>
         </Card>
@@ -322,7 +322,7 @@ export default function Dashboard() {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{Math.round(metrics.averageDowntime)}</div>
-            <p className="text-xs text-gray-500">Last 7 days avg</p>
+            <p className="text-xs text-gray-500">Last 30 days avg</p>
           </CardContent>
         </Card>
       </div>
@@ -332,7 +332,7 @@ export default function Dashboard() {
         <Card>
           <CardHeader>
             <CardTitle>Efficiency Trend</CardTitle>
-            <CardDescription>Daily average efficiency (Last 7 days)</CardDescription>
+            <CardDescription>Daily average efficiency (Last 30 days)</CardDescription>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
@@ -366,7 +366,7 @@ export default function Dashboard() {
         <Card>
           <CardHeader>
             <CardTitle>Production Volume</CardTitle>
-            <CardDescription>Daily production cycles and parts (Last 7 days)</CardDescription>
+            <CardDescription>Daily production cycles and parts (Last 30 days)</CardDescription>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={300}>
@@ -389,7 +389,7 @@ export default function Dashboard() {
         <Card>
           <CardHeader>
             <CardTitle>Machine Performance</CardTitle>
-            <CardDescription>Average efficiency by machine (Last 7 days)</CardDescription>
+            <CardDescription>Average efficiency by machine (Last 30 days)</CardDescription>
           </CardHeader>
           <CardContent>
             <ResponsiveContainer width="100%" height={250}>
@@ -499,7 +499,7 @@ export default function Dashboard() {
         <Card>
           <CardHeader>
             <CardTitle>Recent Production</CardTitle>
-            <CardDescription>Most recent production records (Last 7 days)</CardDescription>
+            <CardDescription>Most recent production records (Last 30 days)</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-2">

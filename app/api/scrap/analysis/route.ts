@@ -63,7 +63,7 @@ export async function GET(req: NextRequest) {
       summaryQuery = summaryQuery.ilike('source_sheet', `%${source}%`)
     }
 
-    const { data: scrapData, error } = await summaryQuery.limit(5000)
+    const { data: scrapData, error } = await summaryQuery.order('month', { ascending: true }).limit(5000)
     
     if (error) throw error
     
@@ -286,8 +286,8 @@ export async function GET(req: NextRequest) {
         totalCost,
         totalRecords: scrapData?.length || 0,
         dateRange: {
-          start: scrapData?.[scrapData.length - 1]?.month || '',
-          end: scrapData?.[0]?.month || ''
+          start: scrapData?.length ? scrapData[0]?.month || '' : '',
+          end: scrapData?.length ? scrapData[scrapData.length - 1]?.month || '' : ''
         }
       },
       topReasons,
