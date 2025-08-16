@@ -3,6 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import Link from 'next/link'
 import { Home, LayoutDashboard, FileText, BarChart3, Settings, Factory } from 'lucide-react'
+import ProductionChatbot from './components/ProductionChatbot'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -68,6 +69,9 @@ export default function RootLayout({
             </div>
           </footer>
         </div>
+        
+        {/* Production Chatbot */}
+        <ProductionChatbot />
       </body>
     </html>
   )
