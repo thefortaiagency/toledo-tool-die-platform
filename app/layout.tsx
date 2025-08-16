@@ -3,7 +3,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import Link from 'next/link'
 import { Home, LayoutDashboard, FileText, BarChart3, Settings, Factory } from 'lucide-react'
-import ProductionChatbot from './components/ProductionChatbot'
+import ResizableChatSidebar from './components/ResizableChatSidebar'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -58,7 +58,6 @@ export default function RootLayout({
                     <Link href="/settings" className="hover:bg-orange-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center transition-colors">
                       <Settings className="h-4 w-4 mr-1" /> Settings
                     </Link>
-                    <ProductionChatbot isNavbar={true} />
                   </div>
                 </div>
               </div>
@@ -79,6 +78,9 @@ export default function RootLayout({
             </div>
           </footer>
         </div>
+        
+        {/* Resizable Chat Sidebar */}
+        <ResizableChatSidebar />
       </body>
     </html>
   )
