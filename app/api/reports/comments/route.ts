@@ -197,14 +197,15 @@ export async function GET(request: Request) {
     const priorityStats = { high: 0, medium: 0, low: 0 }
     const machineStats: Record<string, number> = {}
     
-    processedComments.forEach(comment => {
+    processedComments.forEach((comment: any) => {
       // Category stats
-      comment.categories.forEach(cat => {
+      comment.categories.forEach((cat: string) => {
         categoryStats[cat] = (categoryStats[cat] || 0) + 1
       })
       
       // Priority stats
-      priorityStats[comment.priority]++
+      const priority = comment.priority as 'high' | 'medium' | 'low'
+      priorityStats[priority]++
       
       // Machine stats
       machineStats[comment.machine] = (machineStats[comment.machine] || 0) + 1
