@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import ResizableChatSidebar from './ResizableChatSidebar'
-import { ChevronLeft, Home, LayoutDashboard, FileText, BarChart3, Settings, LogOut, User } from 'lucide-react'
+import { ChevronLeft, Home, LayoutDashboard, FileText, BarChart3, Settings, LogOut, User, Bot, Sparkles } from 'lucide-react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/browser-client'
 
@@ -98,6 +98,21 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               </div>
               {user && (
                 <div className="flex items-center space-x-4 ml-8">
+                  {/* AI Assistant Button */}
+                  <button
+                    onClick={() => setIsChatCollapsed(!isChatCollapsed)}
+                    className="relative hover:bg-orange-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center transition-all group"
+                    title="AI Production Assistant (⌘/)"
+                  >
+                    <Bot className="h-5 w-5 mr-1" />
+                    <span className="hidden md:inline">AI Assistant</span>
+                    {/* Animated indicator */}
+                    <Sparkles className="h-3 w-3 ml-1 text-yellow-400 animate-pulse" />
+                    {!isChatCollapsed && (
+                      <span className="absolute -top-1 -right-1 h-2 w-2 bg-green-400 rounded-full animate-pulse"></span>
+                    )}
+                  </button>
+                  
                   <div className="flex items-center text-sm">
                     <User className="h-4 w-4 mr-1" />
                     <span className="hidden lg:inline">{user.email}</span>
@@ -117,44 +132,26 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
       
       {/* Main Content Area with Sidebar */}
       <div className="flex flex-1 relative">
-        {/* Main Content - adjusts width based on sidebar state */}
-        <main 
-          className="flex-1 transition-all duration-300"
-          style={{ 
-            marginRight: (user && !isChatCollapsed) ? chatWidth : 0,
-          }}
-        >
+        {/* Main Content - no margin adjustment needed for floating chat */}
+        <main className="flex-1">
           {children}
         </main>
         
         {/* Chat Sidebar - Only show if user is authenticated */}
-        {user && (
-          <>
-            <div 
-              className="fixed right-0 top-16 bottom-0 transition-all duration-300"
-              style={{ 
-                width: isChatCollapsed ? 0 : chatWidth,
-              }}
-            >
-              <ResizableChatSidebar 
-                isCollapsed={isChatCollapsed}
-                onCollapsedChange={setIsChatCollapsed}
-                width={chatWidth}
-                onWidthChange={setChatWidth}
-              />
-            </div>
-            
-            {/* Floating toggle button when collapsed */}
-            {isChatCollapsed && (
-              <button
-                onClick={() => setIsChatCollapsed(false)}
-                className="fixed right-0 top-1/2 -translate-y-1/2 bg-orange-600 text-white p-2 rounded-l-lg shadow-lg hover:bg-orange-700 transition-all z-40"
-                title="Open AI Assistant (⌘/)"
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-            )}
-          </>
+        {user && !isChatCollapsed && (
+          <div 
+            className="fixed right-4 top-20 bottom-4 transition-all duration-300 z-50"
+            style={{ 
+              width: Math.min(chatWidth, 400),
+            }}
+          >
+            <ResizableChatSidebar 
+              isCollapsed={isChatCollapsed}
+              onCollapsedChange={setIsChatCollapsed}
+              width={Math.min(chatWidth, 400)}
+              onWidthChange={setChatWidth}
+            />
+          </div>
         )}
       </div>
       

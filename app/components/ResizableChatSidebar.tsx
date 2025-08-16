@@ -277,7 +277,7 @@ export default function ResizableChatSidebar({
 
   return (
     <div 
-      className="h-full bg-white border-l border-gray-200 flex flex-col relative"
+      className="h-full bg-white rounded-lg shadow-2xl flex flex-col relative border border-gray-200"
       style={{ width: `${width}px`, flexShrink: 0 }}
     >
       {/* Resize Handle */}
@@ -292,7 +292,7 @@ export default function ResizableChatSidebar({
       </div>
 
       {/* Header */}
-      <div className="bg-gradient-to-r from-orange-600 to-orange-700 text-white p-4 flex items-center justify-between">
+      <div className="bg-gradient-to-r from-orange-600 to-orange-700 text-white p-4 flex items-center justify-between rounded-t-lg">
         <div className="flex items-center space-x-3">
           <Factory className="w-6 h-6" />
           <div>
