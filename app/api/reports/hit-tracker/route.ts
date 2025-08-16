@@ -27,14 +27,10 @@ const MACHINE_NAMES: Record<string, string> = {
 
 export async function GET() {
   try {
-    // Fetch the latest hit tracker data from the last 30 days to ensure we have data
-    const thirtyDaysAgo = new Date()
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
-    
+    // Fetch ALL hit tracker data we have to show full trends
     const { data: hitTrackerData, error } = await supabase
       .from('hits_tracking')
       .select('*')
-      .gte('date', thirtyDaysAgo.toISOString().split('T')[0])
       .order('date', { ascending: false })
 
     if (error) throw error
@@ -114,7 +110,7 @@ export async function GET() {
     const targetAchievement = allShiftEfficiencies.filter(e => e >= 90).length / (allShiftEfficiencies.length || 1) * 100
     
     return NextResponse.json({
-      chartData: chartData.slice(-7), // Last 7 days
+      chartData: chartData.slice(-12), // Show last 12 weeks for better trend visibility
       stats: {
         weeklyAverage,
         bestShift,
