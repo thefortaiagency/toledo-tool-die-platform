@@ -21,7 +21,11 @@ const stripMarkdown = (text: string) => {
     .replace(/#{1,6}\s/g, '')      // Remove # headers
 }
 
-export default function ProductionChatbot() {
+interface ProductionChatbotProps {
+  isNavbar?: boolean
+}
+
+export default function ProductionChatbot({ isNavbar = false }: ProductionChatbotProps) {
   const [isOpen, setIsOpen] = useState(false)
   const [messages, setMessages] = useState<Message[]>([
     {
@@ -107,17 +111,27 @@ export default function ProductionChatbot() {
   return (
     <>
       {/* Chat Button */}
-      <button
-        onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 bg-orange-600 text-white rounded-full p-4 shadow-lg hover:bg-orange-700 transition-all duration-300 z-40 flex items-center space-x-2"
-      >
-        <MessageCircle className="w-6 h-6" />
-        <span className="hidden md:inline">Production Assistant</span>
-      </button>
+      {isNavbar ? (
+        <button
+          onClick={() => setIsOpen(true)}
+          className="bg-orange-600 text-white px-3 py-2 rounded-md text-sm font-medium flex items-center transition-colors hover:bg-orange-700"
+        >
+          <MessageCircle className="w-4 h-4 mr-1" />
+          <span>AI Assistant</span>
+        </button>
+      ) : (
+        <button
+          onClick={() => setIsOpen(true)}
+          className="fixed bottom-6 right-6 bg-orange-600 text-white rounded-full p-4 shadow-lg hover:bg-orange-700 transition-all duration-300 z-40 flex items-center space-x-2"
+        >
+          <MessageCircle className="w-6 h-6" />
+          <span className="hidden md:inline">Production Assistant</span>
+        </button>
+      )}
 
       {/* Chat Window */}
       {isOpen && (
-        <div className="fixed bottom-6 right-6 w-96 h-[600px] bg-white rounded-xl shadow-2xl z-50 flex flex-col">
+        <div className="fixed top-20 right-4 w-96 h-[600px] bg-white rounded-xl shadow-2xl z-50 flex flex-col">
           {/* Header */}
           <div className="bg-gradient-to-r from-orange-600 to-orange-700 text-white p-4 rounded-t-xl flex items-center justify-between">
             <div className="flex items-center space-x-3">
