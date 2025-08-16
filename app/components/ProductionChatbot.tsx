@@ -10,6 +10,17 @@ interface Message {
   data?: any
 }
 
+// Simple function to strip markdown formatting
+const stripMarkdown = (text: string) => {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, '$1') // Remove **bold**
+    .replace(/\*(.*?)\*/g, '$1')     // Remove *italic*
+    .replace(/__(.*?)__/g, '$1')   // Remove __underline__
+    .replace(/_(.*?)_/g, '$1')     // Remove _italic_
+    .replace(/`(.*?)`/g, '$1')     // Remove `code`
+    .replace(/#{1,6}\s/g, '')      // Remove # headers
+}
+
 export default function ProductionChatbot() {
   const [isOpen, setIsOpen] = useState(false)
   const [messages, setMessages] = useState<Message[]>([
@@ -144,7 +155,7 @@ export default function ProductionChatbot() {
                       <span className="text-xs font-semibold text-orange-600">AI Assistant</span>
                     </div>
                   )}
-                  <div className="whitespace-pre-wrap">{msg.content}</div>
+                  <div className="whitespace-pre-wrap">{stripMarkdown(msg.content)}</div>
                   <div className={`text-xs mt-1 ${msg.role === 'user' ? 'text-orange-100' : 'text-gray-500'}`}>
                     {msg.timestamp.toLocaleTimeString()}
                   </div>
