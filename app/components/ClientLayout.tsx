@@ -98,21 +98,6 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               </div>
               {user && (
                 <div className="flex items-center space-x-4 ml-8">
-                  {/* AI Assistant Button */}
-                  <button
-                    onClick={() => setIsChatCollapsed(!isChatCollapsed)}
-                    className="relative hover:bg-orange-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center transition-all group"
-                    title="AI Production Assistant (⌘/)"
-                  >
-                    <Bot className="h-5 w-5 mr-1" />
-                    <span className="hidden md:inline">AI Assistant</span>
-                    {/* Animated indicator */}
-                    <Sparkles className="h-3 w-3 ml-1 text-yellow-400 animate-pulse" />
-                    {!isChatCollapsed && (
-                      <span className="absolute -top-1 -right-1 h-2 w-2 bg-green-400 rounded-full animate-pulse"></span>
-                    )}
-                  </button>
-                  
                   <div className="flex items-center text-sm">
                     <User className="h-4 w-4 mr-1" />
                     <span className="hidden lg:inline">{user.email}</span>
@@ -123,6 +108,23 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                   >
                     <LogOut className="h-4 w-4 mr-1" /> Logout
                   </button>
+                  
+                  {/* AI Assistant Button - Far Right */}
+                  <div className="border-l border-gray-600 pl-4 ml-4">
+                    <button
+                      onClick={() => setIsChatCollapsed(!isChatCollapsed)}
+                      className="relative hover:bg-orange-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center transition-all group"
+                      title="AI Production Assistant (⌘/)"
+                    >
+                      <Bot className="h-5 w-5 mr-1" />
+                      <span className="hidden md:inline">AI Assistant</span>
+                      {/* Animated indicator */}
+                      <Sparkles className="h-3 w-3 ml-1 text-yellow-400 animate-pulse" />
+                      {!isChatCollapsed && (
+                        <span className="absolute -top-1 -right-1 h-2 w-2 bg-green-400 rounded-full animate-pulse"></span>
+                      )}
+                    </button>
+                  </div>
                 </div>
               )}
             </div>
