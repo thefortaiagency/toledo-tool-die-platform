@@ -5,7 +5,7 @@ import { supabase } from '@/lib/supabase/client'
 import type { Machine, Shift, Part, Operator } from '@/lib/supabase/client'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { CheckCircle, AlertCircle, Save, RefreshCw } from 'lucide-react'
+import { CheckCircle, AlertCircle, Save, RefreshCw, Calculator, Clock, TrendingUp, AlertTriangle } from 'lucide-react'
 
 export default function DataEntry() {
   const [loading, setLoading] = useState(false)
@@ -159,7 +159,7 @@ export default function DataEntry() {
       }
       
       setSuccess(true)
-      // Reset form
+      // Reset form but keep date, shift, and machine for faster entry
       setFormData({
         ...formData,
         part_id: '',
@@ -181,7 +181,12 @@ export default function DataEntry() {
       setTimeout(() => setSuccess(false), 5000)
     } catch (err: any) {
       console.error('Error submitting data:', err)
-      setError(err.message || 'Error submitting data. Please try again.')
+      // Check for duplicate entry error
+      if (err.message?.includes('duplicate key')) {
+        setError('Production data for this date, shift, and machine already exists. Please check your entry.')
+      } else {
+        setError(err.message || 'Error submitting data. Please try again.')
+      }
     } finally {
       setLoading(false)
     }
@@ -201,11 +206,48 @@ export default function DataEntry() {
     return ((good / total) * 100).toFixed(1)
   }
 
+  const calculateScrapRate = () => {
+    const scrap = parseInt(formData.scrap_parts) || 0
+    const total = parseInt(formData.total_cycles) || 0
+    if (total === 0) return '0.0'
+    return ((scrap / total) * 100).toFixed(1)
+  }
+
+  const calculateUptime = () => {
+    const downtime = parseInt(formData.downtime_minutes) || 0
+    const scheduledMinutes = (parseFloat(formData.scheduled_hours) || 8) * 60
+    if (scheduledMinutes === 0) return '100.0'
+    const uptime = ((scheduledMinutes - downtime) / scheduledMinutes) * 100
+    return Math.max(0, uptime).toFixed(1)
+  }
+
+  const getTargetForMachine = () => {
+    const machine = machines.find(m => m.id === formData.machine_id)
+    if (!machine) return null
+    // Target rates per hour based on machine
+    const targets: Record<string, number> = {
+      '600': 950,
+      '1500-1': 600,
+      '1500-2': 600,
+      '1400': 600,
+      '1000': 875,
+      'Hyd': 600
+    }
+    return targets[machine.machine_number] || 600
+  }
+
+  const calculateActualRate = () => {
+    const cycles = parseInt(formData.total_cycles) || 0
+    const hours = parseFloat(formData.actual_hours) || 1
+    if (hours === 0) return 0
+    return Math.round(cycles / hours)
+  }
+
   return (
-    <div className="p-8 max-w-6xl mx-auto">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900">Production Data Entry</h1>
-        <p className="text-gray-600 mt-2">Submit shift production reports and metrics</p>
+    <div className="p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto">
+      <div className="mb-6 sm:mb-8">
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Production Data Entry</h1>
+        <p className="text-sm sm:text-base text-gray-600 mt-2">Submit shift production reports and metrics</p>
       </div>
 
       {success && (
@@ -223,7 +265,7 @@ export default function DataEntry() {
       )}
       
       <form onSubmit={handleSubmit}>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
           {/* Shift Information */}
           <Card>
             <CardHeader>
@@ -448,18 +490,78 @@ export default function DataEntry() {
                 />
               </div>
 
-              <div className="p-4 bg-gray-50 rounded-md">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm font-medium">Calculated Efficiency:</span>
-                  <span className={`text-lg font-bold ${
-                    parseFloat(calculateEfficiency()) >= 100 ? 'text-green-600' :
-                    parseFloat(calculateEfficiency()) >= 90 ? 'text-yellow-600' :
-                    parseFloat(calculateEfficiency()) >= 80 ? 'text-orange-600' :
-                    'text-red-600'
-                  }`}>
-                    {calculateEfficiency()}%
-                  </span>
+              <div className="space-y-3">
+                <div className="p-4 bg-gray-50 rounded-md">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium flex items-center">
+                      <Calculator className="h-4 w-4 mr-1" />
+                      Calculated Efficiency:
+                    </span>
+                    <span className={`text-lg font-bold ${
+                      parseFloat(calculateEfficiency()) >= 100 ? 'text-green-600' :
+                      parseFloat(calculateEfficiency()) >= 90 ? 'text-yellow-600' :
+                      parseFloat(calculateEfficiency()) >= 80 ? 'text-orange-600' :
+                      'text-red-600'
+                    }`}>
+                      {calculateEfficiency()}%
+                    </span>
+                  </div>
                 </div>
+
+                <div className="p-4 bg-gray-50 rounded-md">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium flex items-center">
+                      <AlertTriangle className="h-4 w-4 mr-1" />
+                      Scrap Rate:
+                    </span>
+                    <span className={`text-lg font-bold ${
+                      parseFloat(calculateScrapRate()) <= 2 ? 'text-green-600' :
+                      parseFloat(calculateScrapRate()) <= 5 ? 'text-yellow-600' :
+                      parseFloat(calculateScrapRate()) <= 10 ? 'text-orange-600' :
+                      'text-red-600'
+                    }`}>
+                      {calculateScrapRate()}%
+                    </span>
+                  </div>
+                </div>
+
+                <div className="p-4 bg-gray-50 rounded-md">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-medium flex items-center">
+                      <Clock className="h-4 w-4 mr-1" />
+                      Machine Uptime:
+                    </span>
+                    <span className={`text-lg font-bold ${
+                      parseFloat(calculateUptime()) >= 95 ? 'text-green-600' :
+                      parseFloat(calculateUptime()) >= 90 ? 'text-yellow-600' :
+                      parseFloat(calculateUptime()) >= 80 ? 'text-orange-600' :
+                      'text-red-600'
+                    }`}>
+                      {calculateUptime()}%
+                    </span>
+                  </div>
+                </div>
+
+                {formData.machine_id && formData.actual_hours && (
+                  <div className="p-4 bg-blue-50 rounded-md">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm font-medium flex items-center">
+                        <TrendingUp className="h-4 w-4 mr-1" />
+                        Actual vs Target Rate:
+                      </span>
+                      <div className="text-right">
+                        <span className={`text-lg font-bold ${
+                          calculateActualRate() >= (getTargetForMachine() || 0) ? 'text-green-600' : 'text-red-600'
+                        }`}>
+                          {calculateActualRate()}
+                        </span>
+                        <span className="text-sm text-gray-600">
+                          {' '}/ {getTargetForMachine()} per hour
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                )}
               </div>
             </CardContent>
           </Card>
@@ -499,12 +601,13 @@ export default function DataEntry() {
         </div>
 
         {/* Submit Buttons */}
-        <div className="mt-8 flex justify-end space-x-4">
+        <div className="mt-6 sm:mt-8 flex flex-col sm:flex-row justify-end gap-3 sm:gap-0 sm:space-x-4">
           <Button
             type="button"
             variant="outline"
             onClick={() => window.location.reload()}
             disabled={loading}
+            className="w-full sm:w-auto"
           >
             <RefreshCw className="h-4 w-4 mr-2" />
             Reset Form
@@ -512,6 +615,7 @@ export default function DataEntry() {
           <Button
             type="submit"
             disabled={loading}
+            className="w-full sm:w-auto"
           >
             {loading ? (
               <>

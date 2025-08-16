@@ -56,11 +56,11 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 <Link href="/dashboard" className="hover:bg-orange-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center transition-colors">
                   <LayoutDashboard className="h-4 w-4 mr-1" /> Dashboard
                 </Link>
-                <Link href="/entry" className="hover:bg-orange-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center transition-colors">
-                  <FileText className="h-4 w-4 mr-1" /> Data Entry
-                </Link>
                 <Link href="/reports" className="hover:bg-orange-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center transition-colors">
                   <BarChart3 className="h-4 w-4 mr-1" /> Reports
+                </Link>
+                <Link href="/entry" className="hover:bg-orange-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center transition-colors">
+                  <FileText className="h-4 w-4 mr-1" /> Data Entry
                 </Link>
                 <Link href="/settings" className="hover:bg-orange-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center transition-colors">
                   <Settings className="h-4 w-4 mr-1" /> Settings
