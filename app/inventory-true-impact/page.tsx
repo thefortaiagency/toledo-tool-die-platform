@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import { Package, TrendingUp, TrendingDown, DollarSign, AlertCircle, Calendar, Users, BarChart3, FileText, AlertTriangle, CheckCircle } from 'lucide-react'
 import trueImpactData from '../../data/true-inventory-impact-analysis.json'
+import { AIInsights } from '@/components/ai-insights'
 
 const COLORS = ['#10b981', '#ef4444', '#3b82f6', '#f59e0b', '#8b5cf6', '#ec4899']
 
@@ -144,12 +145,13 @@ export default function InventoryTrueImpactPage() {
 
       {/* Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-6">
           <TabsTrigger value="overview">Overview</TabsTrigger>
           <TabsTrigger value="comparison">Before vs After</TabsTrigger>
           <TabsTrigger value="monthly">Monthly Trends</TabsTrigger>
           <TabsTrigger value="reasons">True Reasons</TabsTrigger>
           <TabsTrigger value="recommendations">Action Items</TabsTrigger>
+          <TabsTrigger value="ai-insights">AI Insights</TabsTrigger>
         </TabsList>
 
         {/* Overview Tab */}
@@ -519,6 +521,92 @@ export default function InventoryTrueImpactPage() {
                     <span>Streamline reporting with clear separation of transfers vs. adjustments</span>
                   </li>
                 </ul>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        {/* AI Insights Tab */}
+        <TabsContent value="ai-insights" className="space-y-4">
+          <AIInsights filter="inventory" />
+          
+          <Card className="border-2 border-purple-200 bg-gradient-to-br from-purple-50 to-indigo-50">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <TrendingUp className="h-5 w-5 text-purple-600" />
+                Gross vs Net Impact Tracking
+              </CardTitle>
+              <CardDescription>
+                AI recommends dual-tracking system for complete visibility
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div className="bg-white/80 rounded-lg p-4">
+                  <h4 className="font-semibold mb-3 text-gray-900">📊 Gross Movement Tracking</h4>
+                  <ul className="space-y-2 text-sm text-gray-700">
+                    <li className="flex items-start gap-2">
+                      <span className="text-purple-600 mt-1">•</span>
+                      <span>Track all container transfers for operational visibility</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-purple-600 mt-1">•</span>
+                      <span>Monitor transfer patterns between operations</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-purple-600 mt-1">•</span>
+                      <span>Identify bottlenecks in material flow</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-purple-600 mt-1">•</span>
+                      <span>$551.9M gross movement volume</span>
+                    </li>
+                  </ul>
+                </div>
+                
+                <div className="bg-white/80 rounded-lg p-4">
+                  <h4 className="font-semibold mb-3 text-gray-900">💎 Net Impact Tracking</h4>
+                  <ul className="space-y-2 text-sm text-gray-700">
+                    <li className="flex items-start gap-2">
+                      <span className="text-indigo-600 mt-1">•</span>
+                      <span>Focus on true inventory adjustments</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-indigo-600 mt-1">•</span>
+                      <span>Exclude paired transfers from KPIs</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-indigo-600 mt-1">•</span>
+                      <span>Target optimization on real issues</span>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <span className="text-indigo-600 mt-1">•</span>
+                      <span>$34.4M true impact to address</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              
+              <div className="mt-6 p-4 bg-gradient-to-r from-purple-100 to-indigo-100 rounded-lg">
+                <h4 className="font-semibold mb-2">Implementation Roadmap</h4>
+                <div className="space-y-2 text-sm">
+                  <div className="flex items-center gap-3">
+                    <span className="flex-shrink-0 w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold text-xs">1</span>
+                    <span>Update ERP to tag container transfers separately (Week 1)</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="flex-shrink-0 w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold text-xs">2</span>
+                    <span>Create dual dashboards: Operations (gross) vs Finance (net) (Week 2)</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="flex-shrink-0 w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold text-xs">3</span>
+                    <span>Implement automated pairing detection algorithm (Week 3)</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className="flex-shrink-0 w-8 h-8 bg-purple-600 text-white rounded-full flex items-center justify-center font-bold text-xs">4</span>
+                    <span>Train staff on new reporting structure (Week 4)</span>
+                  </div>
+                </div>
               </div>
             </CardContent>
           </Card>

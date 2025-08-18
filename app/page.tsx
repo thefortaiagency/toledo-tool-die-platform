@@ -87,8 +87,49 @@ export default async function Home() {
         </div>
       </div>
 
-      {/* New Scrap Analysis Alert Banner */}
+      {/* Critical Inventory Discovery Alert */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <Link href="/inventory-true-impact" className="block">
+          <div className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white p-6 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden">
+            <div className="absolute right-0 top-0 opacity-10">
+              <TrendingUp className="h-32 w-32" />
+            </div>
+            <div className="relative z-10 flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-bold mb-2 flex items-center gap-2">
+                  <TrendingUp className="h-8 w-8 animate-pulse" />
+                  🚨 CRITICAL DISCOVERY: 93.8% of Inventory "Adjustments" Were Transfers!
+                </h2>
+                <p className="text-lg opacity-95">
+                  AI analysis reveals TRUE inventory impact is only $34.4M, not $551.9M • Container transfers incorrectly classified
+                </p>
+                <div className="mt-4 flex gap-6">
+                  <div>
+                    <span className="text-3xl font-bold">$551.9M</span>
+                    <span className="text-sm block opacity-90">Reported (Inflated)</span>
+                  </div>
+                  <div>
+                    <span className="text-3xl font-bold">$34.4M</span>
+                    <span className="text-sm block opacity-90">TRUE Impact</span>
+                  </div>
+                  <div>
+                    <span className="text-3xl font-bold">93.8%</span>
+                    <span className="text-sm block opacity-90">Reduction</span>
+                  </div>
+                </div>
+              </div>
+              <div className="text-right">
+                <span className="inline-block bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg font-semibold">
+                  View Analysis →
+                </span>
+              </div>
+            </div>
+          </div>
+        </Link>
+      </div>
+
+      {/* New Scrap Analysis Alert Banner */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <Link href="/scrap-analysis" className="block">
           <div className="bg-gradient-to-r from-red-600 to-orange-600 text-white p-6 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden">
             <div className="absolute right-0 top-0 opacity-10">
@@ -148,13 +189,23 @@ export default async function Home() {
             </div>
           </Link>
           
+          <Link href="/inventory-true-impact" className="block">
+            <div className="h-full bg-gradient-to-br from-emerald-50 to-teal-50 border-2 border-emerald-300 p-6 sm:p-8 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+              <div className="flex items-center justify-between mb-3 sm:mb-4">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900">Inventory Impact</h3>
+                <TrendingUp className="h-5 sm:h-6 w-5 sm:w-6 text-emerald-600 animate-pulse" />
+              </div>
+              <p className="text-sm sm:text-base text-gray-700 font-medium">TRUE impact is $34.4M, not $551.9M! 93.8% were transfers</p>
+            </div>
+          </Link>
+
           <Link href="/scrap-analysis" className="block">
             <div className="h-full bg-gradient-to-br from-red-50 to-orange-50 border-2 border-red-300 p-6 sm:p-8 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
               <div className="flex items-center justify-between mb-3 sm:mb-4">
                 <h3 className="text-base sm:text-lg font-semibold text-gray-900">Scrap Analysis</h3>
                 <AlertTriangle className="h-5 sm:h-6 w-5 sm:w-6 text-red-600 animate-pulse" />
               </div>
-              <p className="text-sm sm:text-base text-gray-700 font-medium">NEW! View 2025 scrap analysis with $284K savings potential</p>
+              <p className="text-sm sm:text-base text-gray-700 font-medium">View 2025 scrap analysis with $284K savings potential</p>
             </div>
           </Link>
           
