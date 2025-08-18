@@ -24,6 +24,26 @@ interface GeneratedReport {
   recommendations: string[]
 }
 
+// Pre-configured templates with inventory discovery context
+const reportTemplates = [
+  {
+    name: 'Inventory True Impact Analysis',
+    prompt: 'Generate a report showing the TRUE inventory impact of $34.4M vs reported $551.9M. Include that 93.8% of adjustments were container transfers that net to zero. Focus on Mass Updates ($540K), Cycle Count ($205K), and Production Adjustments ($152K).'
+  },
+  {
+    name: 'Container Transfer Optimization',
+    prompt: 'Analyze the container transfer patterns between operations (Safe Launch to Dock Audit). Show that these represent $517M in movements but net to zero. Recommend tracking improvements.'
+  },
+  {
+    name: 'Scrap Cost Reduction',
+    prompt: 'Generate scrap analysis report showing $1.17M total cost with 48.6% unplanned. Focus on $284K savings potential from setup issues, tool problems, and quality defects.'
+  },
+  {
+    name: 'Executive Summary - Real Issues',
+    prompt: 'Create executive report focusing on TRUE $34.4M inventory impact (not inflated $551.9M). Highlight top 3 real issues: Mass Updates, Cycle Counts, Production Adjustments. Include that 93.8% were just transfers.'
+  }
+]
+
 export default function AIReportGenerator() {
   const [prompt, setPrompt] = useState('')
   const [loading, setLoading] = useState(false)
@@ -630,9 +650,31 @@ export default function AIReportGenerator() {
             )}
           </div>
 
+          {/* Quick Templates - Inventory Context */}
+          <div className="bg-gradient-to-r from-emerald-50 to-teal-50 rounded-xl shadow-lg p-8 mb-6 border-2 border-emerald-200">
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">Quick Reports - Inventory TRUE Impact Context:</h3>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              {reportTemplates.map((template, i) => (
+                <button
+                  key={i}
+                  onClick={() => setPrompt(template.prompt)}
+                  className="text-left p-4 bg-white rounded-lg hover:bg-emerald-50 transition-colors border border-emerald-300"
+                >
+                  <div className="flex items-start space-x-2">
+                    <Sparkles className="w-4 h-4 text-emerald-600 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <span className="text-sm font-semibold text-gray-900">{template.name}</span>
+                      <span className="text-xs text-gray-600 block mt-1">Pre-loaded with $34.4M TRUE impact data</span>
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </div>
+          </div>
+
           {/* Sample Prompts */}
           <div className="bg-white rounded-xl shadow-lg p-8">
-            <h3 className="text-lg font-semibold text-gray-900 mb-4">Try these examples:</h3>
+            <h3 className="text-lg font-semibold text-gray-900 mb-4">General Production Examples:</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {samplePrompts.map((sample, i) => (
                 <button

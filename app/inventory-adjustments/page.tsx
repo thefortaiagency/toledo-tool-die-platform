@@ -66,7 +66,7 @@ export default function InventoryAdjustmentsPage() {
       <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white p-6 rounded-lg shadow-lg">
         <h1 className="text-3xl font-bold mb-2">Inventory Adjustment Analysis</h1>
         <p className="text-purple-100">
-          ⚠️ IMPORTANT: 93.8% of these "adjustments" are actually container transfers that net to zero
+          IMPORTANT: 93.8% of these "adjustments" are actually container transfers that net to zero
         </p>
         <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
@@ -95,7 +95,7 @@ export default function InventoryAdjustmentsPage() {
           <AlertTriangle className="h-6 w-6 text-yellow-600 mt-1 flex-shrink-0" />
           <div className="flex-1">
             <h2 className="text-xl font-bold text-yellow-900 mb-2">
-              🚨 CRITICAL DISCOVERY: Most "Adjustments" Are Actually Transfers!
+              CRITICAL DISCOVERY: Most "Adjustments" Are Actually Transfers
             </h2>
             <p className="text-yellow-800 mb-4">
               Our AI analysis discovered that <strong>93.8% of the $551.9M</strong> in reported adjustments are actually 
