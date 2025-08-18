@@ -80,29 +80,30 @@ async function continueImport() {
       const fileDate = new Date(2000 + year, month - 1, day).toISOString().split('T')[0]
       
       for (const row of jsonData) {
-        const partNumber = row['Part Number - Revision'] || row['Part Number'] || ''
-        const quantity = parseFloat(row['Quantity'] || 0)
+        const rowData = row as any
+        const partNumber = rowData['Part Number - Revision'] || rowData['Part Number'] || ''
+        const quantity = parseFloat(rowData['Quantity'] || 0)
         
         if (partNumber && quantity !== 0 && !isNaN(quantity)) {
-          const extendedCost = parseFloat(row['Extended Cost'] || 0)
-          const unitCost = quantity !== 0 ? Math.abs(extendedCost / quantity) : parseFloat(row['Unit Cost'] || 0)
+          const extendedCost = parseFloat(rowData['Extended Cost'] || 0)
+          const unitCost = quantity !== 0 ? Math.abs(extendedCost / quantity) : parseFloat(rowData['Unit Cost'] || 0)
           
           batch.push({
             adjustment_date: fileDate,
             part_number: String(partNumber).trim().substring(0, 100),
-            part_name: String(row['Part Type'] || '').trim().substring(0, 255),
-            operation: String(row['Operation'] || '').trim().substring(0, 255),
-            original_quantity: parseFloat(row['Original Quantity'] || 0),
-            adjusted_quantity: parseFloat(row['Original Quantity'] || 0) + quantity,
+            part_name: String(rowData['Part Type'] || '').trim().substring(0, 255),
+            operation: String(rowData['Operation'] || '').trim().substring(0, 255),
+            original_quantity: parseFloat(rowData['Original Quantity'] || 0),
+            adjusted_quantity: parseFloat(rowData['Original Quantity'] || 0) + quantity,
             adjustment_amount: Math.abs(quantity),
             adjustment_type: quantity > 0 ? 'increase' : 'decrease',
             extended_cost: Math.abs(extendedCost),
             unit_cost: unitCost,
-            adjustment_reason: String(row['Adjustment Reason'] || row['Last Action'] || 'Not specified').trim(),
-            location: String(row['Location'] || '').trim().substring(0, 100),
-            part_group: String(row['Part Group'] || '').trim().substring(0, 100),
-            adjusted_by: String(row['By'] || row['User_ID'] || '').trim().substring(0, 100),
-            status: String(row['Status'] || '').trim().substring(0, 50)
+            adjustment_reason: String(rowData['Adjustment Reason'] || rowData['Last Action'] || 'Not specified').trim(),
+            location: String(rowData['Location'] || '').trim().substring(0, 100),
+            part_group: String(rowData['Part Group'] || '').trim().substring(0, 100),
+            adjusted_by: String(rowData['By'] || rowData['User_ID'] || '').trim().substring(0, 100),
+            status: String(rowData['Status'] || '').trim().substring(0, 50)
           })
           
           // Insert batch when it reaches the size limit
