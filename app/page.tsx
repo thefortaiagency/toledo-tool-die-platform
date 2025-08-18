@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { Factory, LayoutDashboard, FileText, BarChart3, Activity, Package, TrendingUp, Users } from 'lucide-react'
+import { Factory, LayoutDashboard, FileText, BarChart3, Activity, Package, TrendingUp, Users, AlertTriangle } from 'lucide-react'
 import { createClient } from '@supabase/supabase-js'
 
 const supabase = createClient(
@@ -87,10 +87,47 @@ export default async function Home() {
         </div>
       </div>
 
+      {/* New Scrap Analysis Alert Banner */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <Link href="/scrap-analysis" className="block">
+          <div className="bg-gradient-to-r from-red-600 to-orange-600 text-white p-6 rounded-2xl shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-1 relative overflow-hidden">
+            <div className="absolute right-0 top-0 opacity-10">
+              <AlertTriangle className="h-32 w-32" />
+            </div>
+            <div className="relative z-10 flex items-center justify-between">
+              <div>
+                <h2 className="text-2xl font-bold mb-2 flex items-center gap-2">
+                  <AlertTriangle className="h-8 w-8 animate-pulse" />
+                  2025 Scrap Analysis Now Available!
+                </h2>
+                <p className="text-lg opacity-95">
+                  Complete analysis of 29,464 scrap records • $1.17M total scrap cost • Identify improvement opportunities
+                </p>
+                <div className="mt-4 flex gap-6">
+                  <div>
+                    <span className="text-3xl font-bold">48.6%</span>
+                    <span className="text-sm block opacity-90">Unplanned Scrap</span>
+                  </div>
+                  <div>
+                    <span className="text-3xl font-bold">$284K</span>
+                    <span className="text-sm block opacity-90">Potential Savings</span>
+                  </div>
+                </div>
+              </div>
+              <div className="text-right">
+                <span className="inline-block bg-white/20 backdrop-blur-sm px-4 py-2 rounded-lg font-semibold">
+                  View Report →
+                </span>
+              </div>
+            </div>
+          </div>
+        </Link>
+      </div>
+
       {/* Quick Actions */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
         <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6 md:mb-8">Quick Actions</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 sm:gap-6">
           <Link href="/dashboard" className="block">
             <div className="h-full bg-white/95 backdrop-blur-sm p-6 sm:p-8 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-200/50">
               <div className="flex items-center justify-between mb-3 sm:mb-4">
@@ -108,6 +145,16 @@ export default async function Home() {
                 <FileText className="h-5 sm:h-6 w-5 sm:w-6 text-green-600" />
               </div>
               <p className="text-sm sm:text-base text-gray-600">Submit shift reports and production data</p>
+            </div>
+          </Link>
+          
+          <Link href="/scrap-analysis" className="block">
+            <div className="h-full bg-gradient-to-br from-red-50 to-orange-50 border-2 border-red-300 p-6 sm:p-8 rounded-xl sm:rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2">
+              <div className="flex items-center justify-between mb-3 sm:mb-4">
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900">Scrap Analysis</h3>
+                <AlertTriangle className="h-5 sm:h-6 w-5 sm:w-6 text-red-600 animate-pulse" />
+              </div>
+              <p className="text-sm sm:text-base text-gray-700 font-medium">NEW! View 2025 scrap analysis with $284K savings potential</p>
             </div>
           </Link>
           

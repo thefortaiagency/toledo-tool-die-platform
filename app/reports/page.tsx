@@ -7,7 +7,7 @@ import HitTrackerTable from './hit-tracker-table'
 import HitTrackerAccurate from './hit-tracker-accurate'
 import dynamic from 'next/dynamic'
 
-const ScrapAnalysis = dynamic(() => import('./scrap-analysis/page'), { ssr: false })
+// Scrap Analysis now has its own dedicated page at /scrap-analysis
 const PioneerScrapAnalysis = dynamic(() => import('./pioneer-scrap/page'), { ssr: false })
 const ExecutiveDashboard = dynamic(() => import('./executive-dashboard'), { ssr: false })
 const QualityPerformance = dynamic(() => import('./quality-performance'), { ssr: false })
@@ -148,17 +148,13 @@ export default function ReportsPage() {
             <MessageSquare className="w-4 h-4 sm:mr-1.5 mb-1 sm:mb-0" />
             <span className="text-center">Comments</span>
           </button>
-          <button
-            onClick={() => setSelectedReport('scrap-analysis')}
-            className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg font-medium transition-colors flex flex-col sm:flex-row items-center justify-center text-xs sm:text-sm ${
-              selectedReport === 'scrap-analysis' 
-                ? 'bg-orange-600 text-white' 
-                : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
-            }`}
+          <a
+            href="/scrap-analysis"
+            className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg font-medium transition-colors flex flex-col sm:flex-row items-center justify-center text-xs sm:text-sm bg-gradient-to-r from-red-600 to-orange-600 text-white hover:from-red-700 hover:to-orange-700`}
           >
-            <AlertTriangle className="w-4 h-4 sm:mr-1.5 mb-1 sm:mb-0" />
+            <AlertTriangle className="w-4 h-4 sm:mr-1.5 mb-1 sm:mb-0 animate-pulse" />
             <span className="text-center">Scrap</span>
-          </button>
+          </a>
           <button
             onClick={() => setSelectedReport('pioneer-scrap')}
             className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg font-medium transition-colors flex flex-col sm:flex-row items-center justify-center text-xs sm:text-sm ${
@@ -479,10 +475,7 @@ export default function ReportsPage() {
         </div>
       )}
 
-      {/* Scrap Analysis Report */}
-      {selectedReport === 'scrap-analysis' && (
-        <ScrapAnalysis />
-      )}
+      {/* Scrap Analysis - Redirects to dedicated page */}
 
       {/* Pioneer Scrap Analysis Report */}
       {selectedReport === 'pioneer-scrap' && (
