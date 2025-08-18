@@ -1,0 +1,192 @@
+{
+  "generatedAt": "2025-08-18T22:34:03.252Z",
+  "originalImpact": 551954415.82,
+  "pairedTransfersCost": 0.01000000000615131,
+  "trueImpact": 34386528.41999988,
+  "reductionPercent": 93.77004197549282,
+  "totalCombinations": 10963,
+  "pairedCount": 99,
+  "trueAdjustmentCount": 10853,
+  "monthlyBreakdown": {
+    "2025-01": {
+      "count": 1558,
+      "cost": 5064262.460000002,
+      "netQty": 76492.16199999998
+    },
+    "2025-02": {
+      "count": 1470,
+      "cost": 4497596.12,
+      "netQty": -19981.551999999967
+    },
+    "2025-03": {
+      "count": 1434,
+      "cost": 3857499.580000006,
+      "netQty": 7419.440999999999
+    },
+    "2025-04": {
+      "count": 1572,
+      "cost": 5557119.580000009,
+      "netQty": 24614.123999999993
+    },
+    "2025-05": {
+      "count": 1576,
+      "cost": 5527975.409999997,
+      "netQty": 14824.153999999999
+    },
+    "2025-06": {
+      "count": 973,
+      "cost": 3232748.649999998,
+      "netQty": -8738.517000000007
+    },
+    "2025-07": {
+      "count": 1352,
+      "cost": 3953541.5600000056,
+      "netQty": -13300.069000000003
+    },
+    "2025-08": {
+      "count": 918,
+      "cost": 2695785.0599999977,
+      "netQty": 1655.7029999999982
+    }
+  },
+  "topAdjustments": [
+    {
+      "date": "2025-04-15",
+      "part_number": "1493548-00-B@B",
+      "operation": "Dock Audit Stamp FG",
+      "net_quantity": -7950,
+      "net_cost": -115816.66000000005,
+      "reason": "Container Audit"
+    },
+    {
+      "date": "2025-04-15",
+      "part_number": "1493548-00-B@B",
+      "operation": "Dock Audit 2",
+      "net_quantity": 7950,
+      "net_cost": 115816.66000000005,
+      "reason": "Container Audit"
+    },
+    {
+      "date": "2025-06-20",
+      "part_number": "1493547-00-B@B",
+      "operation": "Dock Audit 2",
+      "net_quantity": 7800,
+      "net_cost": 113631.44000000005,
+      "reason": "Container Audit"
+    },
+    {
+      "date": "2025-06-20",
+      "part_number": "1493547-00-B@B",
+      "operation": "Dock Audit Stamp FG",
+      "net_quantity": -7350,
+      "net_cost": -107075.78000000004,
+      "reason": "Container Audit"
+    },
+    {
+      "date": "2025-05-20",
+      "part_number": "1090395-00-E@E",
+      "operation": "Dock Audit Stamp FG",
+      "net_quantity": -7200,
+      "net_cost": -69150.47999999997,
+      "reason": "Container Audit"
+    },
+    {
+      "date": "2025-05-20",
+      "part_number": "1090395-00-E@E",
+      "operation": "Dock Audit 2",
+      "net_quantity": 7200,
+      "net_cost": 69150.47999999997,
+      "reason": "Container Audit"
+    },
+    {
+      "date": "2025-04-12",
+      "part_number": "1646081-00-B",
+      "operation": "Stamp - MultiOut - FG",
+      "net_quantity": -6720,
+      "net_cost": -65889.87999999999,
+      "reason": "Container Audit"
+    },
+    {
+      "date": "2025-04-12",
+      "part_number": "1646082-00-B@B",
+      "operation": "Stamp - MultiOut - FG",
+      "net_quantity": -6720,
+      "net_cost": -65889.87999999999,
+      "reason": "Container Audit"
+    },
+    {
+      "date": "2025-08-01",
+      "part_number": "PT00044608-H@H",
+      "operation": "Dock Audit Stamp FG",
+      "net_quantity": -2200,
+      "net_cost": -57595.11999999999,
+      "reason": "Container Audit"
+    },
+    {
+      "date": "2025-08-01",
+      "part_number": "PT00044608-H@H",
+      "operation": "Dock Audit 2",
+      "net_quantity": 2200,
+      "net_cost": 57595.11999999999,
+      "reason": "Container Audit"
+    }
+  ],
+  "reasonBreakdown": {
+    "Retire at Control Panel": {
+      "count": 596,
+      "cost": 124239.03000000007
+    },
+    "Rollover Adjustment": {
+      "count": 341,
+      "cost": 47687.28999999995
+    },
+    "Updated at Container Form": {
+      "count": 193,
+      "cost": 205091.3099999997
+    },
+    "Production Adjustment": {
+      "count": 174,
+      "cost": 152491.3000000001
+    },
+    "Cycle Count": {
+      "count": 168,
+      "cost": 205743.27
+    },
+    "Mass Update": {
+      "count": 123,
+      "cost": 540345.6399999999
+    },
+    "PC Retire": {
+      "count": 45,
+      "cost": 5250.930000000001
+    },
+    "Pre-Launch Adjustment": {
+      "count": 34,
+      "cost": 37449.120000000024
+    },
+    "Updated at Inventory Update Form": {
+      "count": 34,
+      "cost": 3647.08
+    },
+    "Cycle Complete": {
+      "count": 5,
+      "cost": 291.94999999999993
+    },
+    "Receipt Re-Weigh": {
+      "count": 4,
+      "cost": 12243.669999999998
+    },
+    "Split Container Reactivate": {
+      "count": 2,
+      "cost": 379.51
+    },
+    "Manually retired at subcontract": {
+      "count": 2,
+      "cost": 299.29
+    },
+    "Initial Count": {
+      "count": 1,
+      "cost": 267.3
+    }
+  }
+}
