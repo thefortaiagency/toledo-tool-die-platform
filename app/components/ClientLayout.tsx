@@ -119,6 +119,9 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 <Link href="/reports" className="hover:bg-orange-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center transition-colors">
                   <BarChart3 className="h-4 w-4 mr-1" /> Reports
                 </Link>
+                <Link href="/scrap-analysis" className="hover:bg-orange-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center transition-colors">
+                  <BarChart3 className="h-4 w-4 mr-1" /> Scrap Analysis
+                </Link>
                 <Link href="/ai-reports" className="hover:bg-orange-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center transition-colors bg-gradient-to-r from-orange-600 to-orange-700">
                   <Sparkles className="h-4 w-4 mr-1 animate-pulse" /> AI Reports
                 </Link>
@@ -187,6 +190,13 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                   className="hover:bg-orange-600 hover:text-white px-3 py-2 rounded-md text-base font-medium flex items-center transition-colors"
                 >
                   <BarChart3 className="h-5 w-5 mr-2" /> Reports
+                </Link>
+                <Link 
+                  href="/scrap-analysis" 
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="hover:bg-orange-600 hover:text-white px-3 py-2 rounded-md text-base font-medium flex items-center transition-colors"
+                >
+                  <BarChart3 className="h-5 w-5 mr-2" /> Scrap Analysis
                 </Link>
                 <Link 
                   href="/ai-reports" 
