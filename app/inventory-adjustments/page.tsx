@@ -4,7 +4,8 @@ import { useState, useEffect } from 'react'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
-import { Package, TrendingUp, TrendingDown, DollarSign, AlertCircle, Calendar, Users, BarChart3, FileText } from 'lucide-react'
+import { Package, TrendingUp, TrendingDown, DollarSign, AlertCircle, Calendar, Users, BarChart3, FileText, AlertTriangle } from 'lucide-react'
+import Link from 'next/link'
 import analysisData from '../../data/inventory-adjustment-analysis-2025.json'
 
 const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042', '#8884d8', '#82ca9d']
@@ -65,24 +66,63 @@ export default function InventoryAdjustmentsPage() {
       <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white p-6 rounded-lg shadow-lg">
         <h1 className="text-3xl font-bold mb-2">Inventory Adjustment Analysis</h1>
         <p className="text-purple-100">
-          Comprehensive analysis of 2025 inventory adjustments across all facilities
+          ⚠️ IMPORTANT: 93.8% of these "adjustments" are actually container transfers that net to zero
         </p>
         <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
             <div className="text-2xl font-bold">{formatNumber(summary.totalAdjustments)}</div>
-            <div className="text-sm text-purple-100">Total Adjustments</div>
+            <div className="text-sm text-purple-100">Total Records</div>
           </div>
-          <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
-            <div className="text-2xl font-bold">{formatCurrency(summary.totalCostImpact)}</div>
-            <div className="text-sm text-purple-100">Total Cost Impact</div>
+          <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 border-2 border-yellow-300">
+            <div className="text-xl font-bold line-through opacity-60">{formatCurrency(summary.totalCostImpact)}</div>
+            <div className="text-2xl font-bold text-yellow-300">$34.4M</div>
+            <div className="text-sm text-purple-100">Reported → TRUE Impact</div>
           </div>
           <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
             <div className="text-2xl font-bold">{analysisData.fileCount}</div>
             <div className="text-sm text-purple-100">Daily Reports Analyzed</div>
           </div>
           <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
-            <div className="text-2xl font-bold">{formatNumber(summary.netQuantityChange)}</div>
-            <div className="text-sm text-purple-100">Net Quantity Change</div>
+            <div className="text-2xl font-bold">93.8%</div>
+            <div className="text-sm text-purple-100">Were Transfers (Not Real)</div>
+          </div>
+        </div>
+      </div>
+
+      {/* Critical Discovery Alert */}
+      <div className="bg-yellow-50 border-2 border-yellow-400 rounded-lg p-6">
+        <div className="flex items-start gap-3">
+          <AlertTriangle className="h-6 w-6 text-yellow-600 mt-1 flex-shrink-0" />
+          <div className="flex-1">
+            <h2 className="text-xl font-bold text-yellow-900 mb-2">
+              🚨 CRITICAL DISCOVERY: Most "Adjustments" Are Actually Transfers!
+            </h2>
+            <p className="text-yellow-800 mb-4">
+              Our AI analysis discovered that <strong>93.8% of the $551.9M</strong> in reported adjustments are actually 
+              paired container transfers (parts moving between operations like Safe Launch → Dock Audit) that create 
+              symmetric increase/decrease records netting to zero.
+            </p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+              <div className="bg-white rounded-lg p-3 border border-yellow-300">
+                <div className="text-sm text-gray-600">Reported Impact</div>
+                <div className="text-2xl font-bold text-red-600">$551,954,416</div>
+                <div className="text-xs text-gray-500">Includes all transfers</div>
+              </div>
+              <div className="bg-white rounded-lg p-3 border border-yellow-300">
+                <div className="text-sm text-gray-600">TRUE Impact</div>
+                <div className="text-2xl font-bold text-green-600">$34,386,528</div>
+                <div className="text-xs text-gray-500">Actual inventory changes only</div>
+              </div>
+              <div className="bg-white rounded-lg p-3 border border-yellow-300">
+                <div className="text-sm text-gray-600">Reduction</div>
+                <div className="text-2xl font-bold text-blue-600">93.8%</div>
+                <div className="text-xs text-gray-500">Were just transfers</div>
+              </div>
+            </div>
+            <Link href="/inventory-true-impact" className="inline-flex items-center gap-2 bg-yellow-600 hover:bg-yellow-700 text-white px-4 py-2 rounded-lg font-semibold transition-colors">
+              View TRUE Impact Analysis
+              <TrendingUp className="h-4 w-4" />
+            </Link>
           </div>
         </div>
       </div>
