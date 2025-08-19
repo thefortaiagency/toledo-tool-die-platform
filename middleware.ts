@@ -7,7 +7,7 @@ export async function middleware(request: NextRequest) {
   const { session, response } = await updateSession(request)
 
   // List of public routes that don't require authentication
-  const publicRoutes = ['/login', '/api/chatbot']
+  const publicRoutes = ['/login', '/api/chatbot', '/api/bug-report']
   const isPublicRoute = publicRoutes.some(route => request.nextUrl.pathname.startsWith(route))
 
   // Log for debugging
