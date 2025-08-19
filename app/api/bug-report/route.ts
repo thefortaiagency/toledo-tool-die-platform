@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { Resend } from 'resend';
 
 export async function POST(req: NextRequest) {
   try {
@@ -13,6 +12,9 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
+
+    // Generate ticket ID
+    const ticketId = `TOL-${Date.now().toString().slice(-6)}`;
 
     // Format priority text
     const priorityText = {
@@ -44,23 +46,16 @@ export async function POST(req: NextRequest) {
     }, null, 2));
     console.log('==================================\n');
 
-    // Generate ticket ID
-    const ticketId = `TOL-${Date.now().toString().slice(-6)}`;
-
-    // Check for Resend API key
-    if (!process.env.RESEND_API_KEY) {
-      console.error('RESEND_API_KEY not configured');
-      return NextResponse.json({ 
-        success: true, 
-        message: 'Thank you for your report. We\'ll investigate and get back to you soon!',
-        method: 'logged-only'
-      });
-    }
-
-    // Initialize Resend only when we have the API key
-    const resend = new Resend(process.env.RESEND_API_KEY);
-
+    // Try to send email via Resend (EXACT Fort AI Agency pattern)
     try {
+      if (!process.env.RESEND_API_KEY) {
+        console.error('❌ RESEND_API_KEY not found in environment');
+        throw new Error('Resend API not configured');
+      }
+
+      const { Resend } = require('resend');
+      const resend = new Resend(process.env.RESEND_API_KEY);
+
       // Email HTML content
       const emailHtml = `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
@@ -102,41 +97,38 @@ export async function POST(req: NextRequest) {
         </div>
       `;
 
-      // Send email using Resend
-      const { data, error } = await resend.emails.send({
+      const textContent = `${typeText} - ${title}\n\nTicket ID: ${ticketId}\nPriority: ${priorityText}\n\nDescription:\n${description}\n\nTechnical Details:\nUser Email: ${userEmail || 'Not provided'}\nCurrent URL: ${currentUrl || 'Not provided'}\nBrowser: ${browserInfo || 'Not provided'}\nTimestamp: ${new Date().toLocaleString()}`;
+
+      // Send email using EXACT Fort AI Agency pattern
+      const result = await resend.emails.send({
         from: `Toledo Tool & Die Platform <${process.env.RESEND_FROM_EMAIL || 'contact@thefortaiagency.com'}>`,
         to: 'aoberlin@thefortaiagency.ai',
         replyTo: userEmail || undefined,
         subject: `${typeText} [${ticketId}] - ${title}`,
         html: emailHtml,
-        text: `${typeText} - ${title}\n\nTicket ID: ${ticketId}\nPriority: ${priorityText}\n\nDescription:\n${description}\n\nTechnical Details:\nUser Email: ${userEmail || 'Not provided'}\nCurrent URL: ${currentUrl || 'Not provided'}\nBrowser: ${browserInfo || 'Not provided'}\nTimestamp: ${new Date().toLocaleString()}`
+        text: textContent
       });
 
-      if (error) {
-        console.error('Resend API error:', error);
-        return NextResponse.json({ 
-          success: true, 
-          message: 'Your report has been logged. We\'ll investigate and get back to you soon!',
-          method: 'logged-only'
-        });
-      }
-      
-      console.log('✅ Bug report email sent successfully via Resend:', data?.id);
+      console.log('✅ Toledo Platform bug report email sent via Resend:', result.data?.id);
       
       return NextResponse.json({ 
         success: true, 
         message: `Thank you for your ${type === 'bug' ? 'bug report' : 'feature request'}! We've created ticket ${ticketId} and will investigate soon.`,
         ticketId,
-        method: 'resend'
+        method: 'resend',
+        emailSent: true
       });
-      
+
     } catch (emailError: any) {
       console.error('Resend send failed:', emailError.message);
       
+      // Still return success but indicate email wasn't sent
       return NextResponse.json({ 
         success: true, 
         message: 'Your report has been logged. We\'ll investigate and get back to you soon!',
-        method: 'logged-only'
+        ticketId,
+        method: 'logged-only',
+        emailSent: false
       });
     }
     
