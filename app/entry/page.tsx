@@ -5,8 +5,7 @@ import { supabase } from '@/lib/supabase/client'
 import type { Machine, Shift, Part, Operator } from '@/lib/supabase/client'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { CheckCircle, AlertCircle, Save, RefreshCw, Calculator, Clock, TrendingUp, AlertTriangle, Users, UserCheck, UserX, BarChart3 } from 'lucide-react'
-import YTDRunningTotals from '../components/YTDRunningTotals'
+import { CheckCircle, AlertCircle, Save, RefreshCw, Calculator, Clock, TrendingUp, AlertTriangle, Users, UserCheck, UserX } from 'lucide-react'
 
 export default function DataEntry() {
   const [loading, setLoading] = useState(false)
@@ -16,7 +15,6 @@ export default function DataEntry() {
   const [shifts, setShifts] = useState<Shift[]>([])
   const [parts, setParts] = useState<Part[]>([])
   const [operators, setOperators] = useState<Operator[]>([])
-  const [activeTab, setActiveTab] = useState<'entry' | 'ytd'>('entry')
   
   const [formData, setFormData] = useState({
     date: new Date().toISOString().split('T')[0],
@@ -300,58 +298,25 @@ export default function DataEntry() {
   return (
     <div className="p-4 sm:p-6 lg:p-8 max-w-6xl mx-auto">
       <div className="mb-6 sm:mb-8">
-        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Production Management</h1>
-        <p className="text-sm sm:text-base text-gray-600 mt-2">Submit production data and view YTD performance</p>
+        <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">Production Data Entry</h1>
+        <p className="text-sm sm:text-base text-gray-600 mt-2">Submit shift production reports and metrics</p>
       </div>
 
-      {/* Tab Navigation */}
-      <div className="mb-6">
-        <div className="border-b border-gray-200">
-          <nav className="-mb-px flex space-x-8">
-            <button
-              onClick={() => setActiveTab('entry')}
-              className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                activeTab === 'entry'
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
-              <Save className="h-4 w-4 inline mr-2" />
-              Data Entry
-            </button>
-            <button
-              onClick={() => setActiveTab('ytd')}
-              className={`py-2 px-1 border-b-2 font-medium text-sm ${
-                activeTab === 'ytd'
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-              }`}
-            >
-              <BarChart3 className="h-4 w-4 inline mr-2" />
-              YTD Totals
-            </button>
-          </nav>
+      {success && (
+        <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center">
+          <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
+          <span className="text-green-800">Production data submitted successfully!</span>
         </div>
-      </div>
+      )}
 
-      {/* Tab Content */}
-      {activeTab === 'entry' && (
-        <>
-          {success && (
-            <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg flex items-center">
-              <CheckCircle className="h-5 w-5 text-green-600 mr-2" />
-              <span className="text-green-800">Production data submitted successfully!</span>
-            </div>
-          )}
-
-          {error && (
-            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center">
-              <AlertCircle className="h-5 w-5 text-red-600 mr-2" />
-              <span className="text-red-800">{error}</span>
-            </div>
-          )}
-          
-          <form onSubmit={handleSubmit}>
+      {error && (
+        <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg flex items-center">
+          <AlertCircle className="h-5 w-5 text-red-600 mr-2" />
+          <span className="text-red-800">{error}</span>
+        </div>
+      )}
+      
+      <form onSubmit={handleSubmit}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
           {/* Shift Information */}
           <Card>
@@ -1017,12 +982,6 @@ export default function DataEntry() {
           </Button>
         </div>
       </form>
-        </>
-      )}
-
-      {activeTab === 'ytd' && (
-        <YTDRunningTotals />
-      )}
     </div>
   )
 }

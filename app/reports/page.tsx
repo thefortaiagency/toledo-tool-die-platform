@@ -155,6 +155,13 @@ export default function ReportsPage() {
             <AlertTriangle className="w-4 h-4 sm:mr-1.5 mb-1 sm:mb-0 animate-pulse" />
             <span className="text-center">Scrap</span>
           </a>
+          <a
+            href="/reports/ytd-totals"
+            className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg font-medium transition-colors flex flex-col sm:flex-row items-center justify-center text-xs sm:text-sm bg-gradient-to-r from-blue-600 to-green-600 text-white hover:from-blue-700 hover:to-green-700`}
+          >
+            <BarChart3 className="w-4 h-4 sm:mr-1.5 mb-1 sm:mb-0" />
+            <span className="text-center">YTD Totals</span>
+          </a>
           <button
             onClick={() => setSelectedReport('pioneer-scrap')}
             className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg font-medium transition-colors flex flex-col sm:flex-row items-center justify-center text-xs sm:text-sm ${
