@@ -142,10 +142,6 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
             {/* User Actions */}
             {user && (
               <div className="flex items-center space-x-2 sm:space-x-4">
-                <div className="hidden sm:flex items-center text-sm">
-                  <User className="h-4 w-4 mr-1" />
-                  <span className="hidden lg:inline">{user.email}</span>
-                </div>
                 
                 {/* Bug Report Button */}
                 <button

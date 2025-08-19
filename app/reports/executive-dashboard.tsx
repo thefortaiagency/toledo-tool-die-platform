@@ -1,11 +1,14 @@
 'use client'
 
-import React from 'react'
-import { TrendingUp, TrendingDown, AlertTriangle, CheckCircle, DollarSign, Clock, Activity, Target } from 'lucide-react'
+import React, { useState } from 'react'
+import { TrendingUp, TrendingDown, AlertTriangle, CheckCircle, DollarSign, Clock, Activity, Target, ClipboardList } from 'lucide-react'
 import { getExecutiveSummary, getStatusColor } from '../data/pioneer-metrics'
+import PDCAActionPlan from '../components/PDCAActionPlan'
 
 export default function ExecutiveDashboard() {
   const summary = getExecutiveSummary()
+  const [selectedKPI, setSelectedKPI] = useState<any>(null)
+  const [showPDCA, setShowPDCA] = useState(false)
   
   const formatCurrency = (value: number) => {
     return new Intl.NumberFormat('en-US', {
@@ -88,6 +91,27 @@ export default function ExecutiveDashboard() {
     }
   }
 
+  const isKPIMissingTarget = (kpi: any) => {
+    // For cost-based metrics (scrap, downtime), current should be lower than target
+    if (kpi.unit === 'currency') {
+      return kpi.current > kpi.target
+    }
+    // For Quality PPM, lower is better
+    if (kpi.title.includes('PPM')) {
+      return kpi.current > kpi.target
+    }
+    // For PM Completion Rate, higher is better
+    if (kpi.title.includes('PM Completion')) {
+      return kpi.current < kpi.target
+    }
+    return false
+  }
+
+  const openPDCA = (kpi: any) => {
+    setSelectedKPI(kpi)
+    setShowPDCA(true)
+  }
+
   return (
     <div className="p-4 sm:p-6 lg:p-8">
       {/* Header */}
@@ -144,6 +168,22 @@ export default function ExecutiveDashboard() {
               </div>
 
               <p className="text-xs text-gray-500 mt-3">{kpi.description}</p>
+              
+              {/* PDCA Action Plan Button - Show when missing target */}
+              {isKPIMissingTarget(kpi) && (
+                <div className="mt-3 pt-3 border-t border-red-200">
+                  <button
+                    onClick={() => openPDCA(kpi)}
+                    className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-medium text-white bg-red-600 hover:bg-red-700 rounded-md transition-colors"
+                  >
+                    <ClipboardList className="h-3 w-3" />
+                    PDCA Action Required
+                  </button>
+                  <p className="text-xs text-red-600 mt-1 text-center">
+                    Registrar compliance requirement
+                  </p>
+                </div>
+              )}
             </div>
           )
         })}
@@ -267,6 +307,23 @@ export default function ExecutiveDashboard() {
           </li>
         </ul>
       </div>
+
+      {/* PDCA Action Plan Modal */}
+      {showPDCA && selectedKPI && (
+        <PDCAActionPlan
+          title={selectedKPI.title}
+          targetMetric={selectedKPI.title}
+          currentValue={selectedKPI.current}
+          targetValue={selectedKPI.target}
+          unit={selectedKPI.unit === 'currency' ? '$' : selectedKPI.unit === 'percentage' ? '%' : selectedKPI.unit}
+          isOpen={showPDCA}
+          onClose={() => {
+            setShowPDCA(false)
+            setSelectedKPI(null)
+          }}
+          kpiType={selectedKPI.title}
+        />
+      )}
     </div>
   )
 }

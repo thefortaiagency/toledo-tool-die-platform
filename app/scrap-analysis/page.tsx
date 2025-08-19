@@ -5,8 +5,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Progress } from '@/components/ui/progress'
 import { Badge } from '@/components/ui/badge'
-import { AlertCircle, TrendingDown, TrendingUp, DollarSign, Package, BarChart3, Calendar, Factory, ExternalLink } from 'lucide-react'
+import { AlertCircle, TrendingDown, TrendingUp, DollarSign, Package, BarChart3, Calendar, Factory, ExternalLink, ClipboardList } from 'lucide-react'
 import Link from 'next/link'
+import PDCAActionPlan from '../components/PDCAActionPlan'
 import scrapData from '../../data/scrap-analysis-2025-complete.json'
 
 interface ScrapSummary {
@@ -57,6 +58,8 @@ interface ScrapSummary {
 
 export default function ScrapAnalysisPage() {
   const [summary, setSummary] = useState<ScrapSummary | null>(null)
+  const [selectedScrapReason, setSelectedScrapReason] = useState<any>(null)
+  const [showPDCA, setShowPDCA] = useState(false)
 
   useEffect(() => {
     // In production, this would fetch from an API
@@ -88,6 +91,11 @@ export default function ScrapAnalysisPage() {
   }
 
   const potentialSavings = summary.unplannedScrapCost * 0.5
+
+  const openScrapPDCA = (scrapItem: any) => {
+    setSelectedScrapReason(scrapItem)
+    setShowPDCA(true)
+  }
 
   return (
     <div className="container mx-auto py-8 px-4">
@@ -189,30 +197,30 @@ export default function ScrapAnalysisPage() {
 
       {/* Detailed Analysis Tabs */}
       <Tabs defaultValue="unplanned" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-4 h-16 bg-gray-100 rounded-lg p-2">
+        <TabsList className="grid w-full grid-cols-4 h-20 bg-gray-100 rounded-lg p-3">
           <TabsTrigger 
             value="unplanned" 
-            className="h-12 text-base font-semibold bg-white shadow-md border-2 border-red-200 hover:border-red-400 hover:bg-red-50 data-[state=active]:bg-red-600 data-[state=active]:text-white data-[state=active]:border-red-600 transition-all duration-200"
+            className="h-16 text-lg font-bold bg-white shadow-md border-2 border-red-200 hover:border-red-400 hover:bg-red-50 data-[state=active]:bg-red-600 data-[state=active]:text-white data-[state=active]:border-red-600 transition-all duration-200"
           >
-            🚨 Top Issues
+            Top Issues
           </TabsTrigger>
           <TabsTrigger 
             value="monthly" 
-            className="h-12 text-base font-semibold bg-white shadow-md border-2 border-blue-200 hover:border-blue-400 hover:bg-blue-50 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:border-blue-600 transition-all duration-200"
+            className="h-16 text-lg font-bold bg-white shadow-md border-2 border-blue-200 hover:border-blue-400 hover:bg-blue-50 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:border-blue-600 transition-all duration-200"
           >
-            📅 Monthly Trend
+            Monthly Trend
           </TabsTrigger>
           <TabsTrigger 
             value="workcenter" 
-            className="h-12 text-base font-semibold bg-white shadow-md border-2 border-purple-200 hover:border-purple-400 hover:bg-purple-50 data-[state=active]:bg-purple-600 data-[state=active]:text-white data-[state=active]:border-purple-600 transition-all duration-200"
+            className="h-16 text-lg font-bold bg-white shadow-md border-2 border-purple-200 hover:border-purple-400 hover:bg-purple-50 data-[state=active]:bg-purple-600 data-[state=active]:text-white data-[state=active]:border-purple-600 transition-all duration-200"
           >
-            🏭 By Workcenter
+            By Workcenter
           </TabsTrigger>
           <TabsTrigger 
             value="parts" 
-            className="h-12 text-base font-semibold bg-white shadow-md border-2 border-green-200 hover:border-green-400 hover:bg-green-50 data-[state=active]:bg-green-600 data-[state=active]:text-white data-[state=active]:border-green-600 transition-all duration-200"
+            className="h-16 text-lg font-bold bg-white shadow-md border-2 border-green-200 hover:border-green-400 hover:bg-green-50 data-[state=active]:bg-green-600 data-[state=active]:text-white data-[state=active]:border-green-600 transition-all duration-200"
           >
-            📦 By Part
+            By Part
           </TabsTrigger>
         </TabsList>
 
@@ -228,20 +236,38 @@ export default function ScrapAnalysisPage() {
             <CardContent>
               <div className="space-y-3">
                 {summary.topUnplannedCodes.map((item, index) => (
-                  <div key={index} className="flex items-center justify-between p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
-                    <div className="flex items-center gap-3">
-                      <Badge variant={index < 3 ? "destructive" : "secondary"} className="min-w-[2rem] justify-center">
-                        {index + 1}
-                      </Badge>
-                      <div>
-                        <p className="font-medium">{item.description}</p>
-                        <p className="text-sm text-gray-600">{formatNumber(item.quantity)} pieces</p>
+                  <div key={index} className="p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center gap-3">
+                        <Badge variant={index < 3 ? "destructive" : "secondary"} className="min-w-[2rem] justify-center">
+                          {index + 1}
+                        </Badge>
+                        <div>
+                          <p className="font-medium">{item.description}</p>
+                          <p className="text-sm text-gray-600">{formatNumber(item.quantity)} pieces</p>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <p className="font-semibold text-red-600">{formatCurrency(item.cost)}</p>
+                        <p className="text-sm text-gray-600">{item.percentage.toFixed(1)}%</p>
                       </div>
                     </div>
-                    <div className="text-right">
-                      <p className="font-semibold text-red-600">{formatCurrency(item.cost)}</p>
-                      <p className="text-sm text-gray-600">{item.percentage.toFixed(1)}%</p>
-                    </div>
+                    
+                    {/* PDCA Action Button for Top 5 Issues */}
+                    {index < 5 && (
+                      <div className="pt-2 border-t border-gray-200">
+                        <button
+                          onClick={() => openScrapPDCA(item)}
+                          className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-medium text-white bg-red-600 hover:bg-red-700 rounded-md transition-colors"
+                        >
+                          <ClipboardList className="h-3 w-3" />
+                          PDCA Action Required
+                        </button>
+                        <p className="text-xs text-red-600 mt-1 text-center">
+                          Registrar compliance - Action required for top scrap issues
+                        </p>
+                      </div>
+                    )}
                   </div>
                 ))}
               </div>
@@ -402,6 +428,23 @@ export default function ScrapAnalysisPage() {
           </div>
         </CardContent>
       </Card>
+
+      {/* PDCA Action Plan Modal for Scrap Issues */}
+      {showPDCA && selectedScrapReason && (
+        <PDCAActionPlan
+          title={`Scrap Reduction Plan: ${selectedScrapReason.description}`}
+          targetMetric="Scrap Cost"
+          currentValue={selectedScrapReason.cost}
+          targetValue={selectedScrapReason.cost * 0.5} // Target 50% reduction
+          unit="$"
+          isOpen={showPDCA}
+          onClose={() => {
+            setShowPDCA(false)
+            setSelectedScrapReason(null)
+          }}
+          scrapReason={selectedScrapReason.description}
+        />
+      )}
     </div>
   )
 }
