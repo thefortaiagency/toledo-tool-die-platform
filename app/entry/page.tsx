@@ -283,7 +283,7 @@ export default function DataEntry() {
       '1500-2': 600,
       '1400': 600,
       '1000': 875,
-      'Hyd': 600
+      '3000': 600
     }
     return targets[machine.machine_number] || 600
   }

@@ -5,7 +5,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Progress } from '@/components/ui/progress'
 import { Badge } from '@/components/ui/badge'
-import { AlertCircle, TrendingDown, TrendingUp, DollarSign, Package, BarChart3, Calendar, Factory } from 'lucide-react'
+import { AlertCircle, TrendingDown, TrendingUp, DollarSign, Package, BarChart3, Calendar, Factory, ExternalLink } from 'lucide-react'
+import Link from 'next/link'
 import scrapData from '../../data/scrap-analysis-2025-complete.json'
 
 interface ScrapSummary {
@@ -188,11 +189,31 @@ export default function ScrapAnalysisPage() {
 
       {/* Detailed Analysis Tabs */}
       <Tabs defaultValue="unplanned" className="space-y-4">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="unplanned">Top Issues</TabsTrigger>
-          <TabsTrigger value="monthly">Monthly Trend</TabsTrigger>
-          <TabsTrigger value="workcenter">By Workcenter</TabsTrigger>
-          <TabsTrigger value="parts">By Part</TabsTrigger>
+        <TabsList className="grid w-full grid-cols-4 h-16 bg-gray-100 rounded-lg p-2">
+          <TabsTrigger 
+            value="unplanned" 
+            className="h-12 text-base font-semibold bg-white shadow-md border-2 border-red-200 hover:border-red-400 hover:bg-red-50 data-[state=active]:bg-red-600 data-[state=active]:text-white data-[state=active]:border-red-600 transition-all duration-200"
+          >
+            🚨 Top Issues
+          </TabsTrigger>
+          <TabsTrigger 
+            value="monthly" 
+            className="h-12 text-base font-semibold bg-white shadow-md border-2 border-blue-200 hover:border-blue-400 hover:bg-blue-50 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:border-blue-600 transition-all duration-200"
+          >
+            📅 Monthly Trend
+          </TabsTrigger>
+          <TabsTrigger 
+            value="workcenter" 
+            className="h-12 text-base font-semibold bg-white shadow-md border-2 border-purple-200 hover:border-purple-400 hover:bg-purple-50 data-[state=active]:bg-purple-600 data-[state=active]:text-white data-[state=active]:border-purple-600 transition-all duration-200"
+          >
+            🏭 By Workcenter
+          </TabsTrigger>
+          <TabsTrigger 
+            value="parts" 
+            className="h-12 text-base font-semibold bg-white shadow-md border-2 border-green-200 hover:border-green-400 hover:bg-green-50 data-[state=active]:bg-green-600 data-[state=active]:text-white data-[state=active]:border-green-600 transition-all duration-200"
+          >
+            📦 By Part
+          </TabsTrigger>
         </TabsList>
 
         <TabsContent value="unplanned">
@@ -334,7 +355,13 @@ export default function ScrapAnalysisPage() {
                             {index + 1}
                           </Badge>
                           <div>
-                            <p className="font-medium">{part}</p>
+                            <Link 
+                              href={`/scrap-analysis/part/${encodeURIComponent(part)}`}
+                              className="font-medium text-blue-600 hover:text-blue-800 hover:underline flex items-center gap-1 group transition-colors"
+                            >
+                              {part}
+                              <ExternalLink className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                            </Link>
                             <p className="text-sm text-gray-600">{data.name}</p>
                           </div>
                         </div>
