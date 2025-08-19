@@ -63,28 +63,28 @@ export default function InventoryAdjustmentsPage() {
   return (
     <div className="container mx-auto py-6 space-y-6">
       {/* Header */}
-      <div className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white p-6 rounded-lg shadow-lg">
+      <div className="bg-gradient-to-r from-slate-700 to-slate-800 text-white p-6 rounded-lg shadow-lg">
         <h1 className="text-3xl font-bold mb-2">Inventory Adjustment Analysis</h1>
-        <p className="text-purple-100">
+        <p className="text-slate-200">
           IMPORTANT: 93.8% of these "adjustments" are actually container transfers that net to zero
         </p>
         <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-4">
           <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
             <div className="text-2xl font-bold">{formatNumber(summary.totalAdjustments)}</div>
-            <div className="text-sm text-purple-100">Total Records</div>
+            <div className="text-sm text-slate-200">Total Records</div>
           </div>
           <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3 border-2 border-yellow-300">
             <div className="text-xl font-bold line-through opacity-60">{formatCurrency(summary.totalCostImpact)}</div>
             <div className="text-2xl font-bold text-yellow-300">$34.4M</div>
-            <div className="text-sm text-purple-100">Reported → TRUE Impact</div>
+            <div className="text-sm text-slate-200">Reported → TRUE Impact</div>
           </div>
           <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
             <div className="text-2xl font-bold">{analysisData.fileCount}</div>
-            <div className="text-sm text-purple-100">Daily Reports Analyzed</div>
+            <div className="text-sm text-slate-200">Daily Reports Analyzed</div>
           </div>
           <div className="bg-white/20 backdrop-blur-sm rounded-lg p-3">
             <div className="text-2xl font-bold">93.8%</div>
-            <div className="text-sm text-purple-100">Were Transfers (Not Real)</div>
+            <div className="text-sm text-slate-200">Were Transfers (Not Real)</div>
           </div>
         </div>
       </div>
