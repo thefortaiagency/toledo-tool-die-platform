@@ -3,7 +3,8 @@
 import { useState, useEffect } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import ResizableChatSidebar from './ResizableChatSidebar'
-import { ChevronLeft, Home, LayoutDashboard, FileText, BarChart3, Settings, LogOut, User, Bot, Sparkles, Menu, X } from 'lucide-react'
+import { BugReportModal } from '../../components/bug-report-modal'
+import { ChevronLeft, Home, LayoutDashboard, FileText, BarChart3, Settings, LogOut, User, Bot, Sparkles, Menu, X, Bug } from 'lucide-react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/browser-client'
 
@@ -13,6 +14,7 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
   const [user, setUser] = useState<any>(null)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [isBugReportOpen, setIsBugReportOpen] = useState(false)
   const [isChatCollapsed, setIsChatCollapsed] = useState(() => {
     if (typeof window !== 'undefined') {
       const saved = localStorage.getItem('toledo-chat-collapsed')
@@ -137,13 +139,24 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
               </div>
             </div>
 
-            {/* User and AI Assistant */}
+            {/* User Actions */}
             {user && (
               <div className="flex items-center space-x-2 sm:space-x-4">
                 <div className="hidden sm:flex items-center text-sm">
                   <User className="h-4 w-4 mr-1" />
                   <span className="hidden lg:inline">{user.email}</span>
                 </div>
+                
+                {/* Bug Report Button */}
+                <button
+                  onClick={() => setIsBugReportOpen(true)}
+                  className="hover:bg-orange-600 hover:text-white px-2 sm:px-3 py-2 rounded-md text-sm font-medium flex items-center transition-colors group"
+                  title="Report Bug or Request Feature"
+                >
+                  <Bug className="h-4 w-4" />
+                  <span className="hidden sm:inline ml-1">Report</span>
+                </button>
+                
                 <button
                   onClick={handleLogout}
                   className="hidden sm:flex hover:bg-orange-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium items-center transition-colors"
@@ -238,6 +251,15 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                       </div>
                     </div>
                     <button
+                      onClick={() => {
+                        setIsBugReportOpen(true)
+                        setIsMobileMenuOpen(false)
+                      }}
+                      className="hover:bg-orange-600 hover:text-white px-3 py-2 rounded-md text-base font-medium flex items-center transition-colors"
+                    >
+                      <Bug className="h-5 w-5 mr-2" /> Report Bug / Request Feature
+                    </button>
+                    <button
                       onClick={handleLogout}
                       className="hover:bg-orange-600 hover:text-white px-3 py-2 rounded-md text-base font-medium flex items-center transition-colors"
                     >
@@ -290,6 +312,12 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
           </div>
         </div>
       </footer>
+      
+      {/* Bug Report Modal */}
+      <BugReportModal 
+        isOpen={isBugReportOpen} 
+        onClose={() => setIsBugReportOpen(false)} 
+      />
     </div>
   )
 }
