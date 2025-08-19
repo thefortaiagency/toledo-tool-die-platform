@@ -62,9 +62,9 @@ export default function YTDRunningTotals() {
       setYtdData(data)
     } catch (err) {
       console.error('Error fetching YTD data:', err)
-      setError('Failed to load YTD data')
-      // Set mock data for development
-      setYtdData(generateMockYTDData())
+      setError('Failed to load YTD data from production database. Please ensure production data has been entered.')
+      // Do not set mock data - only use real production data
+      setYtdData(null)
     } finally {
       setLoading(false)
     }
@@ -198,8 +198,21 @@ export default function YTDRunningTotals() {
   if (error || !ytdData) {
     return (
       <div className="flex items-center justify-center p-8">
-        <div className="text-center">
-          <p className="text-red-600">{error || 'No YTD data available'}</p>
+        <div className="text-center max-w-md">
+          <div className="mb-4">
+            <Factory className="h-12 w-12 text-gray-400 mx-auto mb-2" />
+            <h3 className="text-lg font-medium text-gray-900">No Production Data Available</h3>
+          </div>
+          <p className="text-red-600 mb-4">{error || 'No YTD data available from production database'}</p>
+          <div className="text-sm text-gray-600 space-y-2">
+            <p>To view YTD totals, please ensure:</p>
+            <ul className="list-disc list-inside space-y-1">
+              <li>Production data has been entered for this year</li>
+              <li>Data includes machine assignments and shift information</li>
+              <li>Good parts counts are recorded for each shift</li>
+            </ul>
+            <p className="mt-4 text-blue-600">Visit the Data Entry page to add production records.</p>
+          </div>
         </div>
       </div>
     )

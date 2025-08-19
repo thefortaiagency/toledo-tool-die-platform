@@ -46,19 +46,21 @@ export async function GET() {
     const today = new Date()
     const daysSinceYearStart = Math.floor((today.getTime() - startOfYear.getTime()) / (1000 * 60 * 60 * 24))
 
-    // Fetch all hit tracking data for current year
-    const { data: hitTrackerData, error } = await supabase
-      .from('hits_tracking')
-      .select('*')
+    // Fetch all production data for current year with shift and machine details
+    const { data: productionData, error } = await supabase
+      .from('production_data')
+      .select(`
+        *,
+        shifts(shift_name),
+        machines(machine_number, machine_name)
+      `)
       .gte('date', startOfYear.toISOString().split('T')[0])
       .order('date', { ascending: true })
 
     if (error) throw error
 
-    // Calculate YTD totals by machine
+    // Initialize machine YTD data
     const machineYTDData: Record<string, MachineYTD> = {}
-
-    // Initialize machines
     Object.keys(MACHINE_TARGETS).forEach(machineId => {
       machineYTDData[machineId] = {
         machineId,
@@ -74,27 +76,28 @@ export async function GET() {
       }
     })
 
-    // Process hit tracker data
-    hitTrackerData?.forEach(record => {
+    // Process real production data
+    productionData?.forEach(record => {
       const machineId = record.machine_id
       if (!machineYTDData[machineId]) return
 
-      const weeklyHits = record.weekly_total || 0
-      const dailyHits = weeklyHits / 7 // Average daily hits from weekly total
+      // Use actual good parts (hits) from production data
+      const hits = record.good_parts || 0
+      const shiftName = record.shifts?.shift_name || 'Unknown'
 
-      // Simulate shift distribution based on realistic patterns
-      const dateHash = record.date.split('-').reduce((acc: number, val: string) => acc + parseInt(val), 0)
-      const machineHash = machineId.charCodeAt(0) + machineId.charCodeAt(1)
-      
-      // Create consistent shift patterns (first shift typically produces most)
-      const shift1Percent = 0.32 + (((dateHash + machineHash) % 10) * 0.015) // 32-47%
-      const shift2Percent = 0.34 + (((dateHash + machineHash * 2) % 8) * 0.015) // 34-46%
-      const shift3Percent = 1 - shift1Percent - shift2Percent // Remainder
+      machineYTDData[machineId].ytdHits += hits
 
-      machineYTDData[machineId].ytdHits += dailyHits
-      machineYTDData[machineId].ytdShift1 += dailyHits * shift1Percent
-      machineYTDData[machineId].ytdShift2 += dailyHits * shift2Percent
-      machineYTDData[machineId].ytdShift3 += dailyHits * shift3Percent
+      // Distribute to correct shift based on actual shift data
+      if (shiftName.includes('1') || shiftName.toLowerCase().includes('first') || shiftName.toLowerCase().includes('day')) {
+        machineYTDData[machineId].ytdShift1 += hits
+      } else if (shiftName.includes('2') || shiftName.toLowerCase().includes('second') || shiftName.toLowerCase().includes('afternoon')) {
+        machineYTDData[machineId].ytdShift2 += hits
+      } else if (shiftName.includes('3') || shiftName.toLowerCase().includes('third') || shiftName.toLowerCase().includes('night')) {
+        machineYTDData[machineId].ytdShift3 += hits
+      } else {
+        // If shift is unknown, default to first shift
+        machineYTDData[machineId].ytdShift1 += hits
+      }
     })
 
     // Calculate performance percentages
@@ -136,16 +139,16 @@ export async function GET() {
     })
 
   } catch (error) {
-    console.error('Error fetching YTD totals:', error)
+    console.error('Error fetching YTD totals from production_data:', error)
     
     return NextResponse.json({
-      error: 'Failed to fetch YTD data from database',
+      error: 'Failed to fetch YTD data from production database. Please ensure production data has been entered.',
       overallYTD: 0,
       overallTarget: 0,
       overallPerformance: 0,
       machines: [],
       shiftTotals: { shift1: 0, shift2: 0, shift3: 0 },
-      daysSinceYearStart: 0,
+      daysSinceYearStart: Math.floor((new Date().getTime() - new Date(new Date().getFullYear(), 0, 1).getTime()) / (1000 * 60 * 60 * 24)),
       projectedAnnual: 0
     }, { status: 500 })
   }
