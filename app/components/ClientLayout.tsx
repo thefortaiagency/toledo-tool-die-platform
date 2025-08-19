@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import ResizableChatSidebar from './ResizableChatSidebar'
 import { BugReportModal } from '../../components/bug-report-modal'
-import { ChevronLeft, Home, LayoutDashboard, FileText, BarChart3, Settings, LogOut, User, Bot, Sparkles, Menu, X, Bug } from 'lucide-react'
+import { ChevronLeft, Home, LayoutDashboard, FileText, BarChart3, LogOut, User, Bot, Sparkles, Menu, X, Bug } from 'lucide-react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/browser-client'
 
@@ -133,9 +133,6 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 <Link href="/entry" className="hover:bg-orange-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center transition-colors">
                   <FileText className="h-4 w-4 mr-1" /> Data Entry
                 </Link>
-                <Link href="/settings" className="hover:bg-orange-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center transition-colors">
-                  <Settings className="h-4 w-4 mr-1" /> Settings
-                </Link>
               </div>
             </div>
 
@@ -234,13 +231,6 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                   className="hover:bg-orange-600 hover:text-white px-3 py-2 rounded-md text-base font-medium flex items-center transition-colors"
                 >
                   <FileText className="h-5 w-5 mr-2" /> Data Entry
-                </Link>
-                <Link 
-                  href="/settings" 
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className="hover:bg-orange-600 hover:text-white px-3 py-2 rounded-md text-base font-medium flex items-center transition-colors"
-                >
-                  <Settings className="h-5 w-5 mr-2" /> Settings
                 </Link>
                 {user && (
                   <>
