@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
       'high': '🟡 High',
       'medium': '🔵 Medium',
       'low': '🟢 Low'
-    }[priority] || 'Medium';
+    }[priority as string] || 'Medium';
 
     // Format type text
     const typeText = {
@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
       'feature': '💡 Feature Request',
       'improvement': '🔧 Improvement',
       'other': '📝 Other'
-    }[type] || 'Other';
+    }[type as string] || 'Other';
 
     // Log submission
     console.log('=== NEW TOLEDO PLATFORM TICKET ===');
