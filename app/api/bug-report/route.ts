@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import nodemailer from 'nodemailer';
 
 export async function POST(req: NextRequest) {
   try {
@@ -44,19 +45,24 @@ export async function POST(req: NextRequest) {
     console.log('==================================\n');
 
     // Check for Gmail credentials
+    console.log('Gmail credentials check:', {
+      hasGmailUser: !!process.env.GMAIL_USER,
+      hasGmailPassword: !!process.env.GMAIL_APP_PASSWORD,
+      gmailUser: process.env.GMAIL_USER ? 'SET' : 'NOT SET',
+      gmailPassword: process.env.GMAIL_APP_PASSWORD ? 'SET' : 'NOT SET'
+    });
+    
     if (!process.env.GMAIL_USER || !process.env.GMAIL_APP_PASSWORD) {
       console.error('Gmail credentials not configured');
       return NextResponse.json({ 
         success: true, 
         message: 'Thank you for your report. We\'ll investigate and get back to you soon!',
-        method: 'logged-only'
+        method: 'logged-only',
+        debug: 'Gmail credentials missing'
       });
     }
 
     try {
-      // Import nodemailer
-      const nodemailer = require('nodemailer');
-      
       // Create transporter
       const transporter = nodemailer.createTransporter({
         service: 'gmail',
