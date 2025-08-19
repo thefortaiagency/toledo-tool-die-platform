@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { ChevronLeft, ChevronRight, TrendingUp, TrendingDown, Minus, AlertCircle, CheckCircle } from 'lucide-react'
+import { ChevronLeft, ChevronRight, TrendingUp, TrendingDown, Minus, AlertCircle, CheckCircle, BarChart3 } from 'lucide-react'
+import YTDRunningTotals from '../components/YTDRunningTotals'
 
 interface MachineData {
   machine: string
@@ -38,6 +39,7 @@ export default function HitTrackerTable() {
   const [machineData, setMachineData] = useState<MachineData[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [activeView, setActiveView] = useState<'table' | 'ytd'>('table')
 
   useEffect(() => {
     // Fetch REAL data from database - NO MOCK DATA
@@ -123,8 +125,39 @@ export default function HitTrackerTable() {
 
   return (
     <div className="space-y-6">
-      {/* Machine Selector */}
-      <div className="flex space-x-2 mb-4">
+      {/* View Toggle */}
+      <div className="border-b border-gray-200 mb-6">
+        <nav className="-mb-px flex space-x-8">
+          <button
+            onClick={() => setActiveView('table')}
+            className={`py-2 px-1 border-b-2 font-medium text-sm ${
+              activeView === 'table'
+                ? 'border-blue-500 text-blue-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            }`}
+          >
+            Hit Tracker Table
+          </button>
+          <button
+            onClick={() => setActiveView('ytd')}
+            className={`py-2 px-1 border-b-2 font-medium text-sm ${
+              activeView === 'ytd'
+                ? 'border-blue-500 text-blue-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+            }`}
+          >
+            <BarChart3 className="h-4 w-4 inline mr-2" />
+            YTD Running Totals
+          </button>
+        </nav>
+      </div>
+
+      {activeView === 'ytd' && <YTDRunningTotals />}
+
+      {activeView === 'table' && (
+        <>
+          {/* Machine Selector */}
+          <div className="flex space-x-2 mb-4">
         {machineData.map((machine) => (
           <button
             key={machine.machine}
@@ -260,6 +293,8 @@ export default function HitTrackerTable() {
           <div className="text-xs text-gray-500">Real production data</div>
         </div>
       </div>
+        </>
+      )}
     </div>
   )
 }
