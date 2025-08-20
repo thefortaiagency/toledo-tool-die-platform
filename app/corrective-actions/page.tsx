@@ -72,9 +72,16 @@ export default function CorrectiveActionsPage() {
       const response = await fetch('/api/pdca-projects')
       if (response.ok) {
         const data = await response.json()
-        setProjects(data || [])
+        // Handle both array and error responses
+        if (Array.isArray(data)) {
+          setProjects(data)
+        } else {
+          console.log('No projects found or database not initialized')
+          setProjects([])
+        }
       } else {
-        // If no projects exist yet, show empty state
+        // If no projects exist yet or tables don't exist, show empty state
+        console.log('Projects API returned non-OK status:', response.status)
         setProjects([])
       }
     } catch (error) {

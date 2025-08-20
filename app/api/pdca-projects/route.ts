@@ -37,9 +37,16 @@ export async function GET(request: Request) {
         .select('*')
         .order('created_at', { ascending: false })
       
-      if (error) throw error
+      if (error) {
+        // If table doesn't exist, return empty array instead of throwing
+        if (error.message?.includes('relation') || error.message?.includes('does not exist')) {
+          console.log('PDCA tables not yet created in database')
+          return NextResponse.json([])
+        }
+        throw error
+      }
       
-      return NextResponse.json(projects)
+      return NextResponse.json(projects || [])
     }
   } catch (error) {
     console.error('Error fetching PDCA projects:', error)
