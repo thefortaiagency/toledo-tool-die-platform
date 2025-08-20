@@ -17,7 +17,15 @@ import {
   Plus,
   Edit,
   Save,
-  X
+  X,
+  Clock,
+  DollarSign,
+  FileText,
+  TrendingUp,
+  Users,
+  MessageSquare,
+  Paperclip,
+  BarChart3
 } from 'lucide-react'
 
 interface PDCAItem {
@@ -29,6 +37,50 @@ interface PDCAItem {
   dueDate: string
   status: 'pending' | 'in_progress' | 'completed' | 'overdue'
   priority: 'low' | 'medium' | 'high' | 'critical'
+  actualStartDate?: string
+  actualEndDate?: string
+  progress?: number
+  estimatedHours?: number
+  actualHours?: number
+  cost?: number
+  notes?: string
+  attachments?: string[]
+}
+
+interface Milestone {
+  id: string
+  title: string
+  description: string
+  targetDate: string
+  actualDate?: string
+  status: 'pending' | 'completed' | 'overdue'
+  criteriaList: string[]
+}
+
+interface ProjectDetails {
+  projectId: string
+  projectName: string
+  projectManager: string
+  sponsor: string
+  startDate: string
+  targetEndDate: string
+  estimatedBudget: number
+  actualBudget: number
+  riskLevel: 'low' | 'medium' | 'high'
+  businessImpact: string
+  successCriteria: string[]
+  stakeholders: string[]
+}
+
+interface ProgressUpdate {
+  id: string
+  date: string
+  author: string
+  summary: string
+  achievements: string[]
+  challenges: string[]
+  nextSteps: string[]
+  overallProgress: number
 }
 
 interface PDCAActionPlanProps {
@@ -111,6 +163,82 @@ export default function PDCAActionPlan({
   const [editingItem, setEditingItem] = useState<string | null>(null)
   const [newItem, setNewItem] = useState<Partial<PDCAItem>>({})
   const [showAddForm, setShowAddForm] = useState(false)
+  const [activeTab, setActiveTab] = useState<'pdca' | 'project' | 'milestones' | 'progress'>('pdca')
+
+  // Project management state
+  const [projectDetails, setProjectDetails] = useState<ProjectDetails>({
+    projectId: `PROJ-${Date.now()}`,
+    projectName: `${title} Improvement Project`,
+    projectManager: 'Operations Manager',
+    sponsor: 'Plant Manager',
+    startDate: new Date().toISOString().split('T')[0],
+    targetEndDate: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0], // 90 days
+    estimatedBudget: 5000,
+    actualBudget: 0,
+    riskLevel: currentValue < targetValue * 0.7 ? 'high' : currentValue < targetValue * 0.9 ? 'medium' : 'low',
+    businessImpact: `Improve ${targetMetric} from ${currentValue} to ${targetValue} ${unit}`,
+    successCriteria: [
+      `Achieve target ${targetMetric} of ${targetValue} ${unit}`,
+      'Implement sustainable process improvements',
+      'Complete project within 90 days',
+      'Stay within budget constraints'
+    ],
+    stakeholders: ['Quality Manager', 'Production Supervisor', 'Operations Manager', 'Plant Manager']
+  })
+
+  const [milestones, setMilestones] = useState<Milestone[]>([
+    {
+      id: '1',
+      title: 'Project Kickoff & Planning Complete',
+      description: 'Complete root cause analysis and establish project plan',
+      targetDate: new Date(Date.now() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      status: 'pending',
+      criteriaList: [
+        'Root cause analysis completed',
+        'Action plan documented',
+        'Team assignments made',
+        'Budget approved'
+      ]
+    },
+    {
+      id: '2', 
+      title: 'Implementation Phase Complete',
+      description: 'All corrective actions implemented and tested',
+      targetDate: new Date(Date.now() + 45 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      status: 'pending',
+      criteriaList: [
+        'All planned actions completed',
+        'Initial results measured',
+        'Process documentation updated'
+      ]
+    },
+    {
+      id: '3',
+      title: 'Project Closure',
+      description: 'Results validated and process standardized',
+      targetDate: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+      status: 'pending',
+      criteriaList: [
+        'Target metrics achieved',
+        'Process standardized',
+        'Training completed',
+        'Lessons learned documented'
+      ]
+    }
+  ])
+
+  const [progressUpdates, setProgressUpdates] = useState<ProgressUpdate[]>([
+    {
+      id: '1',
+      date: new Date().toISOString().split('T')[0],
+      author: 'Project Manager',
+      summary: 'Project initiated to address performance gap',
+      achievements: ['PDCA framework established', 'Initial assessment completed'],
+      challenges: ['Need stakeholder alignment', 'Resource allocation pending'],
+      nextSteps: ['Begin root cause analysis', 'Schedule team meetings'],
+      overallProgress: 5
+    }
+  ])
 
   if (!isOpen) return null
 
@@ -182,12 +310,18 @@ export default function PDCAActionPlan({
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-6xl max-h-[90vh] overflow-y-auto">
+      <div className="bg-white rounded-xl shadow-2xl w-full max-w-7xl max-h-[95vh] overflow-hidden flex flex-col">
         {/* Header */}
-        <div className="sticky top-0 bg-white border-b px-6 py-4 flex items-center justify-between">
-          <div>
-            <h2 className="text-2xl font-bold text-gray-900">PDCA Action Plan</h2>
-            <p className="text-sm text-gray-600 mt-1">{title}</p>
+        <div className="bg-white border-b px-6 py-4 flex items-center justify-between">
+          <div className="flex items-center gap-4">
+            <div>
+              <h2 className="text-2xl font-bold text-gray-900">Project Management System</h2>
+              <p className="text-sm text-gray-600 mt-1">{title}</p>
+            </div>
+            <div className="flex items-center gap-2 px-3 py-1 bg-orange-100 rounded-lg">
+              <FileText className="w-4 h-4 text-orange-600" />
+              <span className="text-sm font-medium text-orange-800">{projectDetails.projectId}</span>
+            </div>
           </div>
           <button
             onClick={onClose}
@@ -195,6 +329,31 @@ export default function PDCAActionPlan({
           >
             <X className="w-6 h-6" />
           </button>
+        </div>
+
+        {/* Tab Navigation */}
+        <div className="border-b bg-gray-50 px-6">
+          <nav className="-mb-px flex space-x-8">
+            {[
+              { key: 'pdca', label: 'PDCA Actions', icon: ClipboardList },
+              { key: 'project', label: 'Project Details', icon: FileText },
+              { key: 'milestones', label: 'Milestones', icon: Target },
+              { key: 'progress', label: 'Progress Updates', icon: BarChart3 }
+            ].map(({ key, label, icon: Icon }) => (
+              <button
+                key={key}
+                onClick={() => setActiveTab(key as any)}
+                className={`py-3 px-1 border-b-2 font-medium text-sm flex items-center gap-2 ${
+                  activeTab === key
+                    ? 'border-orange-500 text-orange-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
+              >
+                <Icon className="w-4 h-4" />
+                {label}
+              </button>
+            ))}
+          </nav>
         </div>
 
         <div className="p-6">

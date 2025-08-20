@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Calendar, TrendingUp, AlertCircle, CheckCircle, Activity, Users, Package, BarChart3, MessageSquare, Brain, Table, AlertTriangle, Factory, PieChart as PieChartIcon, TrendingDown, Wrench, FileText, DollarSign, Upload } from 'lucide-react'
+import { Calendar, TrendingUp, AlertCircle, CheckCircle, Activity, Users, Package, BarChart3, MessageSquare, Brain, Table, AlertTriangle, Factory, PieChart as PieChartIcon, TrendingDown, Wrench, FileText, DollarSign, Upload, ChevronDown } from 'lucide-react'
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell, RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar } from 'recharts'
 import HitTrackerTable from './hit-tracker-table'
 import HitTrackerAccurate from './hit-tracker-accurate'
@@ -25,6 +25,55 @@ export default function ReportsPage() {
   const [commentPatterns, setCommentPatterns] = useState<any[]>([])
   const [recentComments, setRecentComments] = useState<any[]>([])
   const [totalComments, setTotalComments] = useState(0)
+  
+  // Dropdown states
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null)
+
+  // Report categories
+  const reportCategories = {
+    production: {
+      title: 'Production Reports',
+      icon: Factory,
+      color: 'from-blue-600 to-blue-700',
+      reports: [
+        { id: 'hit-tracker-table', title: 'Hit Tracker', icon: Table },
+        { id: 'hit-tracker', title: 'Shift Trends', icon: Activity },
+        { id: 'oee', title: 'OEE Dashboard', icon: Factory },
+        { id: 'quality', title: 'Quality Performance', icon: PieChartIcon },
+      ],
+      links: [
+        { title: 'YTD Totals', href: '/reports/ytd-totals', icon: BarChart3 },
+      ]
+    },
+    analysis: {
+      title: 'Analysis Reports',
+      icon: Brain,
+      color: 'from-purple-600 to-purple-700',
+      reports: [
+        { id: 'ai-insights', title: 'AI Analysis', icon: Brain },
+        { id: 'comments', title: 'Comments Analysis', icon: MessageSquare },
+        { id: 'pioneer-scrap', title: 'Pioneer Analysis', icon: Factory },
+        { id: 'downtime', title: 'Downtime Analysis', icon: Wrench },
+      ],
+      links: [
+        { title: 'Scrap Analysis', href: '/scrap-analysis', icon: AlertTriangle },
+      ]
+    },
+    management: {
+      title: 'Management Reports',
+      icon: DollarSign,
+      color: 'from-green-600 to-green-700',
+      reports: [
+        { id: 'executive', title: 'Executive Dashboard', icon: DollarSign },
+        { id: 'quarterly', title: 'Quarterly Review', icon: FileText },
+        { id: 'manning', title: 'Manning Report', icon: Users },
+      ]
+    }
+  }
+
+  const toggleDropdown = (category: string) => {
+    setOpenDropdown(openDropdown === category ? null : category)
+  }
 
   // Fetch Hit Tracker Data
   const fetchHitTrackerData = async () => {
@@ -102,143 +151,53 @@ export default function ReportsPage() {
       </div>
 
       {/* Report Selector - Two rows for better fit */}
-      <div className="mb-4 sm:mb-6">
-        <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2 sm:gap-3">
-          <button
-            onClick={() => setSelectedReport('hit-tracker-table')}
-            className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg font-medium transition-colors flex flex-col sm:flex-row items-center justify-center text-xs sm:text-sm ${
-              selectedReport === 'hit-tracker-table' 
-                ? 'bg-orange-600 text-white' 
-                : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
-            }`}
-          >
-            <Table className="w-4 h-4 sm:mr-1.5 mb-1 sm:mb-0" />
-            <span className="text-center">Hit Tracker</span>
-          </button>
-          <button
-            onClick={() => setSelectedReport('hit-tracker')}
-            className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg font-medium transition-colors flex flex-col sm:flex-row items-center justify-center text-xs sm:text-sm ${
-              selectedReport === 'hit-tracker' 
-                ? 'bg-orange-600 text-white' 
-                : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
-            }`}
-          >
-            <Activity className="w-4 h-4 sm:mr-1.5 mb-1 sm:mb-0" />
-            <span className="text-center">Shift Trends</span>
-          </button>
-          <button
-            onClick={() => setSelectedReport('ai-insights')}
-            className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg font-medium transition-colors flex flex-col sm:flex-row items-center justify-center text-xs sm:text-sm ${
-              selectedReport === 'ai-insights' 
-                ? 'bg-orange-600 text-white' 
-                : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
-            }`}
-          >
-            <Brain className="w-4 h-4 sm:mr-1.5 mb-1 sm:mb-0" />
-            <span className="text-center">AI Analysis</span>
-          </button>
-          <button
-            onClick={() => setSelectedReport('comments')}
-            className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg font-medium transition-colors flex flex-col sm:flex-row items-center justify-center text-xs sm:text-sm ${
-              selectedReport === 'comments' 
-                ? 'bg-orange-600 text-white' 
-                : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
-            }`}
-          >
-            <MessageSquare className="w-4 h-4 sm:mr-1.5 mb-1 sm:mb-0" />
-            <span className="text-center">Comments</span>
-          </button>
-          <a
-            href="/scrap-analysis"
-            className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg font-medium transition-colors flex flex-col sm:flex-row items-center justify-center text-xs sm:text-sm bg-gradient-to-r from-red-600 to-orange-600 text-white hover:from-red-700 hover:to-orange-700`}
-          >
-            <AlertTriangle className="w-4 h-4 sm:mr-1.5 mb-1 sm:mb-0 animate-pulse" />
-            <span className="text-center">Scrap</span>
-          </a>
-          <a
-            href="/reports/ytd-totals"
-            className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg font-medium transition-colors flex flex-col sm:flex-row items-center justify-center text-xs sm:text-sm bg-gradient-to-r from-blue-600 to-green-600 text-white hover:from-blue-700 hover:to-green-700`}
-          >
-            <BarChart3 className="w-4 h-4 sm:mr-1.5 mb-1 sm:mb-0" />
-            <span className="text-center">YTD Totals</span>
-          </a>
-          <button
-            onClick={() => setSelectedReport('pioneer-scrap')}
-            className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg font-medium transition-colors flex flex-col sm:flex-row items-center justify-center text-xs sm:text-sm ${
-              selectedReport === 'pioneer-scrap' 
-                ? 'bg-orange-600 text-white' 
-                : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
-            }`}
-          >
-            <Factory className="w-4 h-4 sm:mr-1.5 mb-1 sm:mb-0" />
-            <span className="text-center">Pioneer</span>
-          </button>
-          <button
-            onClick={() => setSelectedReport('executive')}
-            className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg font-medium transition-colors flex flex-col sm:flex-row items-center justify-center text-xs sm:text-sm ${
-              selectedReport === 'executive' 
-                ? 'bg-orange-600 text-white' 
-                : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
-            }`}
-          >
-            <DollarSign className="w-4 h-4 sm:mr-1.5 mb-1 sm:mb-0" />
-            <span className="text-center">Executive</span>
-          </button>
-          <button
-            onClick={() => setSelectedReport('quality')}
-            className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg font-medium transition-colors flex flex-col sm:flex-row items-center justify-center text-xs sm:text-sm ${
-              selectedReport === 'quality' 
-                ? 'bg-orange-600 text-white' 
-                : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
-            }`}
-          >
-            <PieChartIcon className="w-4 h-4 sm:mr-1.5 mb-1 sm:mb-0" />
-            <span className="text-center">Quality</span>
-          </button>
-          <button
-            onClick={() => setSelectedReport('downtime')}
-            className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg font-medium transition-colors flex flex-col sm:flex-row items-center justify-center text-xs sm:text-sm ${
-              selectedReport === 'downtime' 
-                ? 'bg-orange-600 text-white' 
-                : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
-            }`}
-          >
-            <Wrench className="w-4 h-4 sm:mr-1.5 mb-1 sm:mb-0" />
-            <span className="text-center">Downtime</span>
-          </button>
-          <button
-            onClick={() => setSelectedReport('quarterly')}
-            className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg font-medium transition-colors flex flex-col sm:flex-row items-center justify-center text-xs sm:text-sm ${
-              selectedReport === 'quarterly' 
-                ? 'bg-orange-600 text-white' 
-                : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
-            }`}
-          >
-            <FileText className="w-4 h-4 sm:mr-1.5 mb-1 sm:mb-0" />
-            <span className="text-center">Quarterly</span>
-          </button>
-          <button
-            onClick={() => setSelectedReport('oee')}
-            className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg font-medium transition-colors flex flex-col sm:flex-row items-center justify-center text-xs sm:text-sm ${
-              selectedReport === 'oee' 
-                ? 'bg-orange-600 text-white' 
-                : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
-            }`}
-          >
-            <Factory className="w-4 h-4 sm:mr-1.5 mb-1 sm:mb-0" />
-            <span className="text-center">OEE</span>
-          </button>
-          <button
-            onClick={() => setSelectedReport('manning')}
-            className={`px-2 sm:px-3 py-2 sm:py-2.5 rounded-lg font-medium transition-colors flex flex-col sm:flex-row items-center justify-center text-xs sm:text-sm ${
-              selectedReport === 'manning' 
-                ? 'bg-orange-600 text-white' 
-                : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
-            }`}
-          >
-            <Users className="w-4 h-4 sm:mr-1.5 mb-1 sm:mb-0" />
-            <span className="text-center">Manning</span>
-          </button>
+      {/* Dropdown Navigation */}
+      <div className="mb-6">
+        <div className="flex flex-wrap gap-4">
+          {Object.entries(reportCategories).map(([categoryKey, category]) => (
+            <div key={categoryKey} className="relative">
+              <button
+                onClick={() => toggleDropdown(categoryKey)}
+                className={`px-4 py-2 rounded-lg font-medium transition-colors flex items-center gap-2 bg-gradient-to-r ${category.color} text-white hover:opacity-90`}
+              >
+                <category.icon className="w-4 h-4" />
+                {category.title}
+                <ChevronDown className={`w-4 h-4 transition-transform ${openDropdown === categoryKey ? 'rotate-180' : ''}`} />
+              </button>
+              
+              {openDropdown === categoryKey && (
+                <div className="absolute top-full left-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg z-50 min-w-[200px]">
+                  <div className="py-2">
+                    {category.reports.map((report) => (
+                      <button
+                        key={report.id}
+                        onClick={() => {
+                          setSelectedReport(report.id)
+                          setOpenDropdown(null)
+                        }}
+                        className={`w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center gap-3 ${
+                          selectedReport === report.id ? 'bg-orange-50 text-orange-600 font-medium' : 'text-gray-700'
+                        }`}
+                      >
+                        <report.icon className="w-4 h-4" />
+                        {report.title}
+                      </button>
+                    ))}
+                    {category.links && category.links.map((link) => (
+                      <a
+                        key={link.href}
+                        href={link.href}
+                        className="w-full px-4 py-2 text-left hover:bg-gray-100 flex items-center gap-3 text-gray-700 border-t border-gray-100"
+                      >
+                        <link.icon className="w-4 h-4" />
+                        {link.title}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </div>
 

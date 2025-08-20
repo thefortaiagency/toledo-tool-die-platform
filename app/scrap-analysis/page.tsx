@@ -7,7 +7,7 @@ import { Progress } from '@/components/ui/progress'
 import { Badge } from '@/components/ui/badge'
 import { AlertCircle, TrendingDown, TrendingUp, DollarSign, Package, BarChart3, Calendar, Factory, ExternalLink, ClipboardList } from 'lucide-react'
 import Link from 'next/link'
-import PDCAActionPlan from '../components/PDCAActionPlan'
+import EnhancedPDCAProject from '../components/EnhancedPDCAProject'
 import scrapData from '../../data/scrap-analysis-2025-complete.json'
 
 interface ScrapSummary {
@@ -429,9 +429,9 @@ export default function ScrapAnalysisPage() {
         </CardContent>
       </Card>
 
-      {/* PDCA Action Plan Modal for Scrap Issues */}
+      {/* Enhanced PDCA Project Management Modal for Scrap Issues */}
       {showPDCA && selectedScrapReason && (
-        <PDCAActionPlan
+        <EnhancedPDCAProject
           title={`Scrap Reduction Plan: ${selectedScrapReason.description}`}
           targetMetric="Scrap Cost"
           currentValue={selectedScrapReason.cost}
