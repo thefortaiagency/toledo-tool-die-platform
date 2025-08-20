@@ -101,6 +101,7 @@ interface EnhancedPDCAProjectProps {
   onClose: () => void
   kpiType?: string
   scrapReason?: string
+  projectId?: string
 }
 
 export default function EnhancedPDCAProject({
@@ -112,13 +113,16 @@ export default function EnhancedPDCAProject({
   isOpen,
   onClose,
   kpiType,
-  scrapReason
+  scrapReason,
+  projectId
 }: EnhancedPDCAProjectProps) {
   const [activeTab, setActiveTab] = useState<'overview' | 'pdca' | 'milestones' | 'progress'>('overview')
+  const [isSaving, setIsSaving] = useState(false)
+  const [projectSaved, setProjectSaved] = useState(false)
   
   // Project state
   const [projectDetails, setProjectDetails] = useState<ProjectDetails>({
-    projectId: `PROJ-${Date.now()}`,
+    projectId: projectId || `PROJ-${Date.now()}`,
     projectName: `${title} Improvement Project`,
     projectManager: 'Operations Manager',
     sponsor: 'Plant Manager',
@@ -335,6 +339,78 @@ export default function EnhancedPDCAProject({
       ]
     }
   ])
+
+  // Auto-save project when created
+  const saveProject = async () => {
+    // Only save if this is a new project (not viewing existing)
+    if (projectSaved || projectId) return
+    
+    setIsSaving(true)
+    
+    // Determine project type based on the context
+    let projectType = 'other'
+    if (scrapReason || title.toLowerCase().includes('scrap')) {
+      projectType = 'scrap_reduction'
+    } else if (title.toLowerCase().includes('downtime')) {
+      projectType = 'downtime_reduction'
+    } else if (title.toLowerCase().includes('quality') || title.toLowerCase().includes('ppm')) {
+      projectType = 'quality_improvement'
+    } else if (title.toLowerCase().includes('cost')) {
+      projectType = 'cost_reduction'
+    } else if (title.toLowerCase().includes('maintenance') || title.toLowerCase().includes('pm')) {
+      projectType = 'efficiency_improvement'
+    }
+    
+    try {
+      const response = await fetch('/api/pdca-projects', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          projectId: projectDetails.projectId,
+          projectName: projectDetails.projectName,
+          projectType,
+          targetMetric: targetMetric || title,
+          currentValue,
+          targetValue,
+          unit,
+          projectManager: projectDetails.projectManager,
+          sponsor: projectDetails.sponsor,
+          startDate: projectDetails.startDate,
+          targetEndDate: projectDetails.targetEndDate,
+          estimatedBudget: projectDetails.estimatedBudget,
+          riskLevel: projectDetails.riskLevel,
+          businessImpact: projectDetails.businessImpact,
+          successCriteria: projectDetails.successCriteria,
+          stakeholders: projectDetails.stakeholders,
+          actionItems: pdcaItems,
+          milestones,
+          initialProgress: progressUpdates[0]
+        })
+      })
+      
+      if (response.ok) {
+        setProjectSaved(true)
+        console.log('Project saved successfully')
+      }
+    } catch (error) {
+      console.error('Error saving project:', error)
+    } finally {
+      setIsSaving(false)
+    }
+  }
+
+  // Save project when modal opens (for new projects)
+  React.useEffect(() => {
+    if (isOpen && !projectId && !projectSaved) {
+      // Delay save to allow modal to fully render
+      const timer = setTimeout(() => {
+        saveProject()
+      }, 1000)
+      return () => clearTimeout(timer)
+    }
+  }, [isOpen])
 
   if (!isOpen) return null
 

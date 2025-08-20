@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import ResizableChatSidebar from './ResizableChatSidebar'
 import { BugReportModal } from '../../components/bug-report-modal'
-import { ChevronLeft, Home, LayoutDashboard, FileText, BarChart3, LogOut, User, Bot, Sparkles, Menu, X, Bug } from 'lucide-react'
+import { ChevronLeft, Home, LayoutDashboard, FileText, BarChart3, LogOut, User, Bot, Sparkles, Menu, X, Bug, AlertTriangle } from 'lucide-react'
 import Link from 'next/link'
 import { createClient } from '@/lib/supabase/browser-client'
 
@@ -124,6 +124,9 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                 <Link href="/scrap-analysis" className="hover:bg-orange-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center transition-colors">
                   <BarChart3 className="h-4 w-4 mr-1" /> Scrap Analysis
                 </Link>
+                <Link href="/corrective-actions" className="hover:bg-orange-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center transition-colors bg-red-700">
+                  <AlertTriangle className="h-4 w-4 mr-1" /> Corrective Actions
+                </Link>
                 <Link href="/inventory-adjustments" className="hover:bg-orange-600 hover:text-white px-3 py-2 rounded-md text-sm font-medium flex items-center transition-colors">
                   <BarChart3 className="h-4 w-4 mr-1" /> Inventory
                 </Link>
@@ -209,6 +212,13 @@ export default function ClientLayout({ children }: { children: React.ReactNode }
                   className="hover:bg-orange-600 hover:text-white px-3 py-2 rounded-md text-base font-medium flex items-center transition-colors"
                 >
                   <BarChart3 className="h-5 w-5 mr-2" /> Scrap Analysis
+                </Link>
+                <Link 
+                  href="/corrective-actions" 
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="bg-red-700 hover:bg-orange-600 hover:text-white px-3 py-2 rounded-md text-base font-medium flex items-center transition-colors"
+                >
+                  <AlertTriangle className="h-5 w-5 mr-2" /> Corrective Actions
                 </Link>
                 <Link 
                   href="/inventory-adjustments" 
