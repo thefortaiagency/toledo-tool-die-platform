@@ -336,20 +336,43 @@ export default function ScrapAnalysisPage() {
                 {Object.entries(summary.byWorkcenterGroup)
                   .sort(([, a], [, b]) => b.totalCost - a.totalCost)
                   .slice(0, 10)
-                  .map(([group, data]) => {
+                  .map(([group, data], index) => {
                     const unplannedPct = data.totalQty > 0 ? (data.unplannedQty / data.totalQty * 100) : 0
                     return (
-                      <div key={group} className="flex items-center justify-between p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
-                        <div>
-                          <p className="font-medium">{group}</p>
-                          <p className="text-sm text-gray-600">{formatNumber(data.totalQty)} pieces total</p>
+                      <div key={group} className="p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
+                        <div className="flex items-center justify-between mb-3">
+                          <div>
+                            <p className="font-medium">{group}</p>
+                            <p className="text-sm text-gray-600">{formatNumber(data.totalQty)} pieces total</p>
+                          </div>
+                          <div className="text-right">
+                            <p className="font-semibold">{formatCurrency(data.totalCost)}</p>
+                            <Badge variant={unplannedPct > 60 ? "destructive" : unplannedPct > 40 ? "secondary" : "outline"}>
+                              {unplannedPct.toFixed(1)}% unplanned
+                            </Badge>
+                          </div>
                         </div>
-                        <div className="text-right">
-                          <p className="font-semibold">{formatCurrency(data.totalCost)}</p>
-                          <Badge variant={unplannedPct > 60 ? "destructive" : unplannedPct > 40 ? "secondary" : "outline"}>
-                            {unplannedPct.toFixed(1)}% unplanned
-                          </Badge>
-                        </div>
+                        
+                        {/* PDCA Action Button for Top 3 Workcenters with high unplanned scrap */}
+                        {index < 3 && unplannedPct > 50 && data.totalCost > 5000 && (
+                          <div className="pt-2 border-t border-gray-200">
+                            <button
+                              onClick={() => openScrapPDCA({
+                                description: `Workcenter: ${group}`,
+                                cost: data.totalCost,
+                                quantity: data.totalQty,
+                                percentage: unplannedPct
+                              })}
+                              className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-medium text-white bg-red-600 hover:bg-red-700 rounded-md transition-colors"
+                            >
+                              <ClipboardList className="h-3 w-3" />
+                              PDCA Action Required
+                            </button>
+                            <p className="text-xs text-red-600 mt-1 text-center">
+                              High unplanned scrap in workcenter
+                            </p>
+                          </div>
+                        )}
                       </div>
                     )
                   })}
@@ -375,28 +398,51 @@ export default function ScrapAnalysisPage() {
                   .map(([part, data], index) => {
                     const unplannedPct = data.totalQty > 0 ? (data.unplannedQty / data.totalQty * 100) : 0
                     return (
-                      <div key={part} className="flex items-center justify-between p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
-                        <div className="flex items-center gap-3">
-                          <Badge variant="outline" className="min-w-[2rem] justify-center">
-                            {index + 1}
-                          </Badge>
-                          <div>
-                            <Link 
-                              href={`/scrap-analysis/part/${encodeURIComponent(part)}`}
-                              className="font-medium text-blue-600 hover:text-blue-800 hover:underline flex items-center gap-1 group transition-colors"
-                            >
-                              {part}
-                              <ExternalLink className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
-                            </Link>
-                            <p className="text-sm text-gray-600">{data.name}</p>
+                      <div key={part} className="p-3 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors">
+                        <div className="flex items-center justify-between mb-3">
+                          <div className="flex items-center gap-3">
+                            <Badge variant="outline" className="min-w-[2rem] justify-center">
+                              {index + 1}
+                            </Badge>
+                            <div>
+                              <Link 
+                                href={`/scrap-analysis/part/${encodeURIComponent(part)}`}
+                                className="font-medium text-blue-600 hover:text-blue-800 hover:underline flex items-center gap-1 group transition-colors"
+                              >
+                                {part}
+                                <ExternalLink className="h-3 w-3 opacity-0 group-hover:opacity-100 transition-opacity" />
+                              </Link>
+                              <p className="text-sm text-gray-600">{data.name}</p>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <p className="font-semibold">{formatCurrency(data.totalCost)}</p>
+                            <Badge variant={unplannedPct > 60 ? "destructive" : unplannedPct > 40 ? "secondary" : "outline"}>
+                              {unplannedPct.toFixed(1)}% unplanned
+                            </Badge>
                           </div>
                         </div>
-                        <div className="text-right">
-                          <p className="font-semibold">{formatCurrency(data.totalCost)}</p>
-                          <Badge variant={unplannedPct > 60 ? "destructive" : unplannedPct > 40 ? "secondary" : "outline"}>
-                            {unplannedPct.toFixed(1)}% unplanned
-                          </Badge>
-                        </div>
+                        
+                        {/* PDCA Action Button for Top 5 Parts */}
+                        {index < 5 && data.totalCost > 1000 && (
+                          <div className="pt-2 border-t border-gray-200">
+                            <button
+                              onClick={() => openScrapPDCA({
+                                description: `Part ${part}: ${data.name}`,
+                                cost: data.totalCost,
+                                quantity: data.totalQty,
+                                percentage: (data.totalCost / summary.totalScrapCost * 100)
+                              })}
+                              className="w-full flex items-center justify-center gap-2 px-3 py-2 text-xs font-medium text-white bg-red-600 hover:bg-red-700 rounded-md transition-colors"
+                            >
+                              <ClipboardList className="h-3 w-3" />
+                              PDCA Action Required
+                            </button>
+                            <p className="text-xs text-red-600 mt-1 text-center">
+                              High-cost part requiring corrective action
+                            </p>
+                          </div>
+                        )}
                       </div>
                     )
                   })}
