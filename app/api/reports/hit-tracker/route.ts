@@ -74,20 +74,26 @@ export async function GET() {
         id: record.machine_id,
         name: MACHINE_NAMES[record.machine_id],
         hits: dailyHits,
-        target: target * 24 // Daily target (24 hours)
+        target: target, // Keep as hourly target for clarity
+        dailyTarget: target * 24 // Daily target (24 hours)
       })
     })
     
     // Calculate efficiencies for chart
     const chartData = Object.values(dailyData).map((day: any) => {
-      // Calculate per-shift targets (8 hours per shift)
+      // Calculate per-shift targets
+      // Each shift is 8 hours: 
+      // Shift 1: 6:00 AM - 2:00 PM (8 hours)
+      // Shift 2: 2:00 PM - 10:00 PM (8 hours)  
+      // Shift 3: 10:00 PM - 6:00 AM (8 hours)
       let shift1Target = 0
       let shift2Target = 0
       let shift3Target = 0
       
       // Sum up the targets for each machine
       day.machines.forEach((m: any) => {
-        const shiftTarget = m.target / 3 // Daily target divided by 3 shifts
+        // Each machine has an hourly target stored in m.target
+        const shiftTarget = m.target * 8 // 8 hours per shift
         shift1Target += shiftTarget
         shift2Target += shiftTarget
         shift3Target += shiftTarget
