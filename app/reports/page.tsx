@@ -183,7 +183,7 @@ export default function ReportsPage() {
                         {report.title}
                       </button>
                     ))}
-                    {category.links && category.links.map((link) => (
+                    {'links' in category && category.links && category.links.map((link) => (
                       <a
                         key={link.href}
                         href={link.href}
